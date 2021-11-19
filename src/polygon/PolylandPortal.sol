@@ -5,7 +5,7 @@ interface IFxMessageProcessor {
     function processMessageFromRoot(uint256 stateId, address rootMessageSender, bytes calldata data) external;
 }
 
-/// @dev This is a stateless portal that just execute the bridge from L1 <-> L2
+/// @dev This is portal that just execute the bridge from L1 <-> L2
 contract PolylandPortal {
 
      /*///////////////////////////////////////////////////////////////

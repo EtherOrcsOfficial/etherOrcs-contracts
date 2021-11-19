@@ -76,9 +76,9 @@ contract MainlandPortal {
 
     /// @dev executed when we receive a message from Polygon
     function _processMessageFromChild(bytes memory data) internal {
-        (address[] memory targets, bytes[] memory calls ) = abi.decode(data, (address[], bytes[]));
-        for (uint256 i = 0; i < targets.length; i++) {
-            (bool succ, ) = targets[i].call(calls[i]);
+        (address target, bytes[] memory calls ) = abi.decode(data, (address, bytes[]));
+        for (uint256 i = 0; i < calls.length; i++) {
+            (bool succ, ) = target.call(calls[i]);
             require(succ, "MainlandPortal: call failed");
         }
     }
@@ -198,7 +198,7 @@ contract MainlandPortal {
      *  8 - branchMask - 32 bits denoting the path of receipt in merkle tree
      *  9 - receiptLogIndex - Log Index to read from the receipt
      */
-    function receiveMessage(bytes calldata inputData) public virtual {
+    function receiveMessage(bytes calldata inputData) public {
         bytes memory message = _validateAndExtractMessage(inputData);
         _processMessageFromChild(message);
     }
