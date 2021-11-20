@@ -4,15 +4,15 @@ pragma solidity 0.8.7;
 /// @dev A simple contract to orchestrate comings and going from the OrcsPortal
 contract MainlandCastle {
 
-    address mainlandPortal;
-    address allies;
-    address orcs;
-    address zug;
-    address shr;
+    address public mainlandPortal;
+    address public allies;
+    address public orcs;
+    address public zug;
+    address public shr;
 
-    mapping (address => address) reflection;
-    mapping (uint256 => address) orcOwner;
-    mapping (uint256 => address) allyOwner;
+    mapping (address => address) public reflection;
+    mapping (uint256 => address) public orcOwner;
+    mapping (uint256 => address) public allyOwner;
 
     /// @dev Send Orcs, allies and tokens to PolyLand
     function travel(uint256[] calldata orcIds, uint256[] calldata allyIds, uint256 zugAmount, uint256 shrAmount) external {

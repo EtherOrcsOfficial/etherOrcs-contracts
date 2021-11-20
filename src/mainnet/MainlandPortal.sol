@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-import {RLPReader} from "../../lib/FxPortal/lib/RLPReader.sol";
-import {MerklePatriciaProof} from "../../lib/FxPortal/lib/MerklePatriciaProof.sol";
-import {Merkle} from "../../lib/FxPortal/lib/Merkle.sol";
-import "../../lib/FxPortal/lib/ExitPayloadReader.sol";
+import {RLPReader} from "../../extLib/FxPortal/lib/RLPReader.sol";
+import {MerklePatriciaProof} from "../../extLib/FxPortal/lib/MerklePatriciaProof.sol";
+import {Merkle} from "../../extLib/FxPortal/lib/Merkle.sol";
+import "../../extLib/FxPortal/lib/ExitPayloadReader.sol";
 
 interface IFxStateSender {
     function sendMessageToChild(address _receiver, bytes calldata _data) external;
