@@ -2,9 +2,9 @@
 pragma solidity 0.8.7;
 
 /// @dev A simple contract to orchestrate comings and going from the OrcsPortal
-contract MainlandCastle {
+contract PolylandCastle {
 
-    address mainlandPortal;
+    address polylandPortal;
     address allies;
     address orcs;
     address zug;
@@ -32,6 +32,12 @@ contract MainlandCastle {
             calls[orcIds.length] = abi.encodeWithSelector(this.unstakeMany.selector, msg.sender,  orcIds);
         }
 
+        if (allyIds.length > 0) {
+            _pullIds(allies, allyIds);
+        }
+        
+        // Send allies here and create call to mint
+
         if (zugAmount > 0) {
             ERC20Like(zug).burn(msg.sender, zugAmount);
             calls[orcIds.length + allyIds.length] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(zug)], msg.sender, zugAmount);
@@ -42,7 +48,7 @@ contract MainlandCastle {
             calls[orcIds.length + allyIds.length] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(shr)], msg.sender, shrAmount);
         }
 
-        PortalLike(mainlandPortal).sendMessage(abi.encode(target, calls));
+        PortalLike(polylandPortal).sendMessage(abi.encode(target, calls));
     }
 
     function callOrcs(bytes calldata data) external {
@@ -91,7 +97,7 @@ contract MainlandCastle {
     }
 
     function _onlyPortal() view internal {
-        require(msg.sender == mainlandPortal, "not portal");
+        require(msg.sender == polylandPortal, "not portal");
     } 
 
 }
