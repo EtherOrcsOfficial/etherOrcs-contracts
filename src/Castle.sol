@@ -2,9 +2,9 @@
 pragma solidity 0.8.7;
 
 /// @dev A simple contract to orchestrate comings and going from the OrcsPortal
-contract MainlandCastle {
+contract Castle {
 
-    address public mainlandPortal;
+    address public portal;
     address public allies;
     address public orcs;
     address public zug;
@@ -25,8 +25,7 @@ contract MainlandCastle {
 
             // This will create orcs exactly as they exist in this chain
             for (uint256 i = 0; i < orcIds.length; i++) {
-                (uint8 b, uint8 h, uint8 m, uint8 o, uint16 l, uint16 zM, uint32 lP) = OrcishLike(orcs).orcs(orcIds[i]);
-                calls[i] = abi.encodeWithSelector(this.callOrcs.selector, abi.encodeWithSelector(OrcishLike.manuallyAdjustOrc.selector, b, h, m, o, l, zM, lP));
+                calls[i] = _buildData(orcIds[i]);
             }
 
             calls[orcIds.length] = abi.encodeWithSelector(this.unstakeMany.selector, msg.sender,  orcIds);
@@ -42,7 +41,7 @@ contract MainlandCastle {
             calls[orcIds.length + allyIds.length] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(shr)], msg.sender, shrAmount);
         }
 
-        PortalLike(mainlandPortal).sendMessage(abi.encode(target, calls));
+        PortalLike(portal).sendMessage(abi.encode(target, calls));
     }
 
     function callOrcs(bytes calldata data) external {
@@ -81,6 +80,11 @@ contract MainlandCastle {
         }
     }
 
+    function _buildData(uint256 id) internal view returns (bytes memory data) {
+        (uint8 b, uint8 h, uint8 m, uint8 o, uint16 l, uint16 zM, uint32 lP) = OrcishLike(orcs).orcs(id);
+        data = abi.encodeWithSelector(this.callOrcs.selector, abi.encodeWithSelector(OrcishLike.manuallyAdjustOrc.selector, b, h, m, o, l, zM, lP));   
+    }
+
     function _stake(address token, uint256 id, address owner) internal {
         require((token == orcs ? orcOwner[id] : allyOwner[id]) == address(0), "already staked");
         require(msg.sender == token, "not orcs contract");
@@ -91,7 +95,7 @@ contract MainlandCastle {
     }
 
     function _onlyPortal() view internal {
-        require(msg.sender == mainlandPortal, "not portal");
+        require(msg.sender == portal, "not portal");
     } 
 
 }
