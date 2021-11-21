@@ -21,4 +21,5 @@ contract Rinkorc is EtherOrcs {
         orcs[id].lvlProgress = lvlProgress;
         orcs[id].zugModifier = zugModifier;
     }
+    
 }
