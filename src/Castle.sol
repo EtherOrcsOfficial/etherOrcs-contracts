@@ -14,11 +14,20 @@ contract Castle {
     mapping (uint256 => address) public orcOwner;
     mapping (uint256 => address) public allyOwner;
 
+    function initialize(address portal_, address orc_) external {
+        portal = portal_;
+        orcs   = orc_;
+    }
+
+    function setReflection(address key_, address reflection_) external {
+        reflection[key_] = reflection_;
+    }
+
     /// @dev Send Orcs, allies and tokens to PolyLand
     function travel(uint256[] calldata orcIds, uint256[] calldata allyIds, uint256 zugAmount, uint256 shrAmount) external {
         address target = reflection[address(this)];
 
-        bytes[] memory calls = new bytes[](orcIds.length + allyIds.length + (zugAmount > 0 ? 1 : 0) + (shrAmount > 0 ? 1 : 0));
+        bytes[] memory calls = new bytes[](orcIds.length + 1 + (zugAmount > 0 ? 1 : 0) + (shrAmount > 0 ? 1 : 0));
 
         if (orcIds.length > 0) {
             _pullIds(orcs, orcIds);
@@ -28,17 +37,17 @@ contract Castle {
                 calls[i] = _buildData(orcIds[i]);
             }
 
-            calls[orcIds.length] = abi.encodeWithSelector(this.unstakeMany.selector, msg.sender,  orcIds);
+            calls[orcIds.length] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[orcs], msg.sender,  orcIds);
         }
 
         if (zugAmount > 0) {
             ERC20Like(zug).burn(msg.sender, zugAmount);
-            calls[orcIds.length + allyIds.length] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(zug)], msg.sender, zugAmount);
+            calls[orcIds.length + allyIds.length + 1] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(zug)], msg.sender, zugAmount);
         }
 
         if (shrAmount > 0) {
             ERC20Like(shr).burn(msg.sender, shrAmount);
-            calls[orcIds.length + allyIds.length] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(shr)], msg.sender, shrAmount);
+            calls[orcIds.length + allyIds.length  + 2] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(shr)], msg.sender, shrAmount);
         }
 
         PortalLike(portal).sendMessage(abi.encode(target, calls));
@@ -57,9 +66,10 @@ contract Castle {
         for (uint256 i = 0; i < ids.length; i++) {
             if (token == orcs)   delete orcOwner[ids[i]];
             if (token == allies) delete allyOwner[ids[i]];
+            ERC721Like(token).mint(owner, ids[i]);
         }
 
-        ERC721Like(token).batchTransfer(owner, ids);
+        // ERC721Like(token).batchTransfer(owner, ids);
     }
 
     function mintToken(address token, address to, uint256 amount) external { 
@@ -73,10 +83,10 @@ contract Castle {
         OrcishLike(token).pull(msg.sender, ids);
     }
 
-    function pullCallback(address token, address owner, uint256[] calldata ids) external {
+    function pullCallback(address owner, uint256[] calldata ids) external {
         require(msg.sender == orcs || msg.sender == allies);
         for (uint256 i = 0; i < ids.length; i++) {
-            _stake(token, ids[i], owner);
+            _stake(msg.sender, ids[i], owner);
         }
     }
 
@@ -118,5 +128,6 @@ interface ERC20Like {
 
 interface ERC721Like {
     function ownerOf(uint256 id) external returns (address owner);
-    function batchTransfer(address to, uint256[] calldata tokenids) external;
+    function transfer(address to, uint256 tokenid) external;
+    function mint(address to, uint256 tokenid) external;
 }

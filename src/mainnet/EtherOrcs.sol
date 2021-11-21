@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-import "./ERC20.sol";
-import "./ERC721.sol"; 
+import "../ERC20.sol";
+import "../ERC721.sol"; 
 
 //    ___ _   _               ___            
 //  | __| |_| |_  ___ _ _   / _ \ _ _ __ ___
@@ -19,6 +19,10 @@ interface RaidsLike {
     function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_) external;
     function commanders(uint256 id) external returns(address);
     function unstake(uint256 id) external;
+}
+
+interface CastleLike {
+    function pullCallback(address owner, uint256[] calldata ids) external;
 }
 
 contract EtherOrcs is ERC721 {
@@ -246,6 +250,15 @@ contract EtherOrcs is ERC721 {
             raidsContract.unstake(ids[index]);
             if (action_ != Actions.UNSTAKED) _doAction(ids[index], msg.sender, action_);
         }
+    }
+
+    function pull(address owner_, uint256[] calldata ids) external {
+        //require msg.sender == castle
+        for (uint256 index = 0; index < ids.length; index++) {
+            // if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED);
+            _transfer(owner_, msg.sender, ids[index]);
+        }
+        CastleLike(msg.sender).pullCallback(owner_, ids);
     }
 
     /*///////////////////////////////////////////////////////////////

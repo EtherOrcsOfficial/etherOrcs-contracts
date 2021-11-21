@@ -61,9 +61,9 @@ contract PolylandPortal {
     }
 
     function _processMessageFromRoot(bytes memory data) internal {
-        (address[] memory targets, bytes[] memory calls ) = abi.decode(data, (address[], bytes[]));
-        for (uint256 i = 0; i < targets.length; i++) {
-            (bool succ, ) = targets[i].call(calls[i]);
+        (address target, bytes[] memory calls ) = abi.decode(data, (address, bytes[]));
+        for (uint256 i = 0; i < calls.length; i++) {
+            (bool succ, ) = target.call(calls[i]);
             require(succ, "PolylandPortal: call failed");
         }
     }
