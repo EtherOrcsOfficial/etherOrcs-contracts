@@ -14,13 +14,15 @@ contract Castle {
     mapping (uint256 => address) public orcOwner;
     mapping (uint256 => address) public allyOwner;
 
-    function initialize(address portal_, address orc_) external {
+    function initialize(address portal_, address orc_, address zug_) external {
         portal = portal_;
         orcs   = orc_;
+        zug = zug_;
     }
 
     function setReflection(address key_, address reflection_) external {
         reflection[key_] = reflection_;
+        reflection[reflection_] = key_;
     }
 
     /// @dev Send Orcs, allies and tokens to PolyLand
@@ -66,10 +68,8 @@ contract Castle {
         for (uint256 i = 0; i < ids.length; i++) {
             if (token == orcs)   delete orcOwner[ids[i]];
             if (token == allies) delete allyOwner[ids[i]];
-            ERC721Like(token).mint(owner, ids[i]);
+            ERC721Like(token).transfer(owner, ids[i]);
         }
-
-        // ERC721Like(token).batchTransfer(owner, ids);
     }
 
     function mintToken(address token, address to, uint256 amount) external { 

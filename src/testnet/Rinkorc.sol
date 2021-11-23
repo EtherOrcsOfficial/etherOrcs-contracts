@@ -4,12 +4,8 @@ pragma solidity 0.8.7;
 import "../mainnet/EtherOrcs.sol";
 
 contract Rinkorc is EtherOrcs {
-    function mint(uint256 id) public {
-        _mint(msg.sender, id);
-    }
-
-    function mint(address to, uint256 id) public {
-        _mint(to, id);
+    function takeOrc(uint256 id) public {
+        _transfer(address(this), msg.sender, id);
     }
 
     function updateOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress) external {
@@ -21,5 +17,20 @@ contract Rinkorc is EtherOrcs {
         orcs[id].lvlProgress = lvlProgress;
         orcs[id].zugModifier = zugModifier;
     }
+
+    function setZug(address z) public { 
+        zug = ERC20(z);
+    }
+
+    function setCastle(address c) public {
+        castle = c;
+    }
+
+    function initMint(address to, uint256 start, uint256 end) external {
+        for (uint256 i = start; i < end; i++) {
+            _mint(to, i);
+        }
+    }
     
 }
+

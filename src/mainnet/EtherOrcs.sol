@@ -54,6 +54,8 @@ contract EtherOrcs is ERC721 {
 
     address constant impl = 0x0e3978aeB3fe16d5E77ddcbe1552f5537F226560;
 
+    address castle;
+
     function setImplementer(bytes4[] calldata funcs, address source) external onlyOwner {
         for (uint256 index = 0; index < funcs.length; index++) {
             implementer[funcs[index]] = source; 
@@ -104,8 +106,13 @@ contract EtherOrcs is ERC721 {
         entropySauce = keccak256(abi.encodePacked(acc, block.coinbase));
     }
 
-    modifier ownerOfOrc(uint256 id) { 
-        require(ownerOf[id] == msg.sender || activities[id].owner == msg.sender, "not your orc");
+    modifier ownerOfOrc(uint256 id, address who_) { 
+        require(ownerOf[id] == who_ || activities[id].owner == who_, "not your orc");
+        _;
+    }
+
+    modifier isOwnerOfOrc(uint256 id) {
+         require(ownerOf[id] == msg.sender || activities[id].owner == msg.sender, "not your orc");
         _;
     }
 
@@ -119,11 +126,11 @@ contract EtherOrcs is ERC721 {
                     PUBLIC FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function doAction(uint256 id, Actions action_) public ownerOfOrc(id) noCheaters {
-       _doAction(id, msg.sender, action_);
+    function doAction(uint256 id, Actions action_) public ownerOfOrc(id, msg.sender) noCheaters {
+       _doAction(id, msg.sender, action_, msg.sender);
     }
 
-    function _doAction(uint256 id, address orcOwner, Actions action_) internal ownerOfOrc(id) {
+    function _doAction(uint256 id, address orcOwner, Actions action_, address who_) internal ownerOfOrc(id, who_) {
         Action memory action = activities[id];
         require(action.action != action_, "already doing that");
 
@@ -144,9 +151,10 @@ contract EtherOrcs is ERC721 {
         emit ActionMade(orcOwner, id, block.timestamp, uint8(action_));
     }
 
+
     function doActionWithManyOrcs(uint256[] calldata ids, Actions action_) external {
         for (uint256 index = 0; index < ids.length; index++) {
-            _doAction(ids[index], msg.sender, action_);
+            _doAction(ids[index], msg.sender, action_, msg.sender);
         }
     }
 
@@ -183,11 +191,10 @@ contract EtherOrcs is ERC721 {
         activities[id].timestamp = uint88(block.timestamp);
     }
 
-    function pillage(uint256 id, Places place, bool tryHelm, bool tryMainhand, bool tryOffhand) public ownerOfOrc(id) noCheaters {
+    function pillage(uint256 id, Places place, bool tryHelm, bool tryMainhand, bool tryOffhand) public isOwnerOfOrc(id) noCheaters {
         require(block.timestamp >= uint256(activities[id].timestamp), "on cooldown");
         require(place != Places.ORC_GODS,  "You can't pillage the Orc God");
         require(_tier(orcs[id].mainhand) < 10);
-        require(mintOpen);
 
         if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
 
@@ -197,10 +204,9 @@ contract EtherOrcs is ERC721 {
         require(orcs[id].level >= uint16(pool.minLevel), "below minimum level");
 
         if (pool.cost > 0) {
-            require(block.timestamp >= 1635177600);
             zug.burn(msg.sender, uint256(pool.cost) * 1 ether);
         } 
-
+        {
         uint8 item;
         if (tryHelm) {
             ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"HELM", id));
@@ -216,6 +222,7 @@ contract EtherOrcs is ERC721 {
         }
 
         if (uint(place) > 1) lootPools[place] = pool;
+        }
 
         // Update zug modifier
         Orc memory orc = orcs[id];
@@ -229,7 +236,7 @@ contract EtherOrcs is ERC721 {
     function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
-            if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED);
+            if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED, msg.sender);
             _transfer(msg.sender, raids, ids[index]);
         }
         RaidsLike(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_);
@@ -248,14 +255,14 @@ contract EtherOrcs is ERC721 {
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == raidsContract.commanders(ids[index]), "not your orc");
             raidsContract.unstake(ids[index]);
-            if (action_ != Actions.UNSTAKED) _doAction(ids[index], msg.sender, action_);
+            if (action_ != Actions.UNSTAKED) _doAction(ids[index], msg.sender, action_, msg.sender);
         }
     }
 
     function pull(address owner_, uint256[] calldata ids) external {
-        //require msg.sender == castle
+        require (msg.sender == castle, "not castle");
         for (uint256 index = 0; index < ids.length; index++) {
-            // if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED);
+            if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED, owner_);
             _transfer(owner_, msg.sender, ids[index]);
         }
         CastleLike(msg.sender).pullCallback(owner_, ids);
@@ -357,4 +364,3 @@ contract EtherOrcs is ERC721 {
         }
     }
 }
-

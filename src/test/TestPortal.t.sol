@@ -10,6 +10,9 @@ import "../mainnet/MainlandPortal.sol";
 import "../polygon/PolylandPortal.sol";
 
 import "../Castle.sol";
+import "../ERC20.sol";
+
+import "../BoneShards.sol";
 
 import "./mocks/Mocks.sol";
 
@@ -19,6 +22,8 @@ contract TestPortal is DSTest {
     Rinkorc orcsPoly;
     Castle  castleMainnet;
     Castle  castlePolygon;
+    ERC20   zug;
+    ERC20   pzug;
 
     MainlandPortal mainPortal;
     PolylandPortal polyPortal;
@@ -28,6 +33,9 @@ contract TestPortal is DSTest {
     function setUp() external {
         orcsMainnet = new Rinkorc();
         orcsPoly    = new Rinkorc();
+
+        zug  = new ERC20();
+        pzug = new ERC20();
 
         castleMainnet = new Castle();
         castlePolygon = new Castle();
@@ -49,17 +57,40 @@ contract TestPortal is DSTest {
         polyPortal.setAuth(adds, true);
 
         // Init Castles
-        castleMainnet.initialize(address(mainPortal), address(orcsMainnet));
-        castlePolygon.initialize(address(polyPortal), address(orcsPoly));
+        castleMainnet.initialize(address(mainPortal), address(orcsMainnet), address(zug));
+        castlePolygon.initialize(address(polyPortal), address(orcsPoly), address(pzug));
 
         // Set reflectons
         castleMainnet.setReflection(address(castleMainnet), address(castlePolygon));
         castleMainnet.setReflection(address(orcsMainnet), address(orcsPoly));
+        castleMainnet.setReflection(address(zug), address(pzug));
 
         castlePolygon.setReflection(address(castlePolygon), address(castleMainnet));
         castlePolygon.setReflection(address(orcsPoly), address(orcsMainnet));
+        castlePolygon.setReflection(address(pzug), address(zug));
 
-        orcsMainnet.mint(22);
+        // Set zug
+        orcsMainnet.setZug(address(zug));
+        zug.setMinter(address(orcsMainnet), true);
+        zug.setMinter(address(castleMainnet), true);
+
+        orcsMainnet.setCastle(address(castleMainnet));
+
+        // Set zug
+        orcsPoly.setZug(address(pzug));
+        pzug.setMinter(address(orcsPoly), true);
+        pzug.setMinter(address(castlePolygon), true);
+
+        orcsPoly.setCastle(address(castlePolygon));
+        address(orcsPoly).call(abi.encodeWithSignature("setAuth(address,bool)", address(castlePolygon), true));
+
+        zug.setMinter(address(this), true);
+        pzug.setMinter(address(this), true);
+
+        orcsMainnet.initMint(address(orcsMainnet), 1, 5051);
+        orcsPoly.initMint(address(castlePolygon), 1, 5051);
+
+        orcsMainnet.takeOrc(22);
         orcsMainnet.updateOrc(22, 22, 22, 22, 22, 22, 22, 22000);
     }
 
@@ -67,9 +98,11 @@ contract TestPortal is DSTest {
         uint256[] memory ids = new uint256[](1);
         ids[0] = 22;
 
-        castleMainnet.travel(ids, new uint256[](0), 0, 0);
+        zug.mint(address(this), 100);
+
+        castleMainnet.travel(ids, new uint256[](0), 100, 0);
+
+        fail();
 
     }
-
-
 }
