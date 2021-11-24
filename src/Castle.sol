@@ -4,6 +4,9 @@ pragma solidity 0.8.7;
 /// @dev A simple contract to orchestrate comings and going from the OrcsPortal
 contract Castle {
 
+    address implementation_;
+    address public admin;
+    
     address public portal;
     address public allies;
     address public orcs;
@@ -14,10 +17,11 @@ contract Castle {
     mapping (uint256 => address) public orcOwner;
     mapping (uint256 => address) public allyOwner;
 
-    function initialize(address portal_, address orc_, address zug_) external {
+    function initialize(address portal_, address orc_, address zug_, address shr_) external {
         portal = portal_;
         orcs   = orc_;
         zug = zug_;
+        shr = shr_;
     }
 
     function setReflection(address key_, address reflection_) external {

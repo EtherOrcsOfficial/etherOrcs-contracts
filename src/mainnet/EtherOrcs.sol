@@ -268,6 +268,17 @@ contract EtherOrcs is ERC721 {
         CastleLike(msg.sender).pullCallback(owner_, ids);
     }
 
+    function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint16 lvlProgress) external {
+        require(msg.sender == admin || auth[msg.sender], "not authorized");
+        orcs[id].body = body;
+        orcs[id].helm = helm;
+        orcs[id].mainhand = mainhand;
+        orcs[id].offhand = offhand;
+        orcs[id].level = level;
+        orcs[id].lvlProgress = lvlProgress;
+        orcs[id].zugModifier = zugModifier;
+    }
+
     /*///////////////////////////////////////////////////////////////
                     VIEWERS
     //////////////////////////////////////////////////////////////*/

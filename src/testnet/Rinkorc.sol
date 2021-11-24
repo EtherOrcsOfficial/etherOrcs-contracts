@@ -32,5 +32,13 @@ contract Rinkorc is EtherOrcs {
         }
     }
     
+    function setRaids(address r) external {
+        raids = r;
+    }
+
+    function setAuth(address add, bool status) external {
+        auth[add] = status;
+    }
+
 }
 
