@@ -42,6 +42,8 @@ contract MainlandPortal {
     mapping(bytes32 => bool) public processedExits;
     mapping(address => bool) public auth;
 
+    event CallMade(address target, bool success, bytes data);
+
     /*///////////////////////////////////////////////////////////////
                     ADMIN FUNCTIONS
     //////////////////////////////////////////////////////////////*/
@@ -74,12 +76,18 @@ contract MainlandPortal {
         fxRoot.sendMessageToChild(polylandPortal, message_);
     }
 
+     function replayCall(address target, bytes memory data, bool reqSuccess) external {
+        require(msg.sender == admin, "not allowed");
+        (bool succ, ) = target.call(data);
+        if (reqSuccess) require(succ, "call failed");
+    }
+
     /// @dev executed when we receive a message from Polygon
     function _processMessageFromChild(bytes memory data) internal {
         (address target, bytes[] memory calls ) = abi.decode(data, (address, bytes[]));
         for (uint256 i = 0; i < calls.length; i++) {
             (bool succ, ) = target.call(calls[i]);
-            require(succ, "MainlandPortal: call failed");
+            emit CallMade(target, succ, calls[i]);
         }
     }
 
@@ -198,10 +206,9 @@ contract MainlandPortal {
      *  8 - branchMask - 32 bits denoting the path of receipt in merkle tree
      *  9 - receiptLogIndex - Log Index to read from the receipt
      */
-    function receiveMessage(bytes calldata inputData) public {
+    function receiveMessage(bytes calldata inputData) public virtual {
         bytes memory message = _validateAndExtractMessage(inputData);
         _processMessageFromChild(message);
     }
-
     
 }

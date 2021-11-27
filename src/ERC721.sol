@@ -117,7 +117,7 @@ contract ERC721 {
     //////////////////////////////////////////////////////////////*/
 
     function _transfer(address from, address to, uint256 tokenId) internal {
-        require(ownerOf[tokenId] == from);
+        require(ownerOf[tokenId] == from, "not owner");
 
         balanceOf[from]--; 
         balanceOf[to]++;

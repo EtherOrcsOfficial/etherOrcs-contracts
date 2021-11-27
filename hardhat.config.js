@@ -29,6 +29,8 @@ module.exports = {
     mumbai : {
       url: process.env.MUMBAI_URL,
       accounts:[process.env.GOERLI_KEY],
+      gasPrice: 1000000000,
+      gas: 5000000
     }
   },
    paths: {

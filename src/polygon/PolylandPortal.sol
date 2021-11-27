@@ -23,6 +23,7 @@ contract PolylandPortal {
 
     // MessageTunnel on L1 will get data from this event
     event MessageSent(bytes message);
+    event CallMade(address target, bool success, bytes data);
 
     /*///////////////////////////////////////////////////////////////
                     ADMIN FUNCTIONS
@@ -48,7 +49,7 @@ contract PolylandPortal {
                     PORTAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function sendMessage(bytes calldata message_) external {
+    function sendMessage(bytes calldata message_) virtual external {
         require(auth[msg.sender], "not authorized to use portal");
         emit MessageSent(message_);
     }
@@ -63,9 +64,15 @@ contract PolylandPortal {
     function _processMessageFromRoot(bytes memory data) internal {
         (address target, bytes[] memory calls ) = abi.decode(data, (address, bytes[]));
         for (uint256 i = 0; i < calls.length; i++) {
-            (bool succ, ) = target.call(calls[i]);
-            require(succ, "PolylandPortal: call failed");
+            (bool success, ) = target.call(calls[i]);
+            emit CallMade(target, success, calls[i]);
         }
+    }
+
+    function replayCall(address target, bytes memory data, bool reqSuccess) external {
+        require(msg.sender == admin, "not allowed");
+        (bool succ, ) = target.call(data);
+        if (reqSuccess) require(succ, "call failed");
     }
 
 }

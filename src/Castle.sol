@@ -33,9 +33,13 @@ contract Castle {
     function travel(uint256[] calldata orcIds, uint256[] calldata allyIds, uint256 zugAmount, uint256 shrAmount) external {
         address target = reflection[address(this)];
 
-        bytes[] memory calls = new bytes[](orcIds.length + 1 + (zugAmount > 0 ? 1 : 0) + (shrAmount > 0 ? 1 : 0));
+        uint256 len       = orcIds.length;
+        uint256 currIndex = 0;
 
-        if (orcIds.length > 0) {
+        bytes[] memory calls = new bytes[]((len > 0 ? len + 1 : 0) + (zugAmount > 0 ? 1 : 0) + (shrAmount > 0 ? 1 : 0));
+
+
+        if (len > 0) {
             _pullIds(orcs, orcIds);
 
             // This will create orcs exactly as they exist in this chain
@@ -43,17 +47,19 @@ contract Castle {
                 calls[i] = _buildData(orcIds[i]);
             }
 
-            calls[orcIds.length] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[orcs], msg.sender,  orcIds);
+            calls[len] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[orcs], msg.sender,  orcIds);
+            currIndex += len + 1;
         }
 
         if (zugAmount > 0) {
             ERC20Like(zug).burn(msg.sender, zugAmount);
-            calls[orcIds.length + allyIds.length + 1] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(zug)], msg.sender, zugAmount);
+            calls[currIndex] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(zug)], msg.sender, zugAmount);
+            currIndex++;
         }
 
         if (shrAmount > 0) {
             ERC20Like(shr).burn(msg.sender, shrAmount);
-            calls[orcIds.length + allyIds.length  + 2] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(shr)], msg.sender, shrAmount);
+            calls[currIndex] = abi.encodeWithSelector(this.mintToken.selector, reflection[address(shr)], msg.sender, shrAmount);
         }
 
         PortalLike(portal).sendMessage(abi.encode(target, calls));
@@ -96,7 +102,7 @@ contract Castle {
 
     function _buildData(uint256 id) internal view returns (bytes memory data) {
         (uint8 b, uint8 h, uint8 m, uint8 o, uint16 l, uint16 zM, uint32 lP) = OrcishLike(orcs).orcs(id);
-        data = abi.encodeWithSelector(this.callOrcs.selector, abi.encodeWithSelector(OrcishLike.manuallyAdjustOrc.selector, b, h, m, o, l, zM, lP));   
+        data = abi.encodeWithSelector(this.callOrcs.selector, abi.encodeWithSelector(OrcishLike.manuallyAdjustOrc.selector,id, b, h, m, o, l, zM, lP));   
     }
 
     function _stake(address token, uint256 id, address owner) internal {
@@ -116,7 +122,7 @@ contract Castle {
 
 interface OrcishLike {
     function pull(address owner, uint256[] calldata ids) external;
-    function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint16 lvlProgress) external;
+    function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress) external;
     function transfer(address to, uint256 tokenId) external;
     function orcs(uint256 id) external view returns(uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress);
 }

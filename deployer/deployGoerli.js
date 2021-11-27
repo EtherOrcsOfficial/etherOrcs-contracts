@@ -16,70 +16,71 @@ async function main() {
     const OrcFactory = await hre.ethers.getContractFactory("Rinkorc");
     let orcImpl = await OrcFactory.deploy()
     await orcImpl.deployed();
-    console.log("orc implementation", orcImpl.address)
+    console.log("Orc_impl:", orcImpl.address)
 
     let orc = await ProxyFac.deploy(orcImpl.address);
     await orc.deployed()
-    console.log("orc: ", orc.address)
+    console.log("Orc: ", orc.address)
 
     // Deploying castle
     console.log("Deploying Castle")
     const CastleFactory = await hre.ethers.getContractFactory("Castle");
     let castleImpl = await CastleFactory.deploy();
-    console.log("castle impl", castleImpl.address)
+    console.log("Castle_impl:", castleImpl.address)
 
     
     let castle = await ProxyFac.deploy(castleImpl.address);
     await castle.deployed();
-    console.log("castle address", castle.address);
+    console.log("Castle:", castle.address);
 
     //Deploying Raids
     console.log("Deploying Raids")
     const RaidsFact = await hre.ethers.getContractFactory("Raids")
     let raidsImpl = await RaidsFact.deploy()
     await raidsImpl.deployed()
-    console.log("raids impl", raidsImpl.address)
+    console.log("Raids_impl:", raidsImpl.address)
     let raids= await ProxyFac.deploy(raidsImpl.address)
-    console.log("raids address", raids.address)
+    console.log("Raids:", raids.address)
 
 
     // Getting existing Portal
     const PortalFactory = await hre.ethers.getContractFactory("MainlandPortal");
     let  portalImpl = await PortalFactory.deploy()
     await portalImpl.deployed();
-    console.log("portal impl: ", portalImpl.address)
+    console.log("Portal_impl: ", portalImpl.address)
 
     let portal = await ProxyFac.deploy(portalImpl.address)
     await portal.deployed()
-    console.log("portal", portal.address)
+    console.log("Portal:", portal.address)
 
     // Getting Zug
     const ZugFac = await hre.ethers.getContractFactory("ERC20");
     let zug = await ZugFac.deploy()
     await zug.deployed();
-    console.log("zug:", zug.address)
+    console.log("Zug:", zug.address)
 
     // Getting BoneShards
     const BoneFact = await hre.ethers.getContractFactory("BoneShards");
     let shr = await BoneFact.deploy()
     await shr.deployed()
-    console.log("bone", shr.address)
+    console.log("BoneShards", shr.address)
 
     // getting Hall of Champions
     const HallFact = await hre.ethers.getContractFactory("HallOfChampions");
     let hallImpl = await HallFact.deploy()
     await hallImpl.deployed();
-    console.log("hallImpl: ", hallImpl.address)
+    console.log("Hall_impl: ", hallImpl.address)
 
     let hall = await ProxyFac.deploy(hallImpl.address)
     await hall.deployed()
-    console.log("hall: ", hall.address)
+    console.log("Hall: ", hall.address)
 
     // Config everything
     console.log("Starting config");
 
     portal = await hre.ethers.getContractAt("MainlandPortal", portal.address)
     await portal.setAuth([castle.address], true);
+    await portal.initialize("0x3d1d3E34f7fB6D26245E6640E1c50710eFFf15bA", "0x2890bA17EfE978480615e330ecB65333b880928e", portal.address)
 
     orc = await hre.ethers.getContractAt("Rinkorc", orc.address)
     await orc.setZug(zug.address);
@@ -108,6 +109,10 @@ async function main() {
 
     let proxyCastle = await hre.ethers.getContractAt("Castle", castle.address);
     await proxyCastle.initialize(portal.address, orc.address, zug.address, shr.address)
+    await proxyCastle.setReflection(portal.address, portal.address)
+    await proxyCastle.setReflection(zug.address, zug.address)
+    await proxyCastle.setReflection(shr.address, shr.address)
+    await proxyCastle.setReflection(orc.address, orc.address)
     console.log("done castle")
     for (let i = 0; i < 5051; i += 505) {
       await orc.initMint(orc.address, i, i + 505)

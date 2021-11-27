@@ -1,4 +1,19 @@
 # EtherOrcs
+The smart contracts for the on-chain rpg game EtherOrcs!
+
+## About
+EtherOrcs is mainly divide between Ethereum Mainnet and Polygon POS chain. The core of the Orcs game was built for mainnet only, but increasing gas prices made us provide a cheaper solution for gameplay.
+
+In theory, contracts that are in the shared folder are deployed on both chains, and chain-specific contracts are in their own folder.
+
+We use proxy patterns on most contracts because we want to provide the best user experience, which is hard to foresee. We do expected to slowly ossify the upgrades and eventually burn the admin keys so the game remains immutable.
+
+## About the Repo
+For development, we use dapptools, which offers some interesting capabilities in a concise way. 
+
+For deployments. we use the deployer folder, which contains hardhat scripts.
+
+
 
 ### Testnet deployment
 

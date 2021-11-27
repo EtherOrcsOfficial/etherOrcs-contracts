@@ -28,7 +28,7 @@ contract Rinkorc is EtherOrcs {
 
     function initMint(address to, uint256 start, uint256 end) external {
         for (uint256 i = start; i < end; i++) {
-            _mint(to, i);
+            _mint( to, i);
         }
     }
     

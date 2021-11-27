@@ -262,13 +262,13 @@ contract EtherOrcs is ERC721 {
     function pull(address owner_, uint256[] calldata ids) external {
         require (msg.sender == castle, "not castle");
         for (uint256 index = 0; index < ids.length; index++) {
-            if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED, owner_);
+            if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], owner_, Actions.UNSTAKED, owner_);
             _transfer(owner_, msg.sender, ids[index]);
         }
         CastleLike(msg.sender).pullCallback(owner_, ids);
     }
 
-    function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint16 lvlProgress) external {
+    function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress) external {
         require(msg.sender == admin || auth[msg.sender], "not authorized");
         orcs[id].body = body;
         orcs[id].helm = helm;
@@ -277,6 +277,7 @@ contract EtherOrcs is ERC721 {
         orcs[id].level = level;
         orcs[id].lvlProgress = lvlProgress;
         orcs[id].zugModifier = zugModifier;
+        emit DEB(22222);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -340,6 +341,7 @@ contract EtherOrcs is ERC721 {
                     FALLBACK HANDLER 
     //////////////////////////////////////////////////////////////*/
 
+    event DEB(uint v);
 
     function _delegate(address implementation) internal virtual {
         assembly {
@@ -368,10 +370,11 @@ contract EtherOrcs is ERC721 {
     
 
     fallback() external {
-        if(implementer[msg.sig] == address(0)) {
-            _delegate(impl);
-        } else {
-            _delegate(implementer[msg.sig]);
-        }
+        // if(implementer[msg.sig] == address(0)) {
+        //     _delegate(impl);
+        // } else {
+        //     _delegate(implementer[msg.sig]);
+        // }
+        emit DEB(11111);
     }
 }
