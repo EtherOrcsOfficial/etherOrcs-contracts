@@ -18,6 +18,7 @@ contract Castle {
     mapping (uint256 => address) public allyOwner;
 
     function initialize(address portal_, address orc_, address zug_, address shr_) external {
+        require(msg.sender == admin);
         portal = portal_;
         orcs   = orc_;
         zug = zug_;
@@ -25,6 +26,7 @@ contract Castle {
     }
 
     function setReflection(address key_, address reflection_) external {
+        require(msg.sender == admin);
         reflection[key_] = reflection_;
         reflection[reflection_] = key_;
     }

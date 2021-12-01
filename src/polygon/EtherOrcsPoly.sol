@@ -2,7 +2,7 @@
 pragma solidity 0.8.7;
 
 import "../ERC20.sol";
-import "../ERC721.sol"; 
+import "./PolyERC721.sol"; 
 
 //    ___ _   _               ___            
 //  | __| |_| |_  ___ _ _   / _ \ _ _ __ ___
@@ -25,13 +25,13 @@ interface CastleLike {
     function pullCallback(address owner, uint256[] calldata ids) external;
 }
 
-contract EtherOrcs is ERC721 {
+contract EtherOrcsPoly is PolyERC721 {
 
     /*///////////////////////////////////////////////////////////////
                     Global STATE
     //////////////////////////////////////////////////////////////*/
 
-    uint256 public constant  cooldown = 10 minutes;
+    uint256 public constant  cooldown = 0 minutes;
     uint256 public constant  startingTime = 1633951800 + 4.5 hours;
 
     address public migrator;
@@ -49,11 +49,8 @@ contract EtherOrcs is ERC721 {
     bool mintOpen = false;
 
     MetadataHandlerLike metadaHandler;
-    address public raids = 0x47DC8e20C15f6deAA5cBFeAe6cf9946aCC89af59;
+    address public raids;
     mapping(bytes4 => address) implementer;
-
-    address constant impl = 0x0e3978aeB3fe16d5E77ddcbe1552f5537F226560;
-
     address castle;
 
     function setImplementer(bytes4[] calldata funcs, address source) external onlyOwner {
@@ -134,7 +131,6 @@ contract EtherOrcs is ERC721 {
         Action memory action = activities[id];
         require(action.action != action_, "already doing that");
 
-        // Picking the largest value between block.timestamp, action.timestamp and startingTime
         uint88 timestamp = uint88(block.timestamp > action.timestamp ? block.timestamp : action.timestamp);
 
         if (action.action == Actions.UNSTAKED)  _transfer(orcOwner, address(this), id);
@@ -207,21 +203,19 @@ contract EtherOrcs is ERC721 {
             zug.burn(msg.sender, uint256(pool.cost) * 1 ether);
         } 
         {
-        uint8 item;
-        if (tryHelm) {
-            ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"HELM", id));
-            if (item != 0 ) orcs[id].helm = item;
-        }
-        if (tryMainhand) {
-            ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"MAINHAND", id));
-            if (item != 0 ) orcs[id].mainhand = item;
-        }
-        if (tryOffhand) {
-            ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"OFFHAND", id));
-            if (item != 0 ) orcs[id].offhand = item;
-        }
-
-        if (uint(place) > 1) lootPools[place] = pool;
+            uint8 item;
+            if (tryHelm) {
+                ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"HELM", id));
+                if (item != 0 ) orcs[id].helm = item;
+            }
+            if (tryMainhand) {
+                ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"MAINHAND", id));
+                if (item != 0 ) orcs[id].mainhand = item;
+            }
+            if (tryOffhand) {
+                ( pool, item ) = _getItemFromPool(pool, _randomize(rand_,"OFFHAND", id));
+                if (item != 0 ) orcs[id].offhand = item;
+            }
         }
 
         // Update zug modifier
@@ -279,16 +273,63 @@ contract EtherOrcs is ERC721 {
         orcs[id].zugModifier = zugModifier;
     }
 
-     function setCastle(address c_) external {
+    /*///////////////////////////////////////////////////////////////
+                              ERC-20-LIKE LOGIC
+    //////////////////////////////////////////////////////////////*/
+    
+    function transfer(address to, uint256 tokenId) external {
+        require(auth[msg.sender], "not authorized");
+        require(msg.sender == ownerOf[tokenId], "NOT_OWNER");
+        
+        _transfer(msg.sender, to, tokenId);
+        
+    }
+
+    function addLootPools() external {
+        require(msg.sender == admin);
+
+        // Here's whats available in each place
+        LootPool memory town           = LootPool({ minLevel: 1,  minLootTier: 1, cost:   0, total: 1000, tier_1: 800, tier_2: 150, tier_3: 50, tier_4: 0 });
+        LootPool memory dungeon        = LootPool({ minLevel: 3,  minLootTier: 2, cost:   0, total: 1000, tier_1: 800, tier_2: 150, tier_3: 50, tier_4: 0 });
+        LootPool memory crypt          = LootPool({ minLevel: 10, minLootTier: 4, cost: 120, total: 1000, tier_1: 980, tier_2:  20, tier_3:  0, tier_4: 0 }); 
+
+        lootPools[Places.TOWN]    = town;
+        lootPools[Places.DUNGEON] = dungeon;
+        lootPools[Places.CRYPT]   = crypt;
+    }
+
+    function setZug(address z_) external {
+        require(msg.sender == admin);
+        zug = ERC20(z_);
+    }
+
+    function setCastle(address c_) external {
         require(msg.sender == admin);
         castle = c_;
     }
 
-     function setAuth(address add, bool status) external {
+    function setRaids(address r_) external {
+        require(msg.sender == admin);
+        raids = r_;
+    }
+
+    function setAuth(address add, bool status) external {
         require(msg.sender == admin);
         auth[add] = status;
     }
 
+    function setMetadataHandler(address add) external {
+        require(msg.sender == admin);
+        metadaHandler = MetadataHandlerLike(add);
+    }
+
+    function initMint(address to, uint256 start, uint256 end) external {
+        require(msg.sender == admin);
+        for (uint256 i = start; i < end; i++) {
+            _mint( to, i);
+        }
+    }
+    
 
     /*///////////////////////////////////////////////////////////////
                     VIEWERS
@@ -344,45 +385,6 @@ contract EtherOrcs is ERC721 {
     }
 
     function _rand() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.basefee, block.timestamp, entropySauce)));
-    }
-
-    /*///////////////////////////////////////////////////////////////
-                    FALLBACK HANDLER 
-    //////////////////////////////////////////////////////////////*/
-
-
-    function _delegate(address implementation) internal virtual {
-        assembly {
-            // Copy msg.data. We take full control of memory in this inline assembly
-            // block because it will not return to Solidity code. We overwrite the
-            // Solidity scratch pad at memory position 0.
-            calldatacopy(0, 0, calldatasize())
-
-            // Call the implementation.
-            // out and outsize are 0 because we don't know the size yet.
-            let result := delegatecall(gas(), implementation, 0, calldatasize(), 0, 0)
-
-            // Copy the returned data.
-            returndatacopy(0, 0, returndatasize())
-
-            switch result
-            // delegatecall returns 0 on error.
-            case 0 {
-                revert(0, returndatasize())
-            }
-            default {
-                return(0, returndatasize())
-            }
-        }
-    }
-    
-
-    fallback() external {
-        if(implementer[msg.sig] == address(0)) {
-            _delegate(impl);
-        } else {
-            _delegate(implementer[msg.sig]);
-        }
+        return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.timestamp, entropySauce)));
     }
 }

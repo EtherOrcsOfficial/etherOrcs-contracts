@@ -29,8 +29,13 @@ module.exports = {
     mumbai : {
       url: process.env.MUMBAI_URL,
       accounts:[process.env.GOERLI_KEY],
-      gasPrice: 1000000000,
-      gas: 5000000
+      gasPrice: 30000000000,
+    },
+    polygon : {
+      url: process.env.POLYGON_URL,
+      accounts:[process.env.POLYGON_KEY],
+      gasPrice: 40000000000,
+      // gasLimit: 5000000,
     }
   },
    paths: {

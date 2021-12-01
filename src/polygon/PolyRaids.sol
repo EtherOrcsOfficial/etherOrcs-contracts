@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-contract Raids {
+contract PolyRaids {
 
     /*///////////////////////////////////////////////////////////////
                    STORAGE SLOTS  
@@ -43,6 +43,8 @@ contract Raids {
     //////////////////////////////////////////////////////////////*/
 
     function initialize(address orcs_, address zug_, address boneShards_, address hallOfChampions_) external {
+        require(msg.sender == admin, "not auth");
+        
         orcs            = ERC721Like(orcs_);
         zug             = ERC20Like(zug_);
         boneShards      = ERC20Like(boneShards_);
@@ -79,16 +81,11 @@ contract Raids {
         dbl_discount    = 1_000; 
     }
 
-    function initialize() external {
-        giantCrabHealth = 2000000;
-        dbl_discount    = 1_000; 
-    }
-
     function addLocation(
         uint256 id, uint16 minLevel_,  uint16 maxLevel_,  uint16 duration_, uint16 cost_, uint16 grtAtMin_, uint16 grtAtMax_,
         uint16 supAtMin_, uint16 supAtMax_, uint16 regReward_, uint16 grtReward_, uint16 supReward_) external 
     {
-
+        require(msg.sender == admin, "not auth");
         Raid memory raid = Raid({
             minLevel:  minLevel_,  maxLevel:  maxLevel_,  duration:  duration_, cost:     cost_,  
             grtAtMin:  grtAtMin_,  grtAtMax:  grtAtMax_,  supAtMin:  supAtMin_, supAtMax: supAtMax_,
@@ -241,7 +238,7 @@ contract Raids {
     }
 
     function _rand() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.basefee, block.timestamp, entropySauce)));
+        return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.timestamp, entropySauce)));
     }
 
 }

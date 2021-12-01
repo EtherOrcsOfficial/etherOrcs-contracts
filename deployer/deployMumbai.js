@@ -6,15 +6,14 @@
 const hre = require("hardhat");  
 
 async function main() {
-  console.log(hre.config.solidity.compilers[0])
     await hre.run("compile");
 
     const ProxyFac = await hre.ethers.getContractFactory("Proxy");
 
     // Orcs Deployment
     console.log("Deploying Orcs")
-    const OrcFactory = await hre.ethers.getContractFactory("Rinkorc");
-    console.log(OrcFactory.deploy)
+    const OrcFactory = await hre.ethers.getContractFactory("EtherOrcsPoly");
+    // console.log(OrcFactory.deploy)
     let orcImpl = await OrcFactory.deploy()
     await orcImpl.deployed();
     console.log("Orc_impl:", orcImpl.address)
@@ -36,7 +35,7 @@ async function main() {
 
     //Deploying Raids
     console.log("Deploying Raids")
-    const RaidsFact = await hre.ethers.getContractFactory("Raids")
+    const RaidsFact = await hre.ethers.getContractFactory("PolyRaids")
     let raidsImpl = await RaidsFact.deploy()
     await raidsImpl.deployed()
     console.log("Raids_impl:", raidsImpl.address)
@@ -67,7 +66,7 @@ async function main() {
     console.log("BoneShards", shr.address)
 
     // getting Hall of Champions
-    const HallFact = await hre.ethers.getContractFactory("HallOfChampions");
+    const HallFact = await hre.ethers.getContractFactory("HallOfChampionsPolygon");
     let hallImpl = await HallFact.deploy()
     await hallImpl.deployed();
     console.log("Hall_impl: ", hallImpl.address)
@@ -81,17 +80,17 @@ async function main() {
 
     portal = await hre.ethers.getContractAt("PolylandPortal", portal.address)
     await portal.setAuth([castle.address], true);
-    await portal.initialize("0xCf73231F28B7331BBe3124B907840A94851f9f11", portal.address)
+    await portal.initialize("0x8397259c983751DAf40400790063935a11afa28a", portal.address)
 
-    orc = await hre.ethers.getContractAt("Rinkorc", orc.address)
+    orc = await hre.ethers.getContractAt("EtherOrcsPoly", orc.address)
     await orc.setZug(zug.address);
     await orc.setCastle(castle.address)
     await orc.setRaids(raids.address)
     await orc.setAuth(castle.address, true)
     console.log("done orc")
 
-    hall = await hre.ethers.getContractAt("HallOfChampions", hall.address)
-    await hall.setAddresses(orc.address, zug.address);
+    hall = await hre.ethers.getContractAt("HallOfChampionsPolygon", hall.address)
+    // await hall.setAddresses(orc.address, zug.address);
     console.log("don hall")
 
     await zug.setMinter(castle.address, true)
@@ -100,7 +99,7 @@ async function main() {
     await zug.setMinter(raids.address, true)
     console.log("done zug")
 
-    raids = await hre.ethers.getContractAt("Raids", raids.address)
+    raids = await hre.ethers.getContractAt("PolyRaids", raids.address)
     await raids.initialize(orc.address, zug.address, shr.address, hall.address)
     console.log("done raids")
 
@@ -115,7 +114,7 @@ async function main() {
     await proxyCastle.setReflection(shr.address, shr.address)
     await proxyCastle.setReflection(orc.address, orc.address)
     console.log("done castle")
-    for (let i = 0; i < 5051; i += 505) {
+    for (let i = 0; i < 4546; i += 505) {
       await orc.initMint(proxyCastle.address, i, i + 505)
     }
     console.log("inited")

@@ -1,11 +1,10 @@
 // // SPDX-License-Identifier: Unlicense
 // pragma solidity 0.8.7;
 
-// import "../mainnet/EtherOrcs.sol";
+// import "../polygon/EtherOrcsPolygon.sol";
 
-
-// contract Rinkorc is EtherOrcs {
-//     function takeOrc(uint256 id) public {
+// contract PolyOrc is EtherOrcsPoly {
+//         function takeOrc(uint256 id) public {
 //         _transfer(address(this), msg.sender, id);
 //     }
 

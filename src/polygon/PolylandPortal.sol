@@ -30,8 +30,7 @@ contract PolylandPortal {
     //////////////////////////////////////////////////////////////*/
 
     function initialize(address fxChild_,address mainlandPortal_) external {
-        // Just for testnets, on mainnet the admin is already set
-        admin = msg.sender;
+        require(msg.sender == admin);
 
         fxChild        = fxChild_;
         mainlandPortal = mainlandPortal_;

@@ -10,7 +10,7 @@ interface EtherOrcLike {
 }
 
 
-contract HallOfChampions {
+contract HallOfChampionsPolygon {
 
     address        implementation_;
     address public admin; 
@@ -57,7 +57,11 @@ contract HallOfChampions {
         for (uint256 i = 0; i < ids.length; i++) {
             updateName(ids[i], fNames_[i], lNames_[i], joined_[i]);
         }
+    }
 
+    function setUpdater(address up_) external {
+        require(msg.sender == admin);
+        updater = up_;
     }
 
 	function _toString(uint256 value) internal pure returns (string memory) {
