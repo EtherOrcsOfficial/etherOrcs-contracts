@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-contract Raids {
+contract RaidsPoly {
 	/*///////////////////////////////////////////////////////////////
                    STORAGE SLOTS  
     //////////////////////////////////////////////////////////////*/
@@ -59,6 +59,8 @@ contract Raids {
 		address boneShards_,
 		address hallOfChampions_
 	) external {
+		require(msg.sender == admin, "not auth");
+
 		orcs = ERC721Like(orcs_);
 		zug = ERC20Like(zug_);
 		boneShards = ERC20Like(boneShards_);
@@ -145,11 +147,6 @@ contract Raids {
 		dbl_discount = 1_000;
 	}
 
-	function initialize() external {
-		giantCrabHealth = 2000000;
-		dbl_discount = 1_000;
-	}
-
 	function addLocation(
 		uint256 id,
 		uint16 minLevel_,
@@ -164,6 +161,7 @@ contract Raids {
 		uint16 grtReward_,
 		uint16 supReward_
 	) external {
+		require(msg.sender == admin, "not auth");
 		Raid memory raid = Raid({
 			minLevel: minLevel_,
 			maxLevel: maxLevel_,
@@ -397,7 +395,6 @@ contract Raids {
 					abi.encodePacked(
 						msg.sender,
 						block.timestamp,
-						block.basefee,
 						block.timestamp,
 						entropySauce
 					)
