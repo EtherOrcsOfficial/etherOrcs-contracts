@@ -26,8 +26,6 @@ contract ERC721 {
     //////////////////////////////////////////////////////////////*/
 
     uint256 public totalSupply;
-    uint256 public oldSupply;
-    uint256 public minted;
     
     mapping(address => uint256) public balanceOf;
     
@@ -132,11 +130,8 @@ contract ERC721 {
     function _mint(address to, uint256 tokenId) internal { 
         require(ownerOf[tokenId] == address(0), "ALREADY_MINTED");
 
-        uint supply = oldSupply + minted;
-        uint maxSupply = 5050;
-        require(supply <= maxSupply, "MAX SUPPLY REACHED");
         totalSupply++;
-                
+        
         // This is safe because the sum of all user
         // balances can't exceed type(uint256).max!
         unchecked {

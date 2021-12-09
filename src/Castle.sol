@@ -25,6 +25,11 @@ contract Castle {
         shr = shr_;
     }
 
+    function setAllies(address a_) external {
+        require(msg.sender == admin);
+        allies = a_;
+    }
+
     function setReflection(address key_, address reflection_) external {
         require(msg.sender == admin);
         reflection[key_] = reflection_;
@@ -32,16 +37,17 @@ contract Castle {
     }
 
     /// @dev Send Orcs, allies and tokens to PolyLand
-    function travel(uint256[] calldata orcIds, uint256[] calldata allyIds, uint256 zugAmount, uint256 shrAmount) external {
+    function travel(uint256[] calldata orcIds, uint256[] calldata alliesIds, uint256 zugAmount, uint256 shrAmount) external {
         address target = reflection[address(this)];
 
-        uint256 len       = orcIds.length;
+        uint256 orcsLen   = orcIds.length;
+        uint256 allieslen = alliesIds.length;
         uint256 currIndex = 0;
 
-        bytes[] memory calls = new bytes[]((len > 0 ? len + 1 : 0) + (zugAmount > 0 ? 1 : 0) + (shrAmount > 0 ? 1 : 0));
+        bytes[] memory calls = new bytes[]((orcsLen > 0 ? orcsLen + 1 : 0) + (allieslen > 0 ? allieslen + 1 : 0) + (zugAmount > 0 ? 1 : 0) + (shrAmount > 0 ? 1 : 0));
 
 
-        if (len > 0) {
+        if (orcsLen > 0) {
             _pullIds(orcs, orcIds);
 
             // This will create orcs exactly as they exist in this chain
@@ -49,8 +55,20 @@ contract Castle {
                 calls[i] = _buildData(orcIds[i]);
             }
 
-            calls[len] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[orcs], msg.sender,  orcIds);
-            currIndex += len + 1;
+            calls[orcsLen] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[orcs], msg.sender,  orcIds);
+            currIndex += orcsLen + 1;
+        }
+
+        if (allieslen > 0) {
+            _pullIds(allies, alliesIds);
+
+            // This will create orcs exactly as they exist in this chain
+            for (uint256 i = 0; i < alliesIds.length; i++) {
+                calls[i] = _buildDataAllies(alliesIds[i]);
+            }
+
+            calls[allieslen] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[allies], msg.sender,  alliesIds);
+            currIndex += allieslen + 1;
         }
 
         if (zugAmount > 0) {
@@ -71,6 +89,13 @@ contract Castle {
         _onlyPortal();
 
         (bool succ, ) = orcs.call(data);
+        require(succ);
+    }
+
+    function callAllies(bytes calldata data) external {
+        _onlyPortal();
+
+        (bool succ, ) = allies.call(data);
         require(succ);
     }
 
@@ -107,6 +132,11 @@ contract Castle {
         data = abi.encodeWithSelector(this.callOrcs.selector, abi.encodeWithSelector(OrcishLike.manuallyAdjustOrc.selector,id, b, h, m, o, l, zM, lP));   
     }
 
+    function _buildDataAllies(uint256 id) internal view returns (bytes memory data) {
+        (uint8 cl, uint16 l, uint32 lP, uint16 modF, uint8 sc, bytes22 d) = OrcishLike(allies).allies(id);
+        data = abi.encodeWithSelector(this.callAllies.selector, abi.encodeWithSelector(OrcishLike.adjustAlly.selector,id,cl,l,lP,modF,sc,d));   
+    }
+
     function _stake(address token, uint256 id, address owner) internal {
         require((token == orcs ? orcOwner[id] : allyOwner[id]) == address(0), "already staked");
         require(msg.sender == token, "not orcs contract");
@@ -127,6 +157,8 @@ interface OrcishLike {
     function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress) external;
     function transfer(address to, uint256 tokenId) external;
     function orcs(uint256 id) external view returns(uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress);
+    function allies(uint256 id) external view returns (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details);
+    function adjustAlly(uint256 id, uint8 class_, uint16 level_, uint32 lvlProgress_, uint16 modF_, uint8 skillCredits_, bytes22 details_) external;
 }
 
 interface PortalLike {

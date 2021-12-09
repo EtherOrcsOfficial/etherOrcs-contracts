@@ -17,7 +17,7 @@ solc:; nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA
 
 # Build & test
 build  :; dapp build
-test   :; dapp test # --rpc $ETH_RPC_URL --rpc-block 13531440 # --ffi # enable if you need the `ffi` cheat code on HEVM
+test   :; dapp test --match TestAllies # --rpc $ETH_RPC_URL --rpc-block 13531440 # --ffi # enable if you need the `ffi` cheat code on HEVM
 testFork :; dapp test --rpc $ETH_RPC_URL --match testFork_
 debug  :; dapp debug
 clean  :; dapp clean

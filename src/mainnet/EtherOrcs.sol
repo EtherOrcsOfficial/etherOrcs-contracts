@@ -2,7 +2,7 @@
 pragma solidity 0.8.7;
 
 import "../ERC20.sol";
-import "../ERC721.sol"; 
+import "./ERC721.sol"; 
 
 //    ___ _   _               ___            
 //  | __| |_| |_  ___ _ _   / _ \ _ _ __ ___
