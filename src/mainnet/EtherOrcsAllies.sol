@@ -1,16 +1,9 @@
-// SPDX-License-Identifier: Unlicense
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
 import "../ERC20.sol";
 import "./ERC721.sol"; 
-
-interface CastleLike {
-    function pullCallback(address owner, uint256[] calldata ids) external;
-}
-
-interface MetadataHandlerLike {
-    function getTokenURI(uint16 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier) external view returns (string memory);
-}
+import "../interfaces/Interfaces.sol";
 
 contract EtherOrcsAllies is ERC721 {
 

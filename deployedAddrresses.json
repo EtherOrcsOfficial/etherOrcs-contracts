@@ -1,0 +1,16 @@
+{
+    "mumbai": {
+        "etherOrcs": "0x100DB46daf1Ec32Fb6ba8cEeF7D5bF5BD14aBF05",
+        "allies": "0x4971Ded74A45FB7bB85Be6c3b0ED7A3B08AF86C1",
+        "castle": "0xB99E3b47cD69d72b2D1bE8E790476a69c22D4F99",
+        "raids": "0xf4df86af5DfD77cc12bF648a4444041984E8266E",
+        "portal": "0xE348085162D8fe80e6af99421AB7427166fad326",
+        "zug": "0x516285C190c7878cabB4F85a948e62ff3399883D",
+        "boneShards": "0x58D286E8d5587b7DC806Df5b0a9759248549484f",
+        "hall": "0x80577006D61abf19D6E2B295D00ae64A9109133c",
+        "potions": "0xb7af5dA532bDd65921e3c30572eD2dE73964B9B2"
+    },
+    "goerli": {
+
+    }
+}

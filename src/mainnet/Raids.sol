@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
+import "../interfaces/Interfaces.sol";
+
 contract Raids {
 
     /*///////////////////////////////////////////////////////////////
@@ -167,7 +169,7 @@ contract Raids {
 
         if (campaigns[orcId].reward > 0) _claim(orcId);
 
-        (,,,,uint256 orcLevel,,) = EtherOrcLike(address(orcs)).orcs(orcId);
+        (,,,,uint256 orcLevel,,) = EtherOrcsLike(address(orcs)).orcs(orcId);
         
         require(orcLevel >= raid.minLevel, "below min level");
 
@@ -245,22 +247,3 @@ contract Raids {
     }
 
 }
-
-interface ERC20Like {
-    function burn(address from, uint256 amount) external;
-    function mint(address from, uint256 amount) external;
-}
-
-interface ERC721Like {
-    function transferFrom(address from, address to, uint256 id) external;   
-    function transfer(address to, uint256 id) external;
-    function ownerOf(uint256 id) external returns (address owner);
-}
-
-interface EtherOrcLike {
-    function orcs(uint256 orcId) external view returns (uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress);
-} 
-
-interface HallOfChampionsLike {
-    function joined(uint256 orcId) external view returns (uint256 joinDate);
-} 

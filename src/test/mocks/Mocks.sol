@@ -1,8 +1,15 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
+import "../../ERC20.sol";
 import "../../polygon/PolylandPortal.sol";
 import "../../mainnet/MainlandPortal.sol";
+
+contract MockERC20 is ERC20 {
+    string public constant override name     = "MOCK";
+    string public constant override symbol   = "MOCK";
+    uint8  public constant override decimals = 18;
+}
 
 interface PortalLikesish {
     function processMessageFromRoot(uint256 stateId, address rootMessageSender, bytes calldata data) external;
@@ -21,7 +28,6 @@ contract MockFxRoot {
     }
 
 }
-
 
 contract MockPolyPortal is PolylandPortal {
 

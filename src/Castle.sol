@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
+import "./interfaces/Interfaces.sol";
+
 /// @dev A simple contract to orchestrate comings and going from the OrcsPortal
 contract Castle {
 
@@ -150,28 +152,4 @@ contract Castle {
         require(msg.sender == portal, "not portal");
     } 
 
-}
-
-interface OrcishLike {
-    function pull(address owner, uint256[] calldata ids) external;
-    function manuallyAdjustOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress) external;
-    function transfer(address to, uint256 tokenId) external;
-    function orcs(uint256 id) external view returns(uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress);
-    function allies(uint256 id) external view returns (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details);
-    function adjustAlly(uint256 id, uint8 class_, uint16 level_, uint32 lvlProgress_, uint16 modF_, uint8 skillCredits_, bytes22 details_) external;
-}
-
-interface PortalLike {
-    function sendMessage(bytes calldata message_) external;
-}
-
-interface ERC20Like {
-    function burn(address from, uint256 amount) external;
-    function mint(address from, uint256 amount) external;
-} 
-
-interface ERC721Like {
-    function ownerOf(uint256 id) external returns (address owner);
-    function transfer(address to, uint256 tokenid) external;
-    function mint(address to, uint256 tokenid) external;
 }
