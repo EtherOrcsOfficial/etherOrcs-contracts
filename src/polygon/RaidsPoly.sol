@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-contract PolyRaids {
+import "../interfaces/Interfaces.sol";
+
+contract RaidsPoly {
 
     /*///////////////////////////////////////////////////////////////
                    STORAGE SLOTS  
@@ -47,6 +49,42 @@ contract PolyRaids {
     /*///////////////////////////////////////////////////////////////
                    Admin Functions 
     //////////////////////////////////////////////////////////////*/
+
+    function initialize(address orcs_, address zug_, address boneShards_, address hallOfChampions_) external {
+        require(msg.sender == admin, "not auth");
+        
+        orcs            = ERC721Like(orcs_);
+        zug             = ERC20Like(zug_);
+        boneShards      = ERC20Like(boneShards_);
+        hallOfChampions = HallOfChampionsLike(hallOfChampions_);
+
+        // Creating starting locations
+        Raid memory giantCrabBeach = Raid({
+            minLevel: 5, maxLevel: 15,   duration:  192, cost:      65,  grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0, supAtMax: 1500, regReward: 200, grtReward: 300, supReward: 500, minPotions: 0, maxPotions:4});
+
+        Raid memory pirateCove = Raid({
+            minLevel: 15, maxLevel: 30,   duration:  192,  cost:     150, grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 500, grtReward: 800, supReward: 1200, minPotions: 0, maxPotions:4});
+
+        Raid memory spiderDen = Raid({
+            minLevel: 15, maxLevel: 30,   duration:  192,  cost:     175, grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 400, grtReward: 800, supReward: 2000, minPotions: 0, maxPotions:4});
+
+        Raid memory unstableQuagmire = Raid({
+            minLevel: 30, maxLevel: 50,   duration:  192,  cost:      250,  grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 1200, grtReward: 1500, supReward: 2300, minPotions: 0, maxPotions:4});
+
+        Raid memory merfolkFortress = Raid({
+            minLevel: 50, maxLevel: 75,   duration:  192,  cost:      300,  grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 1600, grtReward: 2000, supReward: 3000, minPotions: 0, maxPotions:4});
+
+        locations[0] = giantCrabBeach;
+        locations[1] = pirateCove;
+        locations[2] = spiderDen;
+        locations[3] = unstableQuagmire;
+        locations[4] = merfolkFortress;
+    }
 
     function init(address allies_, address vendor_, address potions_) external {
         require(msg.sender == admin);
@@ -223,7 +261,7 @@ contract PolyRaids {
 
     function _getLevel(uint256 id) internal view returns(uint16 level) {
         if (id < 5051) {
-            (,,,, level,,) = EtherOrcLike(address(orcs)).orcs(id);
+            (,,,, level,,) = EtherOrcsLike(address(orcs)).orcs(id);
         } else {
             (,level,,,,) = AlliesLike(address(allies)).allies(id);
         }
@@ -264,29 +302,3 @@ contract PolyRaids {
 
 }
 
-interface ERC20Like {
-    function burn(address from, uint256 amount) external;
-    function mint(address from, uint256 amount) external;
-}
-
-interface ERC721Like {
-    function transferFrom(address from, address to, uint256 id) external;   
-    function transfer(address to, uint256 id) external;
-    function ownerOf(uint256 id) external returns (address owner);
-}
-
-interface EtherOrcLike {
-    function orcs(uint256 orcId) external view returns (uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress);
-} 
-
-interface AlliesLike {
-    function allies(uint256 id) external view returns (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details);
-}
-
-interface HallOfChampionsLike {
-    function joined(uint256 orcId) external view returns (uint256 joinDate);
-}    
-
-interface OracleLike {
-    function seedFor(uint256 blc) external view returns(bytes32 hs);
-}

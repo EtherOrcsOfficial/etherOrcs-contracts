@@ -4,6 +4,7 @@ pragma solidity 0.8.7;
 import "../ERC20.sol";
 import "./PolyERC721.sol"; 
 
+import "../interfaces/Interfaces.sol";
 
 contract EtherOrcsAlliesPoly is PolyERC721 {
 
@@ -40,7 +41,6 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         uint8 tier_1Prob;uint8 tier_2Prob; uint8 tier_3Prob; uint tier_1; uint tier_2; uint8 tier_3; 
     }
 
-
     event ActionMade(address owner, uint256 id, uint256 timestamp, uint8 activity);
 
     /*///////////////////////////////////////////////////////////////
@@ -73,12 +73,15 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
                     PUBLIC FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function initialize(address zug_, address shr_, address potions_ ) external {
+    function initialize(address zug_, address shr_, address potions_, address raids_, address castle_, address backupOracle_) external {
         require(msg.sender == admin);
 
-        zug        = ERC20(zug_);
-        boneShards = ERC20(shr_);
-        potions    = ERC20(potions_);
+        zug          = ERC20(zug_);
+        potions      = ERC20(potions_);
+        boneShards   = ERC20(shr_);
+        raids        = raids_;
+        castle       = castle_;
+        backupOracle = backupOracle_;
 
         Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
         Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
@@ -120,13 +123,11 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         amount = activities[id].action == 1 ? _claimable(timeDiff, allies[id].modF) : timeDiff * 3000 / 1 days;
     }
 
-
     function transfer(address to, uint256 tokenId) external {
         require(auth[msg.sender], "not authorized");
         require(msg.sender == ownerOf[tokenId], "NOT_OWNER");
         
         _transfer(msg.sender, to, tokenId);
-        
     }
 
     function doAction(uint256 id, uint8 action_) public ownerOfAlly(id, msg.sender) noCheaters {
@@ -213,7 +214,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
             zug.burn(msg.sender, uint256(loc.cost) * 1 ether);
         } 
 
-        journeys[id] = Journey({blockSeed: uint128(block.number + 1), location: place, equipment: equipment});
+        journeys[id] = Journey({blockSeed: uint128(block.number + 2), location: place, equipment: equipment});
     }
 
     function endJourney(uint256 id) public isOwnerOfAlly(id) noCheaters {
@@ -271,6 +272,22 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         require(auth[msg.sender], "not authorized");
 
         allies[id] = Ally({class: class_, level: level_, lvlProgress: lvlProgress_, modF: modF_, skillCredits: skillCredits_, details: details_});
+    }
+
+    function shamans(uint256 id) external view returns(uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 featA, uint8 featB, uint8 helm, uint8 mainhand, uint8 offhand) {
+        Ally memory ally = allies[id];
+        level        = ally.level;
+        lvlProgress  = ally.lvlProgress;
+        modF         = ally.modF;
+        skillCredits = ally.skillCredits;
+
+        Shaman memory sh = _shaman(ally.details);
+        body     = sh.body;
+        featA    = sh.featA;
+        featB    = sh.featB;
+        helm     = sh.helm;
+        mainhand = sh.mainhand;
+        offhand  = sh.offhand;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -368,24 +385,4 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     function _rand() internal view returns (uint256) {
         return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.timestamp, entropySauce)));
     }
-}
-
-interface MetadataHandlerLike {
-    function getTokenURI(uint16 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier) external view returns (string memory);
-}
-
-interface RaidsLike {
-    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_) external;
-    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_) external;
-    function commanders(uint256 id) external returns(address);
-    function unstake(uint256 id) external;
-}
-
-interface CastleLike {
-    function pullCallback(address owner, uint256[] calldata ids) external;
-}
-
-
-interface OracleLike {
-    function seedFor(uint256 blc) external view returns(bytes32 hs);
 }

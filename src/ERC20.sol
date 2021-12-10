@@ -5,7 +5,7 @@ pragma solidity 0.8.7;
 /// @author Modified from Uniswap (https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2ERC20.sol)
 /// Taken from Solmate: https://github.com/Rari-Capital/solmate
 
-contract ERC20 {
+abstract contract ERC20 {
     /*///////////////////////////////////////////////////////////////
                                   EVENTS
     //////////////////////////////////////////////////////////////*/
@@ -17,9 +17,13 @@ contract ERC20 {
                              METADATA STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    string public constant name     = "ZUG";
-    string public constant symbol   = "ZUG";
-    uint8  public constant decimals = 18;
+    function name() external view virtual returns (string memory);
+    function symbol() external view virtual returns (string memory);
+    function decimals() external view virtual returns (uint8);
+
+    // string public constant name     = "ZUG";
+    // string public constant symbol   = "ZUG";
+    // uint8  public constant decimals = 18;
 
     /*///////////////////////////////////////////////////////////////
                              ERC20 STORAGE

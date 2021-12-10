@@ -4,26 +4,13 @@ pragma solidity 0.8.7;
 import "../ERC20.sol";
 import "./ERC721.sol"; 
 
+import "../interfaces/Interfaces.sol";
+
 //    ___ _   _               ___            
 //  | __| |_| |_  ___ _ _   / _ \ _ _ __ ___
 //  | _||  _| ' \/ -_) '_| | (_) | '_/ _(_-<
 //  |___|\__|_||_\___|_|    \___/|_| \__/__/
 //
-
-interface MetadataHandlerLike {
-    function getTokenURI(uint16 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier) external view returns (string memory);
-}
-
-interface RaidsLike {
-    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_) external;
-    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_) external;
-    function commanders(uint256 id) external returns(address);
-    function unstake(uint256 id) external;
-}
-
-interface CastleLike {
-    function pullCallback(address owner, uint256[] calldata ids) external;
-}
 
 contract EtherOrcs is ERC721 {
 
@@ -48,13 +35,13 @@ contract EtherOrcs is ERC721 {
     uint256 mintedFromThis = 0;
     bool mintOpen = false;
 
-    MetadataHandlerLike metadaHandler;
+    MetadataHandlerLike public metadaHandler;
     address public raids = 0x47DC8e20C15f6deAA5cBFeAe6cf9946aCC89af59;
     mapping(bytes4 => address) implementer;
 
     address constant impl = 0x0e3978aeB3fe16d5E77ddcbe1552f5537F226560;
 
-    address castle;
+    address public castle;
 
     function setImplementer(bytes4[] calldata funcs, address source) external onlyOwner {
         for (uint256 index = 0; index < funcs.length; index++) {
@@ -279,16 +266,10 @@ contract EtherOrcs is ERC721 {
         orcs[id].zugModifier = zugModifier;
     }
 
-     function setCastle(address c_) external {
-        require(msg.sender == admin);
-        castle = c_;
-    }
-
-     function setAuth(address add, bool status) external {
+    function setAuth(address add, bool status) external {
         require(msg.sender == admin);
         auth[add] = status;
     }
-
 
     /*///////////////////////////////////////////////////////////////
                     VIEWERS

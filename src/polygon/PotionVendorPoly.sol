@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-interface ERC20Like {
-    function burn(address from, uint256 amount) external;
-    function transfer(address to, uint256 amount) external;
-}
+import "../interfaces/Interfaces.sol";
+
 
 contract PotionVendorPoly {
     
@@ -25,6 +23,7 @@ contract PotionVendorPoly {
     }
 
     function swap(uint256 _amt) external {
+        require(rate != 0, "no rate set");
         potions.burn(msg.sender, _amt);
         zug.transfer(msg.sender, _amt * rate);
     }
