@@ -1,0 +1,1584 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/omar/dev/working/etherOrcs-contracts/src/AdminSwitcher.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "58824a584d458229bedf3fc4dcaa45ae",
+      "sourceName": "src/AdminSwitcher.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "AdminSwitcher"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/Castle.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "927d5d784c60911204dee7f83158ef89",
+      "sourceName": "src/Castle.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Castle"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/interfaces/Interfaces.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "e5d0df0ab4c3e36d2e43044456109259",
+      "sourceName": "src/interfaces/Interfaces.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "AlliesLike",
+        "CastleLike",
+        "ERC20Like",
+        "ERC721Like",
+        "EtherOrcsLike",
+        "HallOfChampionsLike",
+        "MetadataHandlerLike",
+        "OracleLike",
+        "OrcishLike",
+        "PortalLike",
+        "RaidsLike"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/RaidsPoly.sol": {
+      "lastModificationDate": 1639166335728,
+      "contentHash": "6f3e86df56c3bf4dbbf0b0dfb9239f50",
+      "sourceName": "src/polygon/RaidsPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "RaidsPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/PotionVendorPoly.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "9a0b64a5e64eb4c02225405ceb776bbe",
+      "sourceName": "src/polygon/PotionVendorPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "PotionVendorPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/HallOfChampionsPoly.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "fc81d8c979e8648cd70619006d36d5cf",
+      "sourceName": "src/polygon/HallOfChampionsPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "HallOfChampionsPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/EtherOrcsPoly.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "582e1d6ab2fb92fc0d4bddc4cc19f2ee",
+      "sourceName": "src/polygon/EtherOrcsPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol",
+        "./PolyERC721.sol",
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "EtherOrcsPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/ERC20.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "0572cb39bbf85c07f7dede58f4bb7ec8",
+      "sourceName": "src/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/PolyERC721.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "832a04eeebd3a1582b1472d71cdf1daa",
+      "sourceName": "src/polygon/PolyERC721.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "PolyERC721"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/testnet/PolyOrc.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "e90f72fe0f5acbb44202238101d503ca",
+      "sourceName": "src/testnet/PolyOrc.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../polygon/EtherOrcsPoly.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "PolyOrc"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/EtherOrcsAlliesPoly.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "faeaf72da8ca3fab506064682b7a4846",
+      "sourceName": "src/polygon/EtherOrcsAlliesPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol",
+        "./PolyERC721.sol",
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "EtherOrcsAlliesPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/testnet/MumbaiAllies.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "a06ce0d691e017737160dde7746bd689",
+      "sourceName": "src/testnet/MumbaiAllies.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../polygon/EtherOrcsAlliesPoly.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "MumbaiAllies"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/test/mocks/Mocks.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "a6cee0edda8ed67cff15abc17a7dab2b",
+      "sourceName": "src/test/mocks/Mocks.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../ERC20.sol",
+        "../../polygon/PolylandPortal.sol",
+        "../../mainnet/MainlandPortal.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "MockERC20",
+        "MockFxRoot",
+        "MockMainPortal",
+        "MockPolyPortal",
+        "PortalLikesish"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/PolylandPortal.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "fc157c417af3d7a4cb5f852ac61b252d",
+      "sourceName": "src/polygon/PolylandPortal.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "IFxMessageProcessor",
+        "PolylandPortal"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/MainlandPortal.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "a3b9b097f425a6a29b92a02ca5339e26",
+      "sourceName": "src/mainnet/MainlandPortal.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../extLib/FxPortal/lib/RLPReader.sol",
+        "../../extLib/FxPortal/lib/MerklePatriciaProof.sol",
+        "../../extLib/FxPortal/lib/Merkle.sol",
+        "../../extLib/FxPortal/lib/ExitPayloadReader.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "ICheckpointManager",
+        "IFxStateSender",
+        "MainlandPortal"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/RLPReader.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "7400fa76818565f1096c0ac31762665e",
+      "sourceName": "extLib/FxPortal/lib/RLPReader.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "RLPReader"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/MerklePatriciaProof.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "49ce92b638fa09f86258d6a0d3268e2b",
+      "sourceName": "extLib/FxPortal/lib/MerklePatriciaProof.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./RLPReader.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "MerklePatriciaProof"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/Merkle.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "066d735c2566241430f9fd3d97e4489f",
+      "sourceName": "extLib/FxPortal/lib/Merkle.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Merkle"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/ExitPayloadReader.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "848aa189f431d1a8f86e9f779df97dfb",
+      "sourceName": "extLib/FxPortal/lib/ExitPayloadReader.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./RLPReader.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ExitPayloadReader"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/ZugPoly.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "6ded7fcb668615cd82f0a7719e7af2d3",
+      "sourceName": "src/polygon/ZugPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "ZugPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/BoneShardsPoly.sol": {
+      "lastModificationDate": 1639166599108,
+      "contentHash": "0fba303a67f6bb3e1b05e70c3d6e343f",
+      "sourceName": "src/polygon/BoneShardsPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "BoneShardsPoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/Zug.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "9fed0abf266d23bde50f3400c74a3862",
+      "sourceName": "src/mainnet/Zug.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Zug"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/EtherOrcsAllies.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "9f5bca82a3b9d2021958c027af027367",
+      "sourceName": "src/mainnet/EtherOrcsAllies.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol",
+        "./ERC721.sol",
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "EtherOrcsAllies"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/ERC721.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "233f96fcb8270d2e1dfeb6abfc9d5329",
+      "sourceName": "src/mainnet/ERC721.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "ERC721"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/EtherOrcs.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "5842e7863bf45b6e27e26e323e4d49c0",
+      "sourceName": "src/mainnet/EtherOrcs.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol",
+        "./ERC721.sol",
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "EtherOrcs"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/testnet/Rinkorc.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "b99a430271a61b9bd9a09d45af1063a2",
+      "sourceName": "src/testnet/Rinkorc.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../mainnet/EtherOrcs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Rinkorc"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/BoneShards.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "d90a04d18cb43bb2e224c793a4a93a07",
+      "sourceName": "src/mainnet/BoneShards.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "BoneShards"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/Raids.sol": {
+      "lastModificationDate": 1639166983848,
+      "contentHash": "fb482f989a50b43e1facd7be5be150f2",
+      "sourceName": "src/mainnet/Raids.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Raids"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/HallOfChampions.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "475547a130e1532cc67e8e923ec405e7",
+      "sourceName": "src/mainnet/HallOfChampions.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/Interfaces.sol"
+      ],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "HallOfChampions",
+        "HallOfChampionsFix"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/EtherorcsContracts.sol": {
+      "lastModificationDate": 1639140081840,
+      "contentHash": "fbd9cbd0e04fd1adfa22a4ef2d60f5d5",
+      "sourceName": "src/EtherorcsContracts.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.6"
+      ],
+      "artifacts": [
+        "EtherorcsContracts"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/EtherorcsContracts.t.sol": {
+      "lastModificationDate": 1639165541098,
+      "contentHash": "f71304b54eea83ce9865497c0c041f72",
+      "sourceName": "src/EtherorcsContracts.t.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/Inventory.sol": {
+      "lastModificationDate": 1639164788018,
+      "contentHash": "d846c5d32baa79447f7d9110dc20054f",
+      "sourceName": "src/Inventory.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/InventoryAllies.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "1f1d5d02408b666c6aee12cc796e52ab",
+      "sourceName": "src/InventoryAllies.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Bodies1",
+        "Bodies2",
+        "FeatA",
+        "FeatB",
+        "Helms1",
+        "Helms2",
+        "Helms3",
+        "Mainhands1",
+        "Mainhands2",
+        "Mainhands3",
+        "Offhands1",
+        "Offhands2",
+        "Offhands3"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/InventoryManager.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "bec050c56d03d9d85f566c449dcb2771",
+      "sourceName": "src/InventoryManager.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Base64",
+        "InventoryManager"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/InventoryManagerAllies.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "9166249e6ebb3e223d942b3b2d58fe5c",
+      "sourceName": "src/InventoryManagerAllies.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Base64",
+        "InventoryManagerAllies"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/MetadaMiddleware.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "e3a2341d09ccebee6dfd5f4b6188e289",
+      "sourceName": "src/MetadaMiddleware.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "BBase64",
+        "EquipmentHandler",
+        "MetadataMiddleware",
+        "NameHandler",
+        "NameHandlerLike"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/EtherOrcsItems.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "00363afc4a28b123818a42a92dc9e7ff",
+      "sourceName": "src/polygon/EtherOrcsItems.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "EtherOrcsItems",
+        "IERC1155",
+        "IERC1155TokenReceiver"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/GamingOraclePoly.sol": {
+      "lastModificationDate": 1639164788028,
+      "contentHash": "b55242680ea493b814d4b85d217442dd",
+      "sourceName": "src/polygon/GamingOraclePoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "GamingOraclePoly"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/InventoryManagerPoly.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "46fe2fc4cd8a14f5f70ff44882061f02",
+      "sourceName": "src/polygon/InventoryManagerPoly.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Base64",
+        "InventoryManager"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/Proxy.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "bc0664f621c969680e2893020dc76118",
+      "sourceName": "src/Proxy.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Proxy"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/test/Integration.t.sol": {
+      "lastModificationDate": 1639165521618,
+      "contentHash": "0fd2b05a6993f5853a0211a26708c054",
+      "sourceName": "src/test/Integration.t.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/test/TestAllies.t.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "fb7a2082b2ba02f7bd4d2e57d6fcd017",
+      "sourceName": "src/test/TestAllies.t.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/test/TestPortal.t.sol": {
+      "lastModificationDate": 1639140064050,
+      "contentHash": "322e4ab683b3d2d1c7a0a01ce767a933",
+      "sourceName": "src/test/TestPortal.t.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
+    }
+  }
+}
