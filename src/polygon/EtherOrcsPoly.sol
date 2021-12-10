@@ -215,25 +215,25 @@ contract EtherOrcsPoly is PolyERC721 {
         activities[id].timestamp = uint88(block.timestamp + cooldown);
     } 
 
-    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
+    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED, msg.sender);
             _transfer(msg.sender, raids, ids[index]);
         }
-        RaidsLike(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_);
+        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_, potions_);
     }
 
-    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
+    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
-            require(msg.sender == RaidsLike(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
+            require(msg.sender == RaidsLikePoly(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
         }
-        RaidsLike(raids).startCampaignWithMany(ids, location_, double_);
+        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_);
     }
 
     function returnFromRaid(uint256[] calldata ids, Actions action_) external noCheaters { 
-        RaidsLike raidsContract = RaidsLike(raids);
+        RaidsLikePoly raidsContract = RaidsLikePoly(raids);
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == raidsContract.commanders(ids[index]), "not your orc");
             raidsContract.unstake(ids[index]);

@@ -81,7 +81,7 @@ contract Raids {
         dbl_discount    = 1_000; 
     }
 
-    function initialize() external {
+    function init() external {
         giantCrabHealth = 2000000;
         dbl_discount    = 1_000; 
     }

@@ -29,6 +29,13 @@ interface RaidsLike {
     function unstake(uint256 id) external;
 }
 
+interface RaidsLikePoly {
+    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_, uint256[] calldata potions_) external;
+    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_,  uint256[] calldata potions_) external;
+    function commanders(uint256 id) external returns(address);
+    function unstake(uint256 id) external;
+}
+
 interface CastleLike {
     function pullCallback(address owner, uint256[] calldata ids) external;
 }
@@ -40,9 +47,14 @@ interface EtherOrcsLike {
 }
 
 interface ERC20Like {
+    function balanceOf(address from) external view returns(uint256 balance);
     function burn(address from, uint256 amount) external;
     function mint(address from, uint256 amount) external;
     function transfer(address to, uint256 amount) external;
+}
+
+interface ERC1155Like {
+    function mint(address to, uint256 id, uint256 amount) external;
 }
 
 interface ERC721Like {

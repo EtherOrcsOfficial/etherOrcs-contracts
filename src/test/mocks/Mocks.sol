@@ -11,6 +11,24 @@ contract MockERC20 is ERC20 {
     uint8  public constant override decimals = 18;
 }
 
+contract MockHall {
+    mapping (uint256 => uint256) public  joined;
+
+    function setJoined(uint256 id, uint256 time) public {
+        joined[id] = time;
+    }
+}
+
+// contract MockRaids is EtherOrcsRaids {
+
+//     function getReward(uint256 raidId, uint256 orcId, uint16 orcLevel) external returns(uint176 reward){
+//         return _getReward(locations[raidId], orcId, orcLevel, "aaaaa");
+//     }
+
+//     // function getBaseOutcome(uint16 minLevel, uint16 maxLevel, uint16 minProb, uint16 maxProb, uint16 orcLevel) external returns (uint256 out) {} 
+
+// }
+
 interface PortalLikesish {
     function processMessageFromRoot(uint256 stateId, address rootMessageSender, bytes calldata data) external;
     function receiveMessage(bytes memory data) external;

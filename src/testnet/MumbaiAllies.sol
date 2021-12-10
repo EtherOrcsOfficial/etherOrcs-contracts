@@ -9,7 +9,7 @@ contract MumbaiAllies is EtherOrcsAlliesPoly {
 
     function setZug(address z_) external {
         require(msg.sender == admin);
-        zug = ERC20(z_);
+        zug = ERC20Like(z_);
     }
 
     function setCastle(address c_) external {
