@@ -8,6 +8,8 @@ const hre = require("hardhat");
 async function main() {
 	await hre.run("compile");
 	const BONE_SHARDS = "0x62Add2b8Ff6E7a35720A001B40C22588D584FD13";
+	const CASTLE = "0xaF8884f29a4421d7CA847895Be4d2edE40eD6ad9";
+	const RAIDS = "0x2EeC5C9DfD2a8630fBAa8973357a9ac8393721D4";
 
 	// Allies implementation
 	const _alliesFactory = await hre.ethers.getContractFactory(
@@ -27,9 +29,9 @@ async function main() {
 	console.log("Starting config");
 	allies = await hre.ethers.getContractAt("EtherOrcsAllies", allies.address);
 
-	await allies.setCastle(castle.address);
-	await allies.setRaids(raids.address);
-	await allies.setAuth(castle.address, true);
+	await allies.setCastle(CASTLE);
+	await allies.setRaids(RAIDS);
+	await allies.setAuth(CASTLE, true);
 	console.log("done allies");
 
 	// Boneshards configuration
@@ -37,7 +39,7 @@ async function main() {
 	await shr.setMinter(allies.address, true);
 	console.log("done bonesdhards");
 
-	const proxyCastle = await hre.ethers.getContractAt("Castle", castle.address);
+	const proxyCastle = await hre.ethers.getContractAt("Castle", CASTLE);
 	await proxyCastle.setAllies(allies.address);
 	console.log("done castle");
 	console.log("allies init minting");
