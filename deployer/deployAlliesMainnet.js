@@ -7,7 +7,7 @@ const hre = require("hardhat");
 
 async function main() {
 	await hre.run("compile");
-	const BONE_SHARDS = "0x62Add2b8Ff6E7a35720A001B40C22588D584FD13";
+	const BONE_SHARDS = "0x6c716bDB4289283e0ad1926c47B54412Bd2C257B";
 
 	// Allies implementation
 	const _alliesFactory = await hre.ethers.getContractFactory(
