@@ -190,9 +190,9 @@ contract RaidsPoly {
         commanders[id] = owner;
     }
 
+    event Debu(uint256 a);
     function _startCampaign(uint orcishId, uint256 location_, bool double, uint256 potions_) internal {
         Raid memory raid = locations[location_];
-        
         address owner = commanders[orcishId];
 
         require(potions_ <= (double ? raid.maxPotions * 2 : raid.maxPotions), "too much potions");
@@ -202,6 +202,8 @@ contract RaidsPoly {
 
         if (campaigns[orcishId].reward > 0) _claim(orcishId);
 
+        emit Debu(_getLevel(orcishId));
+        emit Debu(orcishId);
         require(_getLevel(orcishId) >= raid.minLevel, "below min level");
 
         uint256 zugAmount = uint256(raid.cost) * 1 ether;
@@ -218,9 +220,9 @@ contract RaidsPoly {
 
             campaigns[orcishId].double = true;
         }
-        
         _distributeZug(owner, zugAmount);
-        potions.burn(owner, potions_ * 1 ether);
+
+        if(potions_ > 0) potions.burn(owner, potions_ * 1 ether);
 
         campaigns[orcishId].location  = uint8(location_);
         campaigns[orcishId].reward   += reward;

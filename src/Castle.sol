@@ -69,7 +69,7 @@ contract Castle {
                 calls[i] = _buildDataAllies(alliesIds[i]);
             }
 
-            calls[allieslen] = abi.encodeWithSelector(this.unstakeMany.selector,reflection[allies], msg.sender,  alliesIds);
+            calls[allieslen] = abi.encodeWithSelector(this.unstakeMany.selector, reflection[allies], msg.sender,  alliesIds);
             currIndex += allieslen + 1;
         }
 

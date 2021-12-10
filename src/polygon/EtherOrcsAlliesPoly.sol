@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-import "../ERC20.sol";
 import "./PolyERC721.sol"; 
 
 import "../interfaces/Interfaces.sol";
@@ -14,9 +13,9 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     mapping(uint256 => Location) public locations;
     mapping(uint256 => Journey)  public journeys;
 
-    ERC20 zug;
-    ERC20 boneShards;
-    ERC20 potions;
+    ERC20Like   zug;
+    ERC20Like   boneShards;
+    ERC1155Like potions;
 
     MetadataHandlerLike metadaHandler;
 
@@ -26,6 +25,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     bytes32 internal entropySauce;
 
+
+    uint256 public constant POTION_ID = 1; 
 
     // Action: 0 - Unstaked | 1 - Farming | 2 - Training
     struct Action  { address owner; uint88 timestamp; uint8 action; }
@@ -76,9 +77,9 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     function initialize(address zug_, address shr_, address potions_, address raids_, address castle_, address backupOracle_) external {
         require(msg.sender == admin);
 
-        zug          = ERC20(zug_);
-        potions      = ERC20(potions_);
-        boneShards   = ERC20(shr_);
+        zug          = ERC20Like(zug_);
+        potions      = ERC1155Like(potions_);
+        boneShards   = ERC20Like(shr_);
         raids        = raids_;
         castle       = castle_;
         backupOracle = backupOracle_;
@@ -141,14 +142,14 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
         uint88 timestamp = uint88(block.timestamp > action.timestamp ? block.timestamp : action.timestamp);
 
-        if (action.action == 1)  _transfer(allyOwner, address(this), id);
+        if (action.action == 0)  _transfer(allyOwner, address(this), id);
      
         else {
             if (block.timestamp > action.timestamp) _claim(id);
             timestamp = timestamp > action.timestamp ? timestamp : action.timestamp;
         }
 
-        address owner_ = action_ == 1 ? address(0) : allyOwner;
+        address owner_ = action_ == 0 ? address(0) : allyOwner;
         if (action_ == 0) _transfer(address(this), allyOwner, id);
 
         activities[id] = Action({owner: owner_, action: action_,timestamp: timestamp});
@@ -187,7 +188,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
         uint256 timeDiff = uint256(block.timestamp - action.timestamp);
 
-        if (action.action == 1) potions.mint(action.owner, _claimable(timeDiff, ally.modF));
+        if (action.action == 1) potions.mint(action.owner, POTION_ID, _claimable(timeDiff, ally.modF));
        
         if (action.action == 2) {
             allies[id].lvlProgress += uint32(timeDiff * 3000 / 1 days);
@@ -232,26 +233,26 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         delete journeys[id];
     }
 
-    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
+    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_,uint256[] calldata potions_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != 0) _doAction(ids[index], msg.sender, 0, msg.sender);
             _transfer(msg.sender, raids, ids[index]);
         }
-        RaidsLike(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_);
+        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_,potions_ );
     }
 
-    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
+    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_,  uint256[] calldata potions_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
-            require(msg.sender == RaidsLike(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
+            require(msg.sender == RaidsLikePoly(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
         }
-        RaidsLike(raids).startCampaignWithMany(ids, location_, double_);
+        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_);
     }
 
     function returnFromRaid(uint256[] calldata ids, uint8 action_) external noCheaters { 
         require(action_ < 3, "invalid action");
-        RaidsLike raidsContract = RaidsLike(raids);
+        RaidsLikePoly raidsContract = RaidsLikePoly(raids);
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == raidsContract.commanders(ids[index]), "not your orc");
             raidsContract.unstake(ids[index]);
@@ -332,7 +333,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     function _getItem(Location memory loc, uint256 rand) internal pure returns (uint8 item) {
         uint256 draw = uint256(rand % 100);
 
-        uint8 tier = uint8(draw > loc.tier_3Prob ? loc.tier_3 : draw > loc.tier_2Prob ? loc.tier_2 : loc.tier_1) + 1;
+        uint8 tier = uint8(draw < loc.tier_3Prob ? loc.tier_3 : draw < loc.tier_2Prob ? loc.tier_2 : loc.tier_1) + 1;
         item = uint8(draw % _tierItems(tier) + _startForTier(tier));
     }
 

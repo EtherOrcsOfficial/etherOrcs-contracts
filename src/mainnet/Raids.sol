@@ -55,130 +55,62 @@ contract Raids {
                    Admin Functions 
     //////////////////////////////////////////////////////////////*/
 
-	function initialize(
-		address orcs_,
-		address zug_,
-		address boneShards_,
-		address hallOfChampions_
-	) external {
-		orcs = ERC721Like(orcs_);
-		zug = ERC20Like(zug_);
-		boneShards = ERC20Like(boneShards_);
-		hallOfChampions = HallOfChampionsLike(hallOfChampions_);
+    function initialize(address orcs_, address zug_, address boneShards_, address hallOfChampions_) external {
+        orcs            = ERC721Like(orcs_);
+        zug             = ERC20Like(zug_);
+        boneShards      = ERC20Like(boneShards_);
+        hallOfChampions = HallOfChampionsLike(hallOfChampions_);
 
-		// Creating starting locations
-		Raid memory giantCrabBeach = Raid({
-			minLevel: 5,
-			maxLevel: 15,
-			duration: 192,
-			cost: 65,
-			grtAtMin: 1500,
-			grtAtMax: 3500,
-			supAtMin: 0,
-			supAtMax: 1500,
-			regReward: 200,
-			grtReward: 300,
-			supReward: 500
-		});
+        // Creating starting locations
+        Raid memory giantCrabBeach = Raid({
+            minLevel: 5, maxLevel: 15,   duration:  192, cost:      65,  grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0, supAtMax: 1500, regReward: 200, grtReward: 300, supReward: 500});
 
-		Raid memory pirateCove = Raid({
-			minLevel: 15,
-			maxLevel: 30,
-			duration: 192,
-			cost: 150,
-			grtAtMin: 1500,
-			grtAtMax: 3500,
-			supAtMin: 0,
-			supAtMax: 1500,
-			regReward: 500,
-			grtReward: 800,
-			supReward: 1200
-		});
+        Raid memory pirateCove = Raid({
+            minLevel: 15, maxLevel: 30,   duration:  192,  cost:     150, grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 500, grtReward: 800, supReward: 1200});
 
-		Raid memory spiderDen = Raid({
-			minLevel: 15,
-			maxLevel: 30,
-			duration: 192,
-			cost: 175,
-			grtAtMin: 1500,
-			grtAtMax: 3500,
-			supAtMin: 0,
-			supAtMax: 1500,
-			regReward: 400,
-			grtReward: 800,
-			supReward: 2000
-		});
+        Raid memory spiderDen = Raid({
+            minLevel: 15, maxLevel: 30,   duration:  192,  cost:     175, grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 400, grtReward: 800, supReward: 2000});
 
-		Raid memory unstableQuagmire = Raid({
-			minLevel: 30,
-			maxLevel: 50,
-			duration: 192,
-			cost: 250,
-			grtAtMin: 1500,
-			grtAtMax: 3500,
-			supAtMin: 0,
-			supAtMax: 1500,
-			regReward: 1200,
-			grtReward: 1500,
-			supReward: 2300
-		});
+        Raid memory unstableQuagmire = Raid({
+            minLevel: 30, maxLevel: 50,   duration:  192,  cost:      250,  grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 1200, grtReward: 1500, supReward: 2300});
 
-		Raid memory merfolkFortress = Raid({
-			minLevel: 50,
-			maxLevel: 75,
-			duration: 192,
-			cost: 300,
-			grtAtMin: 1500,
-			grtAtMax: 3500,
-			supAtMin: 0,
-			supAtMax: 1500,
-			regReward: 1600,
-			grtReward: 2000,
-			supReward: 3000
-		});
+        Raid memory merfolkFortress = Raid({
+            minLevel: 50, maxLevel: 75,   duration:  192,  cost:      300,  grtAtMin:  1500, grtAtMax: 3500, 
+            supAtMin: 0,  supAtMax: 1500, regReward: 1600, grtReward: 2000, supReward: 3000});
 
-		locations[0] = giantCrabBeach;
-		locations[1] = pirateCove;
-		locations[2] = spiderDen;
-		locations[3] = unstableQuagmire;
-		locations[4] = merfolkFortress;
+        locations[0] = giantCrabBeach;
+        locations[1] = pirateCove;
+        locations[2] = spiderDen;
+        locations[3] = unstableQuagmire;
+        locations[4] = merfolkFortress;
 
-		giantCrabHealth = 2000000;
-		dbl_discount = 1_000;
-	}
+        giantCrabHealth = 2000000;
+        dbl_discount    = 1_000; 
+    }
 
-	function addLocation(
-		uint256 id,
-		uint16 minLevel_,
-		uint16 maxLevel_,
-		uint16 duration_,
-		uint16 cost_,
-		uint16 grtAtMin_,
-		uint16 grtAtMax_,
-		uint16 supAtMin_,
-		uint16 supAtMax_,
-		uint16 regReward_,
-		uint16 grtReward_,
-		uint16 supReward_
-	) external {
-		Raid memory raid = Raid({
-			minLevel: minLevel_,
-			maxLevel: maxLevel_,
-			duration: duration_,
-			cost: cost_,
-			grtAtMin: grtAtMin_,
-			grtAtMax: grtAtMax_,
-			supAtMin: supAtMin_,
-			supAtMax: supAtMax_,
-			regReward: regReward_,
-			grtReward: grtReward_,
-			supReward: supReward_
-		});
+    function init() external {
+        giantCrabHealth = 2000000;
+        dbl_discount    = 1_000; 
+    }
 
-		locations[id] = raid;
-	}
+    function addLocation(
+        uint256 id, uint16 minLevel_,  uint16 maxLevel_,  uint16 duration_, uint16 cost_, uint16 grtAtMin_, uint16 grtAtMax_,
+        uint16 supAtMin_, uint16 supAtMax_, uint16 regReward_, uint16 grtReward_, uint16 supReward_) external 
+    {
 
-	/*///////////////////////////////////////////////////////////////
+        Raid memory raid = Raid({
+            minLevel:  minLevel_,  maxLevel:  maxLevel_,  duration:  duration_, cost:     cost_,  
+            grtAtMin:  grtAtMin_,  grtAtMax:  grtAtMax_,  supAtMin:  supAtMin_, supAtMax: supAtMax_,
+            regReward: regReward_, grtReward: grtReward_, supReward: supReward_});
+
+        locations[id] = raid;
+    }
+
+    /*///////////////////////////////////////////////////////////////
                    PUBLIC FUNCTIONS 
     //////////////////////////////////////////////////////////////*/
 

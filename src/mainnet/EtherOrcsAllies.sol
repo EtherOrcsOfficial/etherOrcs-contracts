@@ -22,6 +22,7 @@ contract EtherOrcsAllies is ERC721 {
     MetadataHandlerLike metadaHandler;
 
     address castle;
+    bool public openForMint;
     bytes32 internal entropySauce;
 
     struct Ally {uint8 class; uint16 level; uint32 lvlProgress; uint16 modF; uint8 skillCredits; bytes22 details;}
@@ -48,18 +49,29 @@ contract EtherOrcsAllies is ERC721 {
         metadaHandler = MetadataHandlerLike(meta);
     }
 
+    function setAuth(address add_, bool status) external {
+        require(msg.sender == admin);
+        auth[add_] = status;
+    }
+
+    function setMintOpen(bool open_) external {
+        require(msg.sender == admin);
+        openForMint = open_;
+    }
+
     function tokenURI(uint256 id) external view returns(string memory) {
         // Shaman memory orc = shamans[id];
         // return metadaHandler.getTokenURI(uint16(id), orc.body, orc.helm, orc.mainhand, orc.offhand, orc.level, orc.zugModifier);
     }
 
-    function mintShaman(uint256 amount) external {
+    function mintShamans(uint256 amount) external {
         for (uint256 i = 0; i < amount; i++) {
             mintShaman();
         }
     }
 
     function mintShaman() public noCheaters {
+        require(openForMint || auth[msg.sender], "not open for mint");
         boneShards.burn(msg.sender, 60 ether);
 
         _mintShaman(_rand());
@@ -78,6 +90,39 @@ contract EtherOrcsAllies is ERC721 {
 
         allies[id] = Ally({class: class_, level: level_, lvlProgress: lvlProgress_, modF: modF_, skillCredits: skillCredits_, details: details_});
     }
+
+    function shamans(uint256 id) external view returns(uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 featA, uint8 featB, uint8 helm, uint8 mainhand, uint8 offhand) {
+        Ally memory ally = allies[id];
+        level        = ally.level;
+        lvlProgress  = ally.lvlProgress;
+        modF         = ally.modF;
+        skillCredits = ally.skillCredits;
+
+        Shaman memory sh = _shaman(ally.details);
+        body     = sh.body;
+        featA    = sh.featA;
+        featB    = sh.featB;
+        helm     = sh.helm;
+        mainhand = sh.mainhand;
+        offhand  = sh.offhand;
+    }
+
+    function _shaman(bytes22 details) internal pure returns(Shaman memory sh) {
+        uint8 body     = uint8(bytes1(details));
+        uint8 featA    = uint8(bytes1(details << 8));
+        uint8 featB    = uint8(bytes1(details << 16));
+        uint8 helm     = uint8(bytes1(details << 24));
+        uint8 mainhand = uint8(bytes1(details << 32));
+        uint8 offhand  = uint8(bytes1(details << 40));
+
+        sh.body     = body;
+        sh.featA    = featA;
+        sh.featB    = featB;
+        sh.helm     = helm;
+        sh.mainhand = mainhand;
+        sh.offhand  = offhand;
+    }
+
 
     function _mintShaman(uint256 rand) internal returns (uint16 id) {
         id = uint16(shSupply + 1 + startId); //check that supply is less than 3000
