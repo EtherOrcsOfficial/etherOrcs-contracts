@@ -23,6 +23,17 @@ async function main() {
 	await orc.deployed();
 	console.log("Orc: ", orc.address);
 
+	// Allies Deployment
+	console.log("Deploying Allies");
+	const AllyFac = await hre.ethers.getContractFactory("EtherOrcsAllies");
+	let allyImpl = await AllyFac.deploy();
+	await allyImpl.deployed();
+	console.log("Ally_impl:", allyImpl.address);
+
+	let allies = await ProxyFac.deploy(allyImpl.address);
+	await allies.deployed();
+	console.log("Ally: ", allies.address);
+
 	// Deploying castle
 	console.log("Deploying Castle");
 	const CastleFactory = await hre.ethers.getContractFactory("Castle");
@@ -75,8 +86,72 @@ async function main() {
 	await hall.deployed();
 	console.log("Hall: ", hall.address);
 
+	// Config everything
+	console.log("Starting config");
+
+	portal = await hre.ethers.getContractAt("MainlandPortal", portal.address);
+	await portal.setAuth([castle.address], true);
+	await portal.initialize(
+		"0x3d1d3E34f7fB6D26245E6640E1c50710eFFf15bA",
+		"0x2890bA17EfE978480615e330ecB65333b880928e",
+		portal.address
+	);
+	console.log("done portal");
+
+	orc = await hre.ethers.getContractAt("Rinkorc", orc.address);
+	await orc.setCastle(castle.address);
+	await orc.setRaids(raids.address);
+	await orc.setZug(zug.address);
+	await orc.setAuth(castle.address, true);
+	console.log("done orc");
+
+	allies = await hre.ethers.getContractAt("EtherOrcsAllies", allies.address)
+	await allies.initialize(castle.address, shr.address,"0x2890bA17EfE978480615e330ecB65333b880928e")
+
+	hall = await hre.ethers.getContractAt("HallOfChampions", hall.address);
+	await hall.setAddresses(orc.address, zug.address);
+	console.log("done hall");
+
+	await zug.setMinter(castle.address, true);
+	await zug.setMinter(orc.address, true);
+	await zug.setMinter(allies.address, true);
+	await zug.setMinter(hall.address, true);
+	await zug.setMinter(raids.address, true);
+	console.log("done zug");
+
+	raids = await hre.ethers.getContractAt("Raids", raids.address);
+	await raids.initialize(orc.address, zug.address, shr.address, hall.address);
+	console.log("done raids");
+
+	await shr.setMinter(castle.address, true);
+	await shr.setMinter(allies.address, true);
+	await shr.setMinter(raids.address, true);
+	console.log("done boneshards");
+
+	castle = await hre.ethers.getContractAt("Castle", castle.address);
+	await castle.initialize(
+		portal.address,
+		orc.address,
+		zug.address,
+		shr.address
+	);
+	await castle.setAllies(allies.address)
+
+	// await castle.setReflection(portal.address, portal.address);
+	// await castle.setReflection(zug.address, zug.address);
+	// await castle.setReflection(shr.address, shr.address);
+	// await castle.setReflection(orc.address, orc.address);
+	console.log("done castle");
+	for (let i = 0; i < 5051; i += 505) {
+		await orc.initMint(orc.address, i, i + 505);
+	}
+	console.log("inited");
+
 	// verifying everything
 	if (VERIFY) {
+		await hre.run("verify:verify", {
+			address: allyImpl.address,
+		});
 		await hre.run("verify:verify", {
 			address: orcImpl.address,
 		});
@@ -114,60 +189,6 @@ async function main() {
 			address: hall.address,
 		});
 	}
-
-	// Config everything
-	console.log("Starting config");
-
-	portal = await hre.ethers.getContractAt("MainlandPortal", portal.address);
-	await portal.setAuth([castle.address], true);
-	await portal.initialize(
-		"0x3d1d3E34f7fB6D26245E6640E1c50710eFFf15bA",
-		"0x2890bA17EfE978480615e330ecB65333b880928e",
-		portal.address
-	);
-	console.log("done portal");
-
-	orc = await hre.ethers.getContractAt("Rinkorc", orc.address);
-	await orc.setCastle(castle.address);
-	await orc.setRaids(raids.address);
-	await orc.setZug(zug.address);
-	await orc.setAuth(castle.address, true);
-	console.log("done orc");
-
-	hall = await hre.ethers.getContractAt("HallOfChampions", hall.address);
-	await hall.setAddresses(orc.address, zug.address);
-	console.log("done hall");
-
-	await zug.setMinter(castle.address, true);
-	await zug.setMinter(orc.address, true);
-	await zug.setMinter(hall.address, true);
-	await zug.setMinter(raids.address, true);
-	console.log("done zug");
-
-	raids = await hre.ethers.getContractAt("Raids", raids.address);
-	await raids.initialize(orc.address, zug.address, shr.address, hall.address);
-	console.log("done raids");
-
-	await shr.setMinter(castle.address, true);
-	await shr.setMinter(raids.address, true);
-	console.log("done boneshards");
-
-	let proxyCastle = await hre.ethers.getContractAt("Castle", castle.address);
-	await proxyCastle.initialize(
-		portal.address,
-		orc.address,
-		zug.address,
-		shr.address
-	);
-	await proxyCastle.setReflection(portal.address, portal.address);
-	await proxyCastle.setReflection(zug.address, zug.address);
-	await proxyCastle.setReflection(shr.address, shr.address);
-	await proxyCastle.setReflection(orc.address, orc.address);
-	console.log("done castle");
-	for (let i = 0; i < 5051; i += 505) {
-		await orc.initMint(orc.address, i, i + 505);
-	}
-	console.log("inited");
 }
 
 // We recommend this pattern to be able to use async/await everywhere

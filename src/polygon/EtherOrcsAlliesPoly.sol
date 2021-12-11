@@ -17,7 +17,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     ERC20Like   boneShards;
     ERC1155Like potions;
 
-    MetadataHandlerLike metadaHandler;
+    MetadataHandlerAllies metadaHandler;
 
     address raids;
     address castle;
@@ -115,8 +115,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     }
 
     function tokenURI(uint256 id) external view returns(string memory) {
-        // Shaman memory orc = shamans[id];
-        // return metadaHandler.getTokenURI(uint16(id), orc.body, orc.helm, orc.mainhand, orc.offhand, orc.level, orc.zugModifier);
+        Ally memory ally = allies[id];
+        return metadaHandler.getTokenURI(id, ally.class, ally.level, ally.modF, ally.skillCredits, ally.details);
     }
 
     function claimable(uint256 id) external view returns (uint256 amount) {
@@ -289,6 +289,11 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         helm     = sh.helm;
         mainhand = sh.mainhand;
         offhand  = sh.offhand;
+    }
+
+    function setMetadataHandler(address add) external {
+        require(msg.sender == admin);
+        metadaHandler = MetadataHandlerAllies(add);
     }
 
     /*///////////////////////////////////////////////////////////////

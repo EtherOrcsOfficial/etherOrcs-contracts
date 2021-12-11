@@ -22,6 +22,10 @@ interface MetadataHandlerLike {
     function getTokenURI(uint16 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier) external view returns (string memory);
 }
 
+interface MetadataHandlerAllies {
+    function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory);
+}
+
 interface RaidsLike {
     function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_) external;
     function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_) external;

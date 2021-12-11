@@ -15,9 +15,18 @@ interface IERC1155 {
   function supportsInterface(bytes4 _interfaceId) external view returns (bool);
 }
 
+interface IERC1155Metadata {
+  event URI(string _uri, uint256 indexed _id);
+  function uri(uint256 _id) external view returns (string memory);
+}
+
 interface IERC1155TokenReceiver {
   function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _amount, bytes calldata _data) external returns(bytes4);
   function onERC1155BatchReceived(address _operator, address _from, uint256[] calldata _ids, uint256[] calldata _amounts, bytes calldata _data) external returns(bytes4);
+}
+
+interface InvManLike {
+    function getTokenURI(uint256 id) external view returns (string memory);
 }
 
 contract EtherOrcsItems is IERC1155 {
@@ -39,9 +48,13 @@ contract EtherOrcsItems is IERC1155 {
 
     mapping(address => bool) public isMinter;
 
+    address public inventoryManager;
+
    /****************************************|
   |            Minting Functions           |
   |_______________________________________*/
+
+
 
     function _mint(address _to, uint256 _id, uint256 _amount) internal {
         decimalBalances[_to][_id] += _amount; 
@@ -69,6 +82,11 @@ contract EtherOrcsItems is IERC1155 {
         require(msg.sender == admin, "NOT ALLOWED TO RULE");
 
         isMinter[minter] = status;
+    }
+
+    function setInventoryManager(address inv_) external {
+        require(msg.sender == admin);
+        inventoryManager = inv_;
     }
 
     /***********************************|
@@ -204,13 +222,21 @@ contract EtherOrcsItems is IERC1155 {
         return batchBalances;
     }
 
+    function uri(uint256 _id) public view returns (string memory) {
+        return InvManLike(inventoryManager).getTokenURI(_id);
+    }
+
+
     /***********************************|
     |          ERC165 Functions         |
     |__________________________________*/
 
     function supportsInterface(bytes4 _interfaceID) public override pure returns (bool) {
         if (_interfaceID == type(IERC1155).interfaceId) {
-        return true;
+            return true;
+        }
+        if (_interfaceID == type(IERC1155Metadata).interfaceId) {
+            return true;
         }
         return _interfaceID == this.supportsInterface.selector;
     }

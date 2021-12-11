@@ -8,6 +8,13 @@ contract PolyOrc is EtherOrcsPoly {
         _transfer(from, msg.sender, id);
     }
 
+    function burnAndMint(address to, uint256 start, uint256 end) public {
+        for (uint256 i = start; i < end; i++) {
+            _burn(i);
+            _mint( to, i);
+        }
+    }
+
     function updateOrc(uint256 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress) external {
         orcs[id].body = body;
         orcs[id].helm = helm;

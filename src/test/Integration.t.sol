@@ -1,27 +1,27 @@
-// // SPDX-License-Identifier: Unlicense
-// pragma solidity 0.8.7;
+// SPDX-License-Identifier: Unlicense
+pragma solidity 0.8.7;
 
-// import "ds-test/test.sol";
+import "ds-test/test.sol";
 
-// import "./mocks/Mocks.sol";
+import "./mocks/Mocks.sol";
 
-// import "../Castle.sol";
-// import "../Proxy.sol";
+import "../Castle.sol";
+import "../Proxy.sol";
 
-// import "../testnet/Rinkorc.sol";
-// import "../testnet/PolyOrc.sol";
-// import "../testnet/MumbaiAllies.sol";
+import "../testnet/Rinkorc.sol";
+import "../testnet/PolyOrc.sol";
+import "../testnet/MumbaiAllies.sol";
 
-// import "../mainnet/Zug.sol";
-// import "../mainnet/Raids.sol";
-// import "../mainnet/HallOfChampions.sol"; 
-// import "../mainnet/EtherOrcsAllies.sol";
+import "../mainnet/Zug.sol";
+import "../mainnet/Raids.sol";
+import "../mainnet/HallOfChampions.sol"; 
+import "../mainnet/EtherOrcsAllies.sol";
 
-// import "../polygon/RaidsPoly.sol";
-// import "../polygon/EtherOrcsItems.sol";
-// import "../polygon/HallOfChampionsPoly.sol";
-// import "../polygon/PotionVendorPoly.sol";  
-// import "../polygon/GamingOraclePoly.sol";
+import "../polygon/RaidsPoly.sol";
+import "../polygon/EtherOrcsItems.sol";
+import "../polygon/HallOfChampionsPoly.sol";
+import "../polygon/PotionVendorPoly.sol";  
+import "../polygon/GamingOraclePoly.sol";
 
 
 abstract contract Hevm {
@@ -48,25 +48,25 @@ contract OrcsBaseTest is DSTest {
     Rinkorc orcsMain;
     PolyOrc orcsPoly;
 
-//     MumbaiAllies    alliesPoly;
-//     EtherOrcsAllies alliesMain;
+    MumbaiAllies    alliesPoly;
+    EtherOrcsAllies alliesMain;
 
-//     // Tokens need to be their own contract (Zug.sol, ZugPoly.sol, etc..)
-//     MockERC20 zug;
-//     MockERC20 pzug;
-//     MockERC20 boneShards;
-//     MockERC20 pBoneShards;
+    // Tokens need to be their own contract (Zug.sol, ZugPoly.sol, etc..)
+    MockERC20 zug;
+    MockERC20 pzug;
+    MockERC20 boneShards;
+    MockERC20 pBoneShards;
 
-//     Castle castleMain;
-//     Castle castlePoly;
+    Castle castleMain;
+    Castle castlePoly;
     
-//     Raids raidsMain;
-//     RaidsPoly raidsPoly;
+    Raids raidsMain;
+    RaidsPoly raidsPoly;
 
-//     HallOfChampions hallMain;
-//     HallOfChampionsPoly hallPoly;
+    HallOfChampions hallMain;
+    HallOfChampionsPoly hallPoly;
 
-//     EtherOrcsItems itemsPoly;
+    EtherOrcsItems itemsPoly;
 
     MockMainPortal portalMain;
 
@@ -75,71 +75,71 @@ contract OrcsBaseTest is DSTest {
 
     function init() internal {
 
-//         /*/////////////////////////////////////
-//                    DEPLOYMENTS 
-//        /////////////////////////////////////*/
+        /*/////////////////////////////////////
+                   DEPLOYMENTS 
+       /////////////////////////////////////*/
 
-//         // Mainnet - Proxy
-//         orcsMain   = Rinkorc(address(new Proxy(address(new Rinkorc()))));
-//         alliesMain = EtherOrcsAllies(address(new Proxy(address(new EtherOrcsAllies()))));
-//         castleMain = Castle(address(new Proxy(address(new Castle()))));
-//         raidsMain  = Raids(address(new Proxy(address(new Raids()))));
-//         hallMain   = HallOfChampions(address(new Proxy(address(new HallOfChampions()))));
+        // Mainnet - Proxy
+        orcsMain   = Rinkorc(address(new Proxy(address(new Rinkorc()))));
+        alliesMain = EtherOrcsAllies(address(new Proxy(address(new EtherOrcsAllies()))));
+        castleMain = Castle(address(new Proxy(address(new Castle()))));
+        raidsMain  = Raids(address(new Proxy(address(new Raids()))));
+        hallMain   = HallOfChampions(address(new Proxy(address(new HallOfChampions()))));
 
-//         // Mainnet - Tokens
-//         zug        = new MockERC20();
-//         boneShards = new MockERC20();
+        // Mainnet - Tokens
+        zug        = new MockERC20();
+        boneShards = new MockERC20();
 
 
         portalMain = MockMainPortal(address(new Proxy(address(new MockMainPortal()))));
 
-//         // Poly - Proxy
-//         orcsPoly   = PolyOrc(address(new Proxy(address(new PolyOrc()))));
-//         alliesPoly = MumbaiAllies(address(new Proxy(address(new MumbaiAllies()))));
-//         castlePoly = Castle(address(new Proxy(address(new Castle()))));
-//         raidsPoly  = RaidsPoly(address(new Proxy(address(new RaidsPoly()))));
-//         itemsPoly  = EtherOrcsItems(address(new Proxy(address(new EtherOrcsItems()))));
+        // Poly - Proxy
+        orcsPoly   = PolyOrc(address(new Proxy(address(new PolyOrc()))));
+        alliesPoly = MumbaiAllies(address(new Proxy(address(new MumbaiAllies()))));
+        castlePoly = Castle(address(new Proxy(address(new Castle()))));
+        raidsPoly  = RaidsPoly(address(new Proxy(address(new RaidsPoly()))));
+        itemsPoly  = EtherOrcsItems(address(new Proxy(address(new EtherOrcsItems()))));
 
-//         pzug        = new MockERC20();
-//         pBoneShards = new MockERC20();
-//         hallPoly    = HallOfChampionsPoly(address(new Proxy(address(new HallOfChampionsPoly()))));
-//         MockPolyPortal portalPoly = MockPolyPortal(address(new Proxy(address(new MockPolyPortal()))));
+        pzug        = new MockERC20();
+        pBoneShards = new MockERC20();
+        hallPoly    = HallOfChampionsPoly(address(new Proxy(address(new HallOfChampionsPoly()))));
+        MockPolyPortal portalPoly = MockPolyPortal(address(new Proxy(address(new MockPolyPortal()))));
         
-//         MockFxRoot fxRoot = new MockFxRoot();
+        MockFxRoot fxRoot = new MockFxRoot();
 
 
         PotionVendorPoly potionVendor = new PotionVendorPoly();
         gamingOracle = GamingOraclePoly(address(new Proxy(address(new GamingOraclePoly()))));
 
-//         // TODO Inventory contracts are missing on both chains
+         // TODO Inventory contracts are missing on both chains
 
-//         /*/////////////////////////////////////
-//                    SETUP - MAIN
-//        /////////////////////////////////////*/
+        /*/////////////////////////////////////
+                   SETUP - MAIN
+       /////////////////////////////////////*/
 
-//         //MAINNET / GOERLI
-//         // Orcs - Already set on mainnet
-//         orcsMain.setCastle(address(castleMain));
-//         orcsMain.setRaids(address(raidsMain));
-//         orcsMain.setZug(address(zug));
-//         orcsMain.setAuth(address(castleMain), true);
+        //MAINNET / GOERLI
+        // Orcs - Already set on mainnet
+        orcsMain.setCastle(address(castleMain));
+        orcsMain.setRaids(address(raidsMain));
+        orcsMain.setZug(address(zug));
+        orcsMain.setAuth(address(castleMain), true);
 
-//         alliesMain.initialize(address(castleMain), address(boneShards), address(1));
+        alliesMain.initialize(address(castleMain), address(boneShards), address(1));
 
-//         // Zug
-//         zug.setMinter(address(orcsMain), true);
-//         zug.setMinter(address(alliesMain), true);
-//         zug.setMinter(address(raidsMain), true);
-//         zug.setMinter(address(hallMain), true);
-//         zug.setMinter(address(castleMain), true);
+        // Zug
+        zug.setMinter(address(orcsMain), true);
+        zug.setMinter(address(alliesMain), true);
+        zug.setMinter(address(raidsMain), true);
+        zug.setMinter(address(hallMain), true);
+        zug.setMinter(address(castleMain), true);
 
-//         // BoneSards
-//         boneShards.setMinter(address(alliesMain), true);
-//         boneShards.setMinter(address(raidsMain), true);
-//         boneShards.setMinter(address(castleMain), true);
+        // BoneSards
+        boneShards.setMinter(address(alliesMain), true);
+        boneShards.setMinter(address(raidsMain), true);
+        boneShards.setMinter(address(castleMain), true);
 
-//         // Portal - Needs to use the networlks contracts, found in 
-//         portalMain.initialize(address(fxRoot), address(1), address(portalPoly));
+        // Portal - Needs to use the networlks contracts, found in 
+        portalMain.initialize(address(fxRoot), address(1), address(portalPoly));
         
         address[] memory adds = new address[](1);
         adds[0] = address(castleMain);
@@ -158,13 +158,13 @@ contract OrcsBaseTest is DSTest {
         //Raids
         raidsMain.initialize(address(orcsMain), address(zug), address(boneShards), address(hallMain));
         
-//         //Hall of Champions
-//         hallMain.setAddresses(address(orcsMain), address(zug));
-//         hallMain.setNamingCost(120);
+        //Hall of Champions
+        hallMain.setAddresses(address(orcsMain), address(zug));
+        hallMain.setNamingCost(120);
 
-//         /*/////////////////////////////////////
-//                    SETUP - POLY
-//        /////////////////////////////////////*/
+        /*/////////////////////////////////////
+                    SETUP - POLY
+        /////////////////////////////////////*/
 
 
         orcsPoly.setCastle(address(castlePoly));
@@ -184,15 +184,15 @@ contract OrcsBaseTest is DSTest {
         pzug.setMinter(address(castlePoly), true);
         
 
-//         pBoneShards.setMinter(address(alliesPoly), true);
-//         pBoneShards.setMinter(address(raidsPoly), true);
-//         pBoneShards.setMinter(address(castlePoly), true);
+        pBoneShards.setMinter(address(alliesPoly), true);
+        pBoneShards.setMinter(address(raidsPoly), true);
+        pBoneShards.setMinter(address(castlePoly), true);
 
 
         itemsPoly.setMinter(address(alliesPoly), true);
         itemsPoly.setMinter(address(raidsPoly), true);
 
-//         portalPoly.initialize(address(fxRoot), address(portalMain));
+        portalPoly.initialize(address(fxRoot), address(portalMain));
 
 
         address[] memory addsPoly = new address[](1);
@@ -208,8 +208,8 @@ contract OrcsBaseTest is DSTest {
         castlePoly.setReflection(address(zug), address(pzug));
         castlePoly.setReflection(address(boneShards), address(pBoneShards));
 
-//         raidsPoly.initialize(address(orcsPoly), address(pzug), address(pBoneShards), address(hallPoly));
-//         raidsPoly.init(address(alliesPoly), address(potionVendor), address(itemsPoly));
+        raidsPoly.initialize(address(orcsPoly), address(pzug), address(pBoneShards), address(hallPoly));
+        raidsPoly.init(address(alliesPoly), address(potionVendor), address(itemsPoly));
 
 
         //TODO need to initMint
@@ -701,5 +701,16 @@ contract TestRaids is OrcsBaseTest {
         raidsPoly.claim(myIds);
     }
 
+}
 
+
+contract ItemsTest is OrcsBaseTest {
+
+    function setUp() external {
+        init();
+    }
+
+    function testMetadata() external {
+        emit log_string(itemsPoly.uri(1));
+    }
 }

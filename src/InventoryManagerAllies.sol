@@ -36,8 +36,16 @@ contract InventoryManagerAllies {
 
     constructor() { manager = msg.sender;}
 
+    function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
+        if (class_ == 1) {
+            // It's a shaman
+            (uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_) = _shaman(details_);
+            return getShamanURI(id_, level_, modF_, skillCredits_, body_, featA_,featB_, helm_, mainhand_, offhand_);
+        }
+    }
 
-    function getTokenURI(uint16 id_, uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_, uint16 level_, uint16 herbalism_, uint16 sc_) public view returns (string memory) {
+
+    function getShamanURI(uint256 id_, uint256 level_, uint256 modF_, uint256 skillCredits_, uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_) public view returns (string memory) {
 
         string memory svg = Base64.encode(bytes(getSVG(body_,featA_, featB_, helm_,mainhand_,offhand_)));
 
@@ -48,11 +56,11 @@ contract InventoryManagerAllies {
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
-                                '{"name":"Orc #',toString(id_),'", "description":"EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. Spawn new Orcs, battle your Orc to level up, and pillage different loot pools to get new weapons and gear which upgrades your Orc metadata. This Horde of Orcs will stand the test of time and live on the blockchain for eternity.", "image": "',
+                                '{"name":"Shaman #',toString(id_),'", "description":"EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. Spawn new Orcs, battle your Orc to level up, and pillage different loot pools to get new weapons and gear which upgrades your Orc metadata. This Horde of Orcs will stand the test of time and live on the blockchain for eternity.", "image": "',
                                 'data:image/svg+xml;base64,',
                                 svg,
                                 '",',
-                                getAttributes(body_, featA_, featB_, helm_, mainhand_, offhand_, level_, herbalism_, sc_),
+                                getAttributes(body_, featA_, featB_, helm_, mainhand_, offhand_, level_, modF_, skillCredits_),
                                 '}'
                             )
                         )
@@ -126,6 +134,15 @@ contract InventoryManagerAllies {
                     INTERNAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    function _shaman(bytes22 details) internal pure returns(uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_) {
+        body_     = uint8(bytes1(details));
+        featA_    = uint8(bytes1(details << 8));
+        featB_    = uint8(bytes1(details << 16));
+        helm_     = uint8(bytes1(details << 24));
+        mainhand_ = uint8(bytes1(details << 32));
+        offhand_  = uint8(bytes1(details << 40));
+    }
+    
     function call(address source, bytes memory sig) internal view returns (string memory svg) {
         (bool succ, bytes memory ret)  = source.staticcall(sig);
         require(succ, "failed to get data");
@@ -183,7 +200,7 @@ contract InventoryManagerAllies {
         return string(buffer);
     }
 
-    function getAttributes(uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_, uint16 level_, uint16 zugModifier_, uint16 sc_) internal pure returns (string memory) {
+    function getAttributes(uint256 body_, uint256 featA_, uint256 featB_, uint256 helm_, uint256 mainhand_, uint256 offhand_, uint256 level_, uint256 modF_, uint256 sc_) internal pure returns (string memory) {
        return string(abi.encodePacked(
            '"attributes": [',
             getBodyAttributes(body_),         ',',
@@ -193,43 +210,47 @@ contract InventoryManagerAllies {
             getMainhandAttributes(mainhand_), ',',
             getOffhandAttributes(offhand_), 
             ',{"trait_type": "level", "value":', toString(level_),
-            '},{"display_type": "boost_number","trait_type": "zug bonus", "value":', 
-            toString(zugModifier_),'}]'));
+            '},{"trait_type": "skillCredits", "value":', toString(sc_),'}{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
+            toString(modF_),'}]'));
     }
 
-    function getBodyAttributes(uint8 body_) internal pure returns(string memory) {
+    function getBodyAttributes(uint256 body_) internal pure returns(string memory) {
         return string(abi.encodePacked('{"trait_type":"Body","value":"',getBodyName(body_),'"}'));
     }
 
-    function getFeatAAttributes(uint8 helm_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"FeatureA","value":"',getHelmName(helm_),'"},{"display_type":"number","trait_type":"HelmTier","value":',toString(getTier(helm_)),'}'));
+    function getFeatAAttributes(uint256 featA_) internal pure returns(string memory) {
+        return string(abi.encodePacked('{"trait_type":"Hair","value":"',getHelmName(featA_),'"}'));
     }
 
-    function getFeatBAttributes(uint8 helm_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"FeatureB","value":"',getHelmName(helm_),'"},{"display_type":"number","trait_type":"HelmTier","value":',toString(getTier(helm_)),'}'));
+    function getFeatBAttributes(uint256 featB_) internal pure returns(string memory) {
+        return string(abi.encodePacked('{"trait_type":"Beard","value":"',getHelmName(featB_),'"}'));
     }
 
-    function getHelmAttributes(uint8 helm_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Helm","value":"',getHelmName(helm_),'"},{"display_type":"number","trait_type":"HelmTier","value":',toString(getTier(helm_)),'}'));
+    function getHelmAttributes(uint256 helm_) internal pure returns(string memory) {
+        return string(abi.encodePacked('{"trait_type":"Helm","value":"',getHelmName(helm_),'"},{"display_type":"number","trait_type":"HelmTier","value":',toString(getTier(uint8(helm_))),'}'));
     }
 
-    function getMainhandAttributes(uint8 mainhand_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Mainhand","value":"',getMainhandName(mainhand_),'"},{"display_type":"number","trait_type":"MainhandTier","value":',toString(getTier(mainhand_)),'}'));
+    function getMainhandAttributes(uint256 mainhand_) internal pure returns(string memory) {
+        return string(abi.encodePacked('{"trait_type":"Mainhand","value":"',getMainhandName(mainhand_),'"},{"display_type":"number","trait_type":"MainhandTier","value":',toString(getTier(uint8(mainhand_))),'}'));
     }
 
-    function getOffhandAttributes(uint8 offhand_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Offhand","value":"',getOffhandName(offhand_),'"},{"display_type":"number","trait_type":"OffhandTier","value":',toString(getTier(offhand_)),'}'));
+    function getOffhandAttributes(uint256 offhand_) internal pure returns(string memory) {
+        return string(abi.encodePacked('{"trait_type":"Offhand","value":"',getOffhandName(offhand_),'"},{"display_type":"number","trait_type":"OffhandTier","value":',toString(getTier(uint8(offhand_))),'}'));
     }
 
-    function getTier(uint16 id) internal pure returns (uint16) {
-        if (id > 40) return 100;
-        if (id == 0) return 0;
-        return ((id - 1) / 4 );
-    }
-
+    function getTier(uint8 item) internal pure returns (uint8 tier) {
+        if (item <= 7) return 0;
+        if (item <= 12) return 1;
+        if (item <= 18) return 2;
+        if (item <= 25) return 3;
+        if (item <= 32) return 4;
+        if (item <= 38) return 5;
+        if (item <= 44) return 6;
+        return 7;
+    } 
     // Here, we do sort of a Binary Search to find the correct name. Not the pritiest code I've wrote, but hey, it works!
 
-    function getBodyName(uint8 id) public pure returns (string memory) {
+    function getBodyName(uint256 id) public pure returns (string memory) {
         if (id > 40) return getUniqueName(id);
         if (id < 20) {
             if ( id < 10) {
@@ -265,51 +286,63 @@ contract InventoryManagerAllies {
         }
     }
 
-    function getHelmName(uint8 id) public pure returns (string memory) {
-        if (id > 40) return getUniqueName(id);
-        if (id < 20) {
-            if ( id < 10) {
-                if (id < 5) {
-                    if (id < 3) {
-                        return id == 1 ? "None" : "None";
-                    }
-                    return id == 3 ? "None" : "None";
-                }
-                if (id < 7) return id == 5 ? "Leather Helm +1" : "Orcish Helm +1"; 
-                return id == 7 ? "Leather Cap +1" : id == 8 ? "Iron Helm +1" : "Bone Helm +2";
-            }
+    function getHelmName(uint256 id) public pure returns (string memory) {
+        if (id <= 7) return "None";
+        if (id <= 25) {
             if (id <= 15) {
-                if (id < 13) {
-                    return id == 10 ? "Full Orc Helm +2" : id == 11 ? "Chainmail Cap +2" : "Strange Helm +2";
-                }
-                return id == 13 ? "Full Plate Helm +3" : id == 14 ? "Chainmail Coif +3" : "Boar Head +3";
+                if (id == 8)  return "Hero Bandana +1";
+                if (id == 9)  return "Bone Shard Crest +1";
+                if (id == 10) return "Bone Mask +1";
+                if (id == 11) return "Horned Helm +1";
+                if (id == 12) return "Iron Helm +1";
+                if (id == 13) return "Horns +2";
+                if (id == 14) return "Skull Mask +2";
+                if (id == 15) return "Centurion Cap +2";
+            } else {
+                if (id == 16) return "Toad +2";
+                if (id == 17) return "Knights Helm +2";
+                if (id == 18) return "Viking Helm +2";
+                if (id == 19) return "Furtive Skull +3";
+                if (id == 20) return "Sacred Mask +3";
+                if (id == 21) return "Wisdom Horns +3";
+                if (id == 22) return "Steel Cover +3";
+                if (id == 23) return "Wolf Helm +3";
+                if (id == 24) return "Royal Knights Helm +3";
+                if (id == 25) return "Elk Antlers +3";
             }
-            if (id < 18) return id == 16 ? "Orb of Protection +3" : "Royal Thingy +4";
-            return id == 18 ? "Dark Iron Helm +4" :  "Cursed Hood +4";
-        }
-
-        if ( id < 30) {
-            if (id < 25) {
-                if (id < 23) {
-                    return id == 20 ? "Red Bandana +4" : id == 21 ? "Thorned Helm +5" : "Demon Skull +5";
-                }
-                return id == 23 ? "Treasure Chest +5" : "Cursed Hood +5";
+        } else {
+            if (id <= 37) {
+                if (id == 26)  return "Tiger Helms +4";
+                if (id == 27)  return "Bone Witch Mask +4";
+                if (id == 28) return "Bear Helm +4";
+                if (id == 29) return "Tribal Skull +4";
+                if (id == 30) return "Hawk Mask +4";
+                if (id == 31) return "Tiger Pelt +4";
+                if (id == 32) return "Fishman Helm +4";
+                if (id == 33) return "Buck Antlers +5";
+                if (id == 34) return "Wolf Pelt +5";
+                if (id == 35) return "Grand Headdress +5";
+                if (id == 36) return "Tribal Champion Skull +5";
+                if (id == 37) return "Ancient Mask +5";
+            } else {
+                if (id == 38) return "Lion Pelt +5";
+                if (id == 39) return "Witch Doctor Mask +6";
+                if (id == 40) return "Ancenstral Mask +6";
+                if (id == 41) return "Primal Horns +6";
+                if (id == 42) return "Cursed Fishman Helm +6";
+                if (id == 43) return "Possessed Mask +6";
+                if (id == 44) return "Wolf Soul +7";
+                if (id == 45) return "Orb the Elk +7";
+                if (id == 46) return "Bear Soul +7";
+                if (id == 47) return "Antlers of Power +7";
+                if (id == 48) return "Alchemist Mask +7";
+                if (id == 49) return "Chieftan Mask +7";
+                if (id == 50) return "Witch Doctor Regalia +7";
             }
-
-            if (id < 27) return id == 25 ? "Blue Knight Helm +6" : "Parasite +6"; 
-            return id == 27 ? "Dragon Eyes +6" : id == 28 ? "Horned Cape +6" : "Nether Blindfold +7";
         }
-        if (id <= 35) {
-            if (id < 33) {
-                return id == 30 ? "Lightning Crown +7" : id == 31 ? "Master Warlock Cape +7" : "Red Knight Helm +7";
-            }
-            return id == 33 ? "Beholder Head +8" : id == 34 ? "Ice Crown +8" : "Band of the Dark Lord +8";
-        }
-        if (id < 38) return id == 36 ? "Helm of Evil +8" : "Blazing Horns +9";
-        return id == 38 ? "Possessed Helm +9" : id == 39 ? "Molten Crown +9" : "Helix Helm +9";
     }
 
-    function getMainhandName(uint8 id) public pure returns (string memory) {
+    function getMainhandName(uint256 id) public pure returns (string memory) {
         if (id > 40) return getUniqueName(id);
         if (id < 20) {
             if ( id < 10) {
@@ -353,7 +386,7 @@ contract InventoryManagerAllies {
         return id == 38 ? "Molten Hammer +9" : id == 39 ? "Possessed Great Staff +9" : "Helix Lance +9";
     }
 
-    function getOffhandName(uint8 id) public pure returns (string memory) {
+    function getOffhandName(uint256 id) public pure returns (string memory) {
         if (id > 40) return getUniqueName(id);
         if (id < 20) {
             if ( id < 10) {
@@ -397,7 +430,7 @@ contract InventoryManagerAllies {
         return id == 38 ? "Molten Scimitar +9" : id == 39 ? "Staff of the Dark Lord +9" : "Helix Scepter +9";
     }
 
-    function getUniqueName(uint8 id) internal pure returns (string memory) {
+    function getUniqueName(uint256 id) internal pure returns (string memory) {
         if(id < 47) {
             if(id < 44) {
                 return id == 41 ? "Cthulhu" : id == 42 ? "Vorgak The War Chief" : "Gromlock The Destroyer";
