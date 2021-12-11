@@ -40,15 +40,11 @@ contract InventoryManagerAllies {
         if (class_ == 1) {
             // It's a shaman
             (uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_) = _shaman(details_);
-            return getShamanURI(id_, level_, modF_, skillCredits_, body_, featA_,featB_, helm_, mainhand_, offhand_);
+            return _buildShamanURI(_getUpper(id_), getSVG(body_,featA_, featB_, helm_,mainhand_,offhand_), getAttributes(details_, level_, modF_, skillCredits_));
         }
     }
 
-
-    function getShamanURI(uint256 id_, uint256 level_, uint256 modF_, uint256 skillCredits_, uint8 body_, uint8 featA_, uint8 featB_, uint8 helm_, uint8 mainhand_, uint8 offhand_) public view returns (string memory) {
-
-        string memory svg = Base64.encode(bytes(getSVG(body_,featA_, featB_, helm_,mainhand_,offhand_)));
-
+    function _buildShamanURI(bytes memory upper, string memory svg, string memory attributes) internal pure returns (string memory) {
         return
             string(
                 abi.encodePacked(
@@ -56,11 +52,10 @@ contract InventoryManagerAllies {
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
-                                '{"name":"Shaman #',toString(id_),'", "description":"EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. Spawn new Orcs, battle your Orc to level up, and pillage different loot pools to get new weapons and gear which upgrades your Orc metadata. This Horde of Orcs will stand the test of time and live on the blockchain for eternity.", "image": "',
-                                'data:image/svg+xml;base64,',
-                                svg,
+                                upper,
+                                Base64.encode(bytes(svg)),
                                 '",',
-                                getAttributes(body_, featA_, featB_, helm_, mainhand_, offhand_, level_, modF_, skillCredits_),
+                                attributes,
                                 '}'
                             )
                         )
@@ -68,6 +63,12 @@ contract InventoryManagerAllies {
                 )
             );
     }
+
+
+    function _getUpper(uint256 id_) internal pure returns (bytes memory) {
+        return abi.encodePacked('{"name":"Shaman #',toString(id_),'", "description":"EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. Spawn new Orcs, battle your Orc to level up, and pillage different loot pools to get new weapons and gear which upgrades your Orc metadata. This Horde of Orcs will stand the test of time and live on the blockchain for eternity.", "image": "',
+                                'data:image/svg+xml;base64,');
+    } 
     
     /*///////////////////////////////////////////////////////////////
                     INVENTORY MANAGEMENT
@@ -200,7 +201,12 @@ contract InventoryManagerAllies {
         return string(buffer);
     }
 
-    function getAttributes(uint256 body_, uint256 featA_, uint256 featB_, uint256 helm_, uint256 mainhand_, uint256 offhand_, uint256 level_, uint256 modF_, uint256 sc_) internal pure returns (string memory) {
+    function getAttributes(bytes22 details_, uint256 level_, uint256 modF_, uint256 sc_) internal pure returns (string memory) {
+       return string(abi.encodePacked(_getTopAtt(details_), _getBottomAtt(level_, sc_, modF_)));
+    }
+
+    function _getTopAtt(bytes22 details_) internal pure returns (string memory) {
+        (uint256 body_, uint256 featA_, uint256 featB_, uint256 helm_, uint256 mainhand_, uint256 offhand_) = _shaman(details_);
        return string(abi.encodePacked(
            '"attributes": [',
             getBodyAttributes(body_),         ',',
@@ -208,8 +214,11 @@ contract InventoryManagerAllies {
             getFeatBAttributes(featB_),         ',',
             getHelmAttributes(helm_),         ',',
             getMainhandAttributes(mainhand_), ',',
-            getOffhandAttributes(offhand_), 
-            ',{"trait_type": "level", "value":', toString(level_),
+            getOffhandAttributes(offhand_)));
+    }
+
+    function _getBottomAtt(uint256 level_, uint256 sc_, uint256 modF_) internal pure returns (string memory) {
+        return string(abi.encodePacked(',{"trait_type": "level", "value":', toString(level_),
             '},{"trait_type": "skillCredits", "value":', toString(sc_),'}{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
             toString(modF_),'}]'));
     }
@@ -248,43 +257,6 @@ contract InventoryManagerAllies {
         if (item <= 44) return 6;
         return 7;
     } 
-    // Here, we do sort of a Binary Search to find the correct name. Not the pritiest code I've wrote, but hey, it works!
-
-    function getBodyName(uint256 id) public pure returns (string memory) {
-        if (id > 40) return getUniqueName(id);
-        if (id < 20) {
-            if ( id < 10) {
-                if (id < 5) {
-                    if (id < 3) {
-                        return id == 1 ? "Green Orc 1" : "Green Orc 2";
-                    }
-                    return id == 3 ? "Green Orc 3" : "Dark Green Orc 1";
-                }
-                if (id < 7) return id == 5 ? "Dark Green Orc 2" : "Dark Green Orc 3"; 
-                return id == 7 ? "Red Orc 1" : id == 8 ? "Red Orc 2" : "Red Orc 3";
-            }
-            if (id <= 15) {
-                if (id < 13) {
-                    return id == 10 ? "Blood Red Orc 1" : id == 11 ? "Blood Red Orc 2" : "Blood Red Orc 3";
-                }
-                return id == 13 ? "Clay Orc 1" : id == 14 ? "Clay Orc 2" : "Clay Orc 3";
-            }
-            if (id < 18) return id == 16 ? "Dark Clay Orc 1" : "Dark Clay Orc 2";
-            return id == 18 ? "Dark Clay Orc 3" :  "Blue Orc 1";
-        }
-
-        if ( id < 30) {
-            if (id < 25) {
-                if (id < 23) {
-                    return id == 20 ? "Blue Orc 2" : id == 21 ? "Blue Orc 3" : "Midnight Blue Orc 1";
-                }
-                return id == 23 ? "Midnight Blue Orc 2" : "Midnight Blue Orc 3";
-            }
-
-            if (id < 27) return id == 25 ? "Albino Orc 1" : "Albino Orc 2"; 
-            return "Albino Orc 3";
-        }
-    }
 
     function getHelmName(uint256 id) public pure returns (string memory) {
         if (id <= 7) return "None";
@@ -312,11 +284,11 @@ contract InventoryManagerAllies {
             }
         } else {
             if (id <= 37) {
-                if (id == 26)  return "Tiger Helms +4";
+                if (id == 26)  return "Tiger Helm +4";
                 if (id == 27)  return "Bone Witch Mask +4";
                 if (id == 28) return "Bear Helm +4";
                 if (id == 29) return "Tribal Skull +4";
-                if (id == 30) return "Hawk Mask +4";
+                if (id == 30) return "Bone Hawk Mask +4";
                 if (id == 31) return "Tiger Pelt +4";
                 if (id == 32) return "Fishman Helm +4";
                 if (id == 33) return "Buck Antlers +5";
@@ -327,7 +299,7 @@ contract InventoryManagerAllies {
             } else {
                 if (id == 38) return "Lion Pelt +5";
                 if (id == 39) return "Witch Doctor Mask +6";
-                if (id == 40) return "Ancenstral Mask +6";
+                if (id == 40) return "Ancestral Mask +6";
                 if (id == 41) return "Primal Horns +6";
                 if (id == 42) return "Cursed Fishman Helm +6";
                 if (id == 43) return "Possessed Mask +6";
@@ -342,106 +314,206 @@ contract InventoryManagerAllies {
         }
     }
 
-    function getMainhandName(uint256 id) public pure returns (string memory) {
-        if (id > 40) return getUniqueName(id);
-        if (id < 20) {
-            if ( id < 10) {
-                if (id < 5) {
-                    if (id < 3) {
-                        return id == 1 ? "Pickaxe" : "Torch";
-                    }
-                return id == 3 ? "Club" : "Pleb Staff";
-            }
-                if (id < 7) return id == 5 ? "Short Sword +1" : "Dagger +1"; 
-                return id == 7 ? "Simple Axe +1" : id == 8 ? "Fiery Poker +1" : "Large Axe +2";
-            }
+
+function getMainhandName(uint256 id) public pure returns (string memory) {
+        if (id <= 7) {
+                if (id == 1)  return "Simple Staff";
+                if (id == 2)  return "Bone Staff";
+                if (id == 3)  return "Steel Cane";
+                if (id == 4)  return "Iron Rod";
+                if (id == 5)  return "Steel Pole";
+                if (id == 6)  return "Monk Staff";
+                if (id == 7)  return "Gnarled Spear";
+}
+        if (id <= 25) {
             if (id <= 15) {
-                if (id < 13) {
-                    return id == 10 ? "Iron Hammer +2" : id == 11 ? "Iron Mace +2" : "Jagged Axe +2";
-                }
-                return id == 13 ? "Enchanted Poker +3" : id == 14 ? "Curved Sword +3" : "Ultra Mallet +3";
+                if (id == 8)  return "Twisted Staff +1";
+                if (id == 9)  return "Martial Club +1";
+                if (id == 10)  return "Living Branch +1";
+                if (id == 11)  return "Wiseman Blade +1";
+                if (id == 12)  return "Monk Spade +1";
+                if (id == 13)  return "Trident +2";
+                if (id == 14)  return "Alchemist Branch +2";
+                if (id == 15)  return "Monk Steel +2";
+            } else {
+                if (id == 16)  return "Alchemist Crook +2";
+                if (id == 17)  return "Ankh Wand +2";
+                if (id == 18)  return "Voodoo Staff +2";
+                if (id == 19)  return "Transmutation Rod +3";
+                if (id == 20)  return "Spined Crook +3";
+                if (id == 21)  return "Enchanted Staff +3";
+                if (id == 22)  return "Alchemist Spark +3";
+                if (id == 23)  return "Crescent Spear +3";
+                if (id == 24)  return "Raven Talon +3";
+                if (id == 25)  return "Healing Roots +3";
             }
-            if (id < 18) return id == 16 ? "Disciple Staff +3" : "Assassin Blade +4";
-            return id == 18 ? "Swamp Staff +4" :  "Simple Wand +4";
-        }
-
-        if ( id < 30) {
-            if (id < 25) {
-                if (id < 23) {
-                    return id == 20 ? "Royal Blade +4" : id == 21 ? "Skull Shield +5" : "Skull Crusher Axe +5";
-                }
-                return id == 23 ? "Flaming Staff +5" : "Flaming Royal Blade +5";
+        } else {
+            if (id <= 37) {
+                if (id == 26)  return "Powered Rod +4";
+                if (id == 27)  return "Fiery Trident +4";
+                if (id == 28)  return "Witch Doctor Staff +4";
+                if (id == 29)  return "Ancient Wand +4";
+                if (id == 30)  return "Demon Crescent +4";
+                if (id == 31)  return "Ancestral Torch +4";
+                if (id == 32)  return "Spirit Staff +4";
+                if (id == 33)  return "Alchemist Rock +5";
+                if (id == 34)  return "Serpent Staff +5";
+                if (id == 35)  return "Elder Staff +5";
+                if (id == 36)  return "Flaming Staff +5";
+                if (id == 37)  return "Poisonous Staff +5";
+            } else {
+                if (id == 38)  return "Wisened Staff +5";
+                if (id == 39)  return "Sage Staff +6";
+                if (id == 40)  return "Ceremonial Staff +6";
+                if (id == 41)  return "Ancestral Torch +6";
+                if (id == 42)  return "Voodoo Spirit +6";
+                if (id == 43)  return "Venomous Serpent +6";
+                if (id == 44)  return "Healing Serpent +6";
+                if (id == 45)  return "Philosopher Stone +7";
+                if (id == 46)  return "Shard of the Ancestors +7";
+                if (id == 47)  return "Ancestral Gift +7";
+                if (id == 48)  return "Grand Healer Staff +7";
+                if (id == 49)  return "Memory of Gulzog +7";
+                if (id == 50)  return "Power of the Sage +7";
             }
-
-            if (id < 27) return id == 25 ? "Berserker Sword +6" : "Necromancer Staff +6"; 
-            return id == 27 ? "Flaming Skull Shield +6" : id == 28 ? "Frozen Scythe +6" : "Blood Sword +7";
         }
-        if (id <= 35) {
-            if (id < 33) {
-                return id == 30 ? "Dark Lord Staff +7" : id == 31 ? "Bow of Artemis +7" : "Ice Sword +7";
-            }
-            return id == 33 ? "Cryptic Staff +8" : id == 34 ? "Nether Lance +8" : "Demonic Axe +8";
-        }
-        if (id < 38) return id == 36 ? "Old Moon Sword +8" : "Lightning Lance +9";
-        return id == 38 ? "Molten Hammer +9" : id == 39 ? "Possessed Great Staff +9" : "Helix Lance +9";
     }
 
-    function getOffhandName(uint256 id) public pure returns (string memory) {
-        if (id > 40) return getUniqueName(id);
-        if (id < 20) {
-            if ( id < 10) {
-                if (id < 5) {
-                    if (id < 3) {
-                        return id == 1 ? "None" : "None";
-                    }
-                    return id == 3 ? "None" : "None";
-                }
-                if (id < 7) return id == 5 ? "Wooden Shield +1" : "Paper Hands Shield +1"; 
-                return id == 7 ? "Dagger +1" : id == 8 ? "Pirate Hook +1" : "Offhand Axe +2";
-            }
+
+
+
+
+
+function getOffhandName(uint256 id) public pure returns (string memory) {
+        if (id <= 7) {
+                if (id == 1)  return "Hammer";
+                if (id == 2)  return "Rough Axe";
+                if (id == 3)  return "Bone";
+                if (id == 4)  return "Gnarled Club";
+                if (id == 5)  return "Standard Mace";
+                if (id == 6)  return "Branch Wand";
+                if (id == 7)  return "Rock Flail";
+        }
+        if (id <= 25) {
             if (id <= 15) {
-                if (id < 13) {
-                    return id == 10 ? "Offhand Slasher +2" : id == 11 ? "Large Shield +2" : "Bomb +2";
-                }
-                return id == 13 ? "Offhand Poker +3" : id == 14 ? "Reinforced Shield +3" : "War Banner +3";
+                if (id == 8)  return "Large Hatchet +1";
+                if (id == 9)  return "Ceremonial Knife +1";
+                if (id == 10)  return "Mallet +1";
+                if (id == 11)  return "Large Hammer +1";
+                if (id == 12)  return "Steel Axe +1";
+                if (id == 13)  return "Skull Crusher +2";
+                if (id == 14)  return "Strange Sword +2";
+                if (id == 15)  return "Bone Axe +2";
+            } else {
+                if (id == 16)  return "Battle Axe +2";
+                if (id == 17)  return "Witch Doctor Hammer +2";
+                if (id == 18)  return "Poisoned Dagger +2";
+                if (id == 19)  return "Delicious Potion +3";
+                if (id == 20)  return "Cutlass +3";
+                if (id == 21)  return "Steel Flanged Mace +3";
+                if (id == 22)  return "Double Sided Hammer +3";
+                if (id == 23)  return "Large Flanged Mace +3";
+                if (id == 24)  return "Spear of the Warrior +3";
+                if (id == 25)  return "Stolen Staff +3";
             }
-            if (id < 18) return id == 16 ? "Hand Cannon +3" : "Metal Kite Shield +4";
-            return id == 18 ? "Crossbow +4" :  "Cursed Skull +4";
-        }
-
-        if ( id < 30) {
-            if (id < 25) {
-                if (id < 23) {
-                    return id == 20 ? "Spiked Shield +4" : id == 21 ? "Cursed Totem +5" : "Grimoire +5";
-                }
-                return id == 23 ? "Offhand Glaive +5" : "Frost Side Sword +5";
+        } else {
+            if (id <= 37) {
+                if (id == 26)  return "Bear Claw +4";
+                if (id == 27)  return "Barbed Club +4";
+                if (id == 28)  return "Venom Axe +4";
+                if (id == 29)  return "Time Hammer +4";
+                if (id == 30)  return "The Smasher +4";
+                if (id == 31)  return "Ancient Censer +4";
+                if (id == 32)  return "Lion Claw +4";
+                if (id == 33)  return "Crescent Blade +5";
+                if (id == 34)  return "Iron Flail +5";
+                if (id == 35)  return "Crusher Axe +5";
+                if (id == 36)  return "Shriveled Totem +5";
+                if (id == 37)  return "Large Flanged Mace +5";
+            } else {
+                if (id == 38)  return "War Axe +5";
+                if (id == 39)  return "Frog +6";
+                if (id == 40)  return "Eagle +6";
+                if (id == 41)  return "Might of the Wizard +6";
+                if (id == 42)  return "Horned Club of Urtgok +6";
+                if (id == 43)  return "Enchanted Serpent +6";
+                if (id == 44)  return "Aspect of Lightning +6";
+                if (id == 45)  return "Elemental Dragon +7";
+                if (id == 46)  return "Elemental Wolf +7";
+                if (id == 47)  return "Eagle Soul +7";
+                if (id == 48)  return "Frog of the Ancestors +7";
+                if (id == 49)  return "Wand of Gulzog +7";
+                if (id == 50)  return "Might of the Sage +7";
             }
-
-            if (id < 27) return id == 25 ? "Magic Shield +6" : "Enchanted Glaive +6"; 
-            return id == 27 ? "Burning Wand +6" : id == 28 ? "Burning Shield +6" : "Burning Blade +7";
         }
-        if (id <= 35) {
-            if (id < 33) {
-                return id == 30 ? "Holy Scepter +7" : id == 31 ? "Possessed Skull +7" : "Demonic Grimoire +7";
-            }
-            return id == 33 ? "Scepter of Frost +8" : id == 34 ? "Demonic Scythe +8" : "Lightning Armband of Power +8";
-        }
-        if (id < 38) return id == 36 ? "Ice Staff +8" : "Nether Shield +9";
-        return id == 38 ? "Molten Scimitar +9" : id == 39 ? "Staff of the Dark Lord +9" : "Helix Scepter +9";
     }
 
-    function getUniqueName(uint256 id) internal pure returns (string memory) {
-        if(id < 47) {
-            if(id < 44) {
-                return id == 41 ? "Cthulhu" : id == 42 ? "Vorgak The War Chief" : "Gromlock The Destroyer";
-            } 
-            return id == 44 ? "Yuckha The Hero" : id == 45 ? "Orgug The Master Warlock" : "Hoknuk The Demon Tamer";
-        }
-        if (id < 50) {
-            return id == 47 ? "Lava Man" : id == 48 ? "hagra the Zombie" : "Morzul The Ice Warrior";
-        }
-        return id == 50 ? "T4000 The MechaOrc" : id == 51 ? "Slime Orc The Forgotten" : "Mouse God";
+    function getBodyName(uint256 id) public pure returns (string memory) {
+        if (id == 1) return "Red";
+        if (id == 2) return "Light Green";
+        if (id == 3) return "Dark Green";
+        if (id == 4) return "Dark Red";
+        if (id == 5) return "Light Red";
+        if (id == 6) return "Blue";
+        if (id == 7) return "Clay";
+        if (id == 8) return "Red Clay";
+        if (id == 9) return "Dark Blue";
+        if (id == 10) return "Light Blue";
+        if (id == 11) return "Albino";
+
     }
+
+    function getFacialHairName(uint256 id) public pure returns (string memory) {
+        if (id == 1) return "Facial Hair 1";
+        if (id == 2) return "Facial Hair 2";
+        if (id == 3) return "Facial Hair 3";
+        if (id == 4) return "Facial Hair 4";
+        if (id == 5) return "Facial Hair 5";
+        if (id == 6) return "None";
+        if (id == 7) return "Facial Hair 7";
+        if (id == 8) return "Facial Hair 8";
+        if (id == 9) return "None";
+        if (id == 10) return "Facial Hair 10";
+        if (id == 11) return "Facial Hair 11";
+        if (id == 12) return "Facial Hair 12";
+        if (id == 13) return "Facial Hair 13";
+        if (id == 14) return "None";
+        if (id == 15) return "Facial Hair 15";
+        if (id == 16) return "Facial Hair 16";
+        if (id == 17) return "Facial Hair 17";
+        if (id == 18) return "None";
+        if (id == 19) return "Facial Hair 19";
+        if (id == 20) return "Facial Hair 20";
+    }
+
+    function getHairName(uint256 id) public pure returns (string memory) {
+        if (id == 1) return "Bald";
+        if (id == 2) return "Hair 1";
+        if (id == 3) return "Hair 2";
+        if (id == 4) return "Hair 3";
+        if (id == 5) return "Hair 4";
+        if (id == 6) return "Hair 5";
+        if (id == 7) return "Hair 6";
+        if (id == 8) return "Hair 7";
+        if (id == 9) return "Hair 8";
+        if (id == 10) return "Hair 9";
+        if (id == 11) return "Hair 10";
+        if (id == 12) return "Hair 11";
+        if (id == 13) return "Hair 12";
+        if (id == 14) return "Hair 13";
+        if (id == 15) return "Hair 14";
+        if (id == 16) return "Hair 15";
+        if (id == 17) return "Hair 16";
+        if (id == 18) return "Hair 17";
+        if (id == 19) return "Hair 18";
+        if (id == 20) return "Hair 19";
+        if (id == 21) return "Hair 20";
+        if (id == 22) return "Hair 21";
+    }
+
+
+
+   
 }
 
 /// @title Base64
