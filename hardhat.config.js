@@ -4,6 +4,7 @@ require("dotenv").config();
 
 // Keys
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const RINKEBY_KEY = process.env.RINKEBY_KEY;
 const GOERLI_KEY = process.env.GOERLI_KEY;
 const MUMBAI_KEY = process.env.GOERLI_KEY;
 const POLYGON_KEY = process.env.POLYGON_KEY;
@@ -38,7 +39,7 @@ module.exports = {
 		},
 		rinkeby: {
 			url: `${RINKEBY_URL}`,
-			accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
+			accounts: RINKEBY_KEY !== undefined ? [RINKEBY_KEY] : [],
 		},
 		goerli: {
 			url: GOERLI_URL,

@@ -49,11 +49,11 @@ contract InventoryManagerAllies {
             string(
                 abi.encodePacked(
                     'data:application/json;base64,',
-                    Base64.encode(
+                    BBase64.encode(
                         bytes(
                             abi.encodePacked(
                                 upper,
-                                Base64.encode(bytes(svg)),
+                                BBase64.encode(bytes(svg)),
                                 '",',
                                 attributes,
                                 '}'
@@ -162,7 +162,7 @@ contract InventoryManagerAllies {
     }
     
     function wrapTag(string memory uri) internal pure returns (string memory) {
-        return string(abi.encodePacked('<image x="1" y="1" width="60" height="60" image-rendering="pixelated" preserveAspectRatio="xMidYMid" xlink:href="data:image/png;base64,', uri, '"/>'));
+        return string(abi.encodePacked('<image x="0" y="0" width="60" height="60" image-rendering="pixelated" preserveAspectRatio="xMidYMid" xlink:href="data:image/png;base64,', uri, '"/>'));
     }
 
     function getData(Part part, uint8 id) internal pure returns (bytes memory data) {
@@ -219,7 +219,7 @@ contract InventoryManagerAllies {
 
     function _getBottomAtt(uint256 level_, uint256 sc_, uint256 modF_) internal pure returns (string memory) {
         return string(abi.encodePacked(',{"trait_type": "level", "value":', toString(level_),
-            '},{"trait_type": "skillCredits", "value":', toString(sc_),'}{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
+            '},{"trait_type": "skillCredits", "value":', toString(sc_),'},{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
             toString(modF_),'}]'));
     }
 
@@ -228,11 +228,11 @@ contract InventoryManagerAllies {
     }
 
     function getFeatAAttributes(uint256 featA_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Hair","value":"',getHelmName(featA_),'"}'));
+        return string(abi.encodePacked('{"trait_type":"Hair","value":"',getHairName(featA_),'"}'));
     }
 
     function getFeatBAttributes(uint256 featB_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Beard","value":"',getHelmName(featB_),'"}'));
+        return string(abi.encodePacked('{"trait_type":"Facial Hair","value":"',getFacialHairName(featB_),'"}'));
     }
 
     function getHelmAttributes(uint256 helm_) internal pure returns(string memory) {
@@ -516,11 +516,11 @@ function getOffhandName(uint256 id) public pure returns (string memory) {
    
 }
 
-/// @title Base64
+/// @title BBase64
 /// @author Brecht Devos - <brecht@loopring.org>
-/// @notice Provides a function for encoding some bytes in base64
+/// @notice Provides a function for encoding some bytes in BBase64
 /// @notice NOT BUILT BY ETHERORCS TEAM. Thanks Bretch Devos!
-library Base64 {
+library BBase64 {
     string internal constant TABLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
     function encode(bytes memory data) internal pure returns (string memory) {

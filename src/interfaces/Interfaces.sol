@@ -59,6 +59,7 @@ interface ERC20Like {
 
 interface ERC1155Like {
     function mint(address to, uint256 id, uint256 amount) external;
+    function burn(address from, uint256 id, uint256 amount) external;
 }
 
 interface ERC721Like {

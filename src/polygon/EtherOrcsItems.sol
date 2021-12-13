@@ -59,13 +59,13 @@ contract EtherOrcsItems is IERC1155 {
     function _mint(address _to, uint256 _id, uint256 _amount) internal {
         decimalBalances[_to][_id] += _amount; 
         balances[_to][_id] = decimalBalances[_to][_id] / 1 ether;
-        emit TransferSingle(msg.sender, address(0x0), _to, _id, _amount);
+        emit TransferSingle(msg.sender, address(0x0), _to, _id, _amount / 1 ether);
     }
     
     function _burn(address _from, uint256 _id, uint256 _amount) internal {
         decimalBalances[_from][_id] -= _amount; 
         balances[_from][_id] = decimalBalances[_from][_id] / 1 ether;
-        emit TransferSingle(msg.sender, _from, address(0x0), _id, _amount);
+        emit TransferSingle(msg.sender, _from, address(0x0), _id, _amount / 1 ether);
     }
 
     function mint(address to,uint256 id, uint256 value) external {

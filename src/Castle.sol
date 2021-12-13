@@ -66,11 +66,11 @@ contract Castle {
 
             // This will create orcs exactly as they exist in this chain
             for (uint256 i = 0; i < alliesIds.length; i++) {
-                calls[i] = _buildDataAllies(alliesIds[i]);
+                calls[currIndex + i] = _buildDataAllies(alliesIds[i]);
             }
 
-            calls[allieslen] = abi.encodeWithSelector(this.unstakeMany.selector, reflection[allies], msg.sender,  alliesIds);
-            currIndex += allieslen + 1;
+            calls[currIndex + allieslen] = abi.encodeWithSelector(this.unstakeMany.selector, reflection[allies], msg.sender,  alliesIds);
+            currIndex += currIndex + allieslen + 1;
         }
 
         if (zugAmount > 0) {
@@ -94,9 +94,11 @@ contract Castle {
         require(succ);
     }
 
+    event D(uint tt);
+    event DAD(address al);
     function callAllies(bytes calldata data) external {
         _onlyPortal();
-
+        
         (bool succ, ) = allies.call(data);
         require(succ);
     }
@@ -104,7 +106,10 @@ contract Castle {
     function unstakeMany(address token, address owner, uint256[] calldata ids) external {
         _onlyPortal();
 
-        for (uint256 i = 0; i < ids.length; i++) {
+        emit DAD(token);
+
+        for (uint256 i = 0; i < ids.length; i++) {  
+            emit D(ids[i]);
             if (token == orcs)   delete orcOwner[ids[i]];
             if (token == allies) delete allyOwner[ids[i]];
             ERC721Like(token).transfer(owner, ids[i]);

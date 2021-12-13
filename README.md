@@ -101,6 +101,49 @@ BoneShards 0x8B2f425841F6829F7161E4EAb076C613DbEE9DB8
 Hall_impl:  0xFFf0c48260C7643fA72de428F46915c0f4b874e4
 Hall:  0xa22Cc75b202C5d4f8f0b00A78827DaE2AD72F3Cf
 
+Deploying Inv Manager
+0xFe3eB12D311d71E4eA6837b5BC0EE5fcdb7a34fF
+Deploying Proxy
+0x436c522E0db1382aF6C1bCC9a6d610704cFBAfF2
+Deploying Bodies1
+address 0x4229cD3E5Cb85dbF93bC09555Ee860fE74eDe195
+Setting as Bodies
+Deploying Bodies2
+address 0xb62a737AF40e9A95cd9B62111e213a53EfA6C6ed
+Setting as Bodies
+Deploying FeatA
+address 0x9c94e7F87f89E3aB1Cb1704aEC12440D249DB935
+Setting as featA
+Deploying FeatB
+address 0x8a007982ba052A0fedE354858253FE22C5268892
+Setting as featB
+Deploying Helms1
+address 0xBC047adeB9e736A8E3a2e871192C115e3d077C39
+Setting as Helms
+Deploying Helms2
+address 0x275826d7412Ca3E2ECe1595597F4281bC642e900
+Setting as Helms
+Deploying Helms3
+address 0xF0EA6866026410bc46c95aD62eC8B5D066c1f574
+Setting as Helms
+Deploying Mainhands1
+address 0x601D0f862Fc6276121298Cb955AA2F457dD1b1fF
+Setting as Mainhands
+Deploying Mainhands2
+address 0xBD65e50E51AD1ed251eA5dF4166426109Accf19c
+Setting as Mainhands
+Deploying Mainhands3
+address 0xA3201830aA69463304Cf6099beC6a6a16b4ff84B
+Setting as Mainhands
+Deploying Offhands1
+address 0x070A5ADF49507813c68CB6e78FD0C6dED35D62c7
+Setting as Offhands
+Deploying Offhands2
+address 0xb0D00988c6d866924Be825E4159572d90e957d31
+Setting as Offhands
+Deploying Offhands3
+address 0x9f7942734FCEa8253A3565234C88dBb0c053f631
+Setting as Offhands
 
 
 ### Mainnet deployment

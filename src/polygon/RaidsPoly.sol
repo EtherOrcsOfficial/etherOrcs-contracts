@@ -27,13 +27,14 @@ contract RaidsPoly {
     bytes32 internal entropySauce;
 
     ERC721Like allies;
-    ERC20Like  potions;
+    ERC1155Like  potions;
 
     address vendor;
     address backupOracle;
 
     uint256 public constant HND_PCT = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
-    uint256 public constant VND_PCT = 5_000;
+    uint256 public constant VND_PCT = 500;
+    uint256 public constant POTION_ID = 1; 
 
     // All that in a single storage slot. Fuck yeah!
     struct Raid {
@@ -111,7 +112,7 @@ contract RaidsPoly {
         dbl_discount    = 1_000;
 
         vendor  = vendor_;
-        potions = ERC20Like(potions_);
+        potions = ERC1155Like(potions_);
         allies  = ERC721Like(allies_);
     }
 
@@ -190,7 +191,6 @@ contract RaidsPoly {
         commanders[id] = owner;
     }
 
-    event Debu(uint256 a);
     function _startCampaign(uint orcishId, uint256 location_, bool double, uint256 potions_) internal {
         Raid memory raid = locations[location_];
         address owner = commanders[orcishId];
@@ -202,8 +202,6 @@ contract RaidsPoly {
 
         if (campaigns[orcishId].reward > 0) _claim(orcishId);
 
-        emit Debu(_getLevel(orcishId));
-        emit Debu(orcishId);
         require(_getLevel(orcishId) >= raid.minLevel, "below min level");
 
         uint256 zugAmount = uint256(raid.cost) * 1 ether;
@@ -222,7 +220,10 @@ contract RaidsPoly {
         }
         _distributeZug(owner, zugAmount);
 
-        if(potions_ > 0) potions.burn(owner, potions_ * 1 ether);
+        if(potions_ > 0) {
+            potions.burn(owner, POTION_ID, potions_ * 1 ether);
+            duration -= potions_ * 24;
+        }
 
         campaigns[orcishId].location  = uint8(location_);
         campaigns[orcishId].reward   += reward;

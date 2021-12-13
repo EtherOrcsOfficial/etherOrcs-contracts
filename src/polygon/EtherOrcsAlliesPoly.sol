@@ -201,7 +201,6 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     function startJourney(uint256 id, uint8 place, uint8 equipment) public isOwnerOfAlly(id) noCheaters {
         require(equipment < 3, "invalid equipment");
         require(journeys[id].blockSeed == 0, "already ongoin journey");
-        if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
 
         Ally     memory ally = allies[id];
         Location memory loc  = locations[place];
@@ -224,6 +223,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         Location memory loc  = locations[jrn.location];
 
         require(block.number > jrn.blockSeed, "too soon");
+        if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
+
 
         bytes22 newDetails = _equipShaman(shm,loc,id,jrn.equipment, _blockhash(jrn.blockSeed));
 
@@ -336,13 +337,13 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     }
 
     function _getItem(Location memory loc, uint256 rand) internal pure returns (uint8 item) {
-        uint256 draw = uint256(rand % 100);
+        uint256 draw = uint256(rand % 100) + 1;
 
-        uint8 tier = uint8(draw < loc.tier_3Prob ? loc.tier_3 : draw < loc.tier_2Prob ? loc.tier_2 : loc.tier_1) + 1;
-        item = uint8(draw % _tierItems(tier) + _startForTier(tier));
+        uint8 tier = uint8(draw <= loc.tier_3Prob ? loc.tier_3 : draw <= loc.tier_2Prob + loc.tier_3Prob? loc.tier_2 : loc.tier_1);
+        item = uint8(rand % _tierItems(tier) + _startForTier(tier));
     }
 
-    function _claimable(uint256 timeDiff, uint16 herbalism_) internal pure returns (uint256 potionAmount) {
+    function _claimable(uint256 timeDiff, uint256 herbalism_) internal pure returns (uint256 potionAmount) {
         potionAmount = timeDiff * (0.5 ether + (herbalism_ * 0.05 ether)) / 1 days;
     }
 
@@ -370,13 +371,13 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     function _startForTier(uint256 tier_) internal pure returns (uint256 start) {
         if (tier_ == 0) return 1;
-        if (tier_ == 1) return 7;
-        if (tier_ == 2) return 12;
-        if (tier_ == 3) return 18;
-        if (tier_ == 4) return 25;
-        if (tier_ == 5) return 32;
-        if (tier_ == 6) return 38;
-        return 44;
+        if (tier_ == 1) return 8;
+        if (tier_ == 2) return 13;
+        if (tier_ == 3) return 19;
+        if (tier_ == 4) return 26;
+        if (tier_ == 5) return 33;
+        if (tier_ == 6) return 39;
+        return 45;
     }
 
     function _blockhash(uint256 blc) internal view returns (bytes32 h) {

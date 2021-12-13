@@ -19,7 +19,7 @@ contract EtherOrcsAllies is ERC721 {
 
     ERC20 boneShards;
 
-    MetadataHandlerLike metadaHandler;
+    MetadataHandlerAllies metadaHandler;
 
     address castle;
     bool public openForMint;
@@ -46,7 +46,7 @@ contract EtherOrcsAllies is ERC721 {
 
         castle = ct;
         boneShards = ERC20(bs);
-        metadaHandler = MetadataHandlerLike(meta);
+        metadaHandler = MetadataHandlerAllies(meta);
     }
 
     function setAuth(address add_, bool status) external {
@@ -60,8 +60,8 @@ contract EtherOrcsAllies is ERC721 {
     }
 
     function tokenURI(uint256 id) external view returns(string memory) {
-        // Shaman memory orc = shamans[id];
-        // return metadaHandler.getTokenURI(uint16(id), orc.body, orc.helm, orc.mainhand, orc.offhand, orc.level, orc.zugModifier);
+        Ally memory ally = allies[id];
+        return metadaHandler.getTokenURI(id, ally.class, ally.level, ally.modF, ally.skillCredits, ally.details);
     }
 
     function mintShamans(uint256 amount) external {

@@ -10,22 +10,26 @@ contract PotionVendorPoly {
     address public admin; 
 
     ERC20Like zug;
-    ERC20Like potions;
+    ERC1155Like potions;
 
     uint256 rate;
+
+    uint256 public constant POTION_ID = 1; 
 
     function init(address zug_, address potions_, uint256 rate_) external {
         require(msg.sender == admin);
 
         zug     = ERC20Like(zug_);
-        potions = ERC20Like(potions_);
+        potions = ERC1155Like(potions_);
         rate    = rate_;
     }
 
     function swap(uint256 _amt) external {
         require(rate != 0, "no rate set");
-        potions.burn(msg.sender, _amt);
-        zug.transfer(msg.sender, _amt * rate);
+
+        uint256 amt = _amt + 1 ether;
+        potions.burn(msg.sender, POTION_ID, amt);
+        zug.transfer(msg.sender, amt * rate);
     }
 
 }
