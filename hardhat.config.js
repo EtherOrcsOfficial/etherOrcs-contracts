@@ -2,11 +2,13 @@ require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 require("dotenv").config();
 
+require("./scripts/update/updateMumbai");
+
 // Keys
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const RINKEBY_KEY = process.env.RINKEBY_KEY;
 const GOERLI_KEY = process.env.GOERLI_KEY;
-const MUMBAI_KEY = process.env.GOERLI_KEY;
+const MUMBAI_KEY = process.env.MUMBAI_KEY;
 const POLYGON_KEY = process.env.POLYGON_KEY;
 
 // URLs
@@ -58,8 +60,8 @@ module.exports = {
 	etherscan: {
 		// Your API key for Etherscan
 		// Obtain one at https://etherscan.io/
-		apiKey: process.env.ETHERSCAN_API_KEY
-  	},
+		apiKey: process.env.ETHERSCAN_API_KEY,
+	},
 
 	paths: {
 		sources: "./src",

@@ -1,8 +1,8 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/AdminSwitcher.sol": {
-      "lastModificationDate": 1638361593421,
+    "/home/omar/dev/working/etherOrcs-contracts/src/AdminSwitcher.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "58824a584d458229bedf3fc4dcaa45ae",
       "sourceName": "src/AdminSwitcher.sol",
       "solcConfig": {
@@ -36,8 +36,8 @@
         "AdminSwitcher"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/Castle.sol": {
-      "lastModificationDate": 1639405210021,
+    "/home/omar/dev/working/etherOrcs-contracts/src/Castle.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "6418b8b100784a44f437ff2a40f81524",
       "sourceName": "src/Castle.sol",
       "solcConfig": {
@@ -73,8 +73,8 @@
         "Castle"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/interfaces/Interfaces.sol": {
-      "lastModificationDate": 1639401291384,
+    "/home/omar/dev/working/etherOrcs-contracts/src/interfaces/Interfaces.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "0f2ddab635eff30596b5bc595fd99b0c",
       "sourceName": "src/interfaces/Interfaces.sol",
       "solcConfig": {
@@ -121,8 +121,8 @@
         "RaidsLikePoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/RaidsPoly.sol": {
-      "lastModificationDate": 1639410396403,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/RaidsPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "c8829595a292c523b8f94150a4a5e35c",
       "sourceName": "src/polygon/RaidsPoly.sol",
       "solcConfig": {
@@ -158,8 +158,8 @@
         "RaidsPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/PotionVendorPoly.sol": {
-      "lastModificationDate": 1639406663457,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/PotionVendorPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "6864bf10889de85c65430c22452a39ac",
       "sourceName": "src/polygon/PotionVendorPoly.sol",
       "solcConfig": {
@@ -195,8 +195,8 @@
         "PotionVendorPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/HallOfChampionsPoly.sol": {
-      "lastModificationDate": 1639143686493,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/HallOfChampionsPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "fc81d8c979e8648cd70619006d36d5cf",
       "sourceName": "src/polygon/HallOfChampionsPoly.sol",
       "solcConfig": {
@@ -232,8 +232,8 @@
         "HallOfChampionsPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/EtherOrcsPoly.sol": {
-      "lastModificationDate": 1639170277661,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/EtherOrcsPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "6fadef91ac017e679662661e3c03da76",
       "sourceName": "src/polygon/EtherOrcsPoly.sol",
       "solcConfig": {
@@ -271,8 +271,8 @@
         "EtherOrcsPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/ERC20.sol": {
-      "lastModificationDate": 1639142206328,
+    "/home/omar/dev/working/etherOrcs-contracts/src/ERC20.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "0572cb39bbf85c07f7dede58f4bb7ec8",
       "sourceName": "src/ERC20.sol",
       "solcConfig": {
@@ -306,8 +306,8 @@
         "ERC20"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/PolyERC721.sol": {
-      "lastModificationDate": 1638217483170,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/PolyERC721.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "832a04eeebd3a1582b1472d71cdf1daa",
       "sourceName": "src/polygon/PolyERC721.sol",
       "solcConfig": {
@@ -341,8 +341,8 @@
         "PolyERC721"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/testnet/PolyOrc.sol": {
-      "lastModificationDate": 1639226351074,
+    "/home/omar/dev/working/etherOrcs-contracts/src/testnet/PolyOrc.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "fd0a9bf50cb6d31fd404ecb4d4ce8e06",
       "sourceName": "src/testnet/PolyOrc.sol",
       "solcConfig": {
@@ -378,8 +378,8 @@
         "PolyOrc"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/EtherOrcsAlliesPoly.sol": {
-      "lastModificationDate": 1639427684582,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/EtherOrcsAlliesPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "76118ac1ae0df5d44f34d06090889263",
       "sourceName": "src/polygon/EtherOrcsAlliesPoly.sol",
       "solcConfig": {
@@ -416,8 +416,8 @@
         "EtherOrcsAlliesPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/testnet/MumbaiAllies.sol": {
-      "lastModificationDate": 1639310833384,
+    "/home/omar/dev/working/etherOrcs-contracts/src/testnet/MumbaiAllies.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "bddc29d89ad7515f19e53af584ddcb97",
       "sourceName": "src/testnet/MumbaiAllies.sol",
       "solcConfig": {
@@ -453,8 +453,8 @@
         "MumbaiAllies"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/test/mocks/Mocks.sol": {
-      "lastModificationDate": 1639162553943,
+    "/home/omar/dev/working/etherOrcs-contracts/src/test/mocks/Mocks.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "eea85efd4ea354a02637f450880f5c73",
       "sourceName": "src/test/mocks/Mocks.sol",
       "solcConfig": {
@@ -497,8 +497,8 @@
         "PortalLikesish"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/PolylandPortal.sol": {
-      "lastModificationDate": 1638299105851,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/PolylandPortal.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "fc157c417af3d7a4cb5f852ac61b252d",
       "sourceName": "src/polygon/PolylandPortal.sol",
       "solcConfig": {
@@ -533,8 +533,8 @@
         "PolylandPortal"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/MainlandPortal.sol": {
-      "lastModificationDate": 1638024386329,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/MainlandPortal.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "a3b9b097f425a6a29b92a02ca5339e26",
       "sourceName": "src/mainnet/MainlandPortal.sol",
       "solcConfig": {
@@ -575,8 +575,8 @@
         "MainlandPortal"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/extLib/FxPortal/lib/RLPReader.sol": {
-      "lastModificationDate": 1637361321896,
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/RLPReader.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "7400fa76818565f1096c0ac31762665e",
       "sourceName": "extLib/FxPortal/lib/RLPReader.sol",
       "solcConfig": {
@@ -610,8 +610,8 @@
         "RLPReader"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/extLib/FxPortal/lib/MerklePatriciaProof.sol": {
-      "lastModificationDate": 1637361321896,
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/MerklePatriciaProof.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "49ce92b638fa09f86258d6a0d3268e2b",
       "sourceName": "extLib/FxPortal/lib/MerklePatriciaProof.sol",
       "solcConfig": {
@@ -647,8 +647,8 @@
         "MerklePatriciaProof"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/extLib/FxPortal/lib/Merkle.sol": {
-      "lastModificationDate": 1637361321896,
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/Merkle.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "066d735c2566241430f9fd3d97e4489f",
       "sourceName": "extLib/FxPortal/lib/Merkle.sol",
       "solcConfig": {
@@ -682,8 +682,8 @@
         "Merkle"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/extLib/FxPortal/lib/ExitPayloadReader.sol": {
-      "lastModificationDate": 1637361321896,
+    "/home/omar/dev/working/etherOrcs-contracts/extLib/FxPortal/lib/ExitPayloadReader.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "848aa189f431d1a8f86e9f779df97dfb",
       "sourceName": "extLib/FxPortal/lib/ExitPayloadReader.sol",
       "solcConfig": {
@@ -719,8 +719,8 @@
         "ExitPayloadReader"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/ZugPoly.sol": {
-      "lastModificationDate": 1639143037954,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/ZugPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "6ded7fcb668615cd82f0a7719e7af2d3",
       "sourceName": "src/polygon/ZugPoly.sol",
       "solcConfig": {
@@ -756,8 +756,8 @@
         "ZugPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/BoneShardsPoly.sol": {
-      "lastModificationDate": 1639174787765,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/BoneShardsPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "0fba303a67f6bb3e1b05e70c3d6e343f",
       "sourceName": "src/polygon/BoneShardsPoly.sol",
       "solcConfig": {
@@ -793,8 +793,8 @@
         "BoneShardsPoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/Zug.sol": {
-      "lastModificationDate": 1639142439287,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/Zug.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "9fed0abf266d23bde50f3400c74a3862",
       "sourceName": "src/mainnet/Zug.sol",
       "solcConfig": {
@@ -830,8 +830,8 @@
         "Zug"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/EtherOrcsAllies.sol": {
-      "lastModificationDate": 1639250331554,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/EtherOrcsAllies.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "22c64065f0d63d45cee1b369d3b63914",
       "sourceName": "src/mainnet/EtherOrcsAllies.sol",
       "solcConfig": {
@@ -869,8 +869,8 @@
         "EtherOrcsAllies"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/ERC721.sol": {
-      "lastModificationDate": 1638800883956,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/ERC721.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "233f96fcb8270d2e1dfeb6abfc9d5329",
       "sourceName": "src/mainnet/ERC721.sol",
       "solcConfig": {
@@ -904,8 +904,8 @@
         "ERC721"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/EtherOrcs.sol": {
-      "lastModificationDate": 1639148495358,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/EtherOrcs.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "5842e7863bf45b6e27e26e323e4d49c0",
       "sourceName": "src/mainnet/EtherOrcs.sol",
       "solcConfig": {
@@ -943,8 +943,8 @@
         "EtherOrcs"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/testnet/Rinkorc.sol": {
-      "lastModificationDate": 1639148505230,
+    "/home/omar/dev/working/etherOrcs-contracts/src/testnet/Rinkorc.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "b99a430271a61b9bd9a09d45af1063a2",
       "sourceName": "src/testnet/Rinkorc.sol",
       "solcConfig": {
@@ -980,8 +980,8 @@
         "Rinkorc"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/BoneShards.sol": {
-      "lastModificationDate": 1639142544029,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/BoneShards.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "d90a04d18cb43bb2e224c793a4a93a07",
       "sourceName": "src/mainnet/BoneShards.sol",
       "solcConfig": {
@@ -1017,8 +1017,8 @@
         "BoneShards"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/Raids.sol": {
-      "lastModificationDate": 1639174787765,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/Raids.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "9a6d9f9cb7002e7e481a4e92e0c2164f",
       "sourceName": "src/mainnet/Raids.sol",
       "solcConfig": {
@@ -1054,8 +1054,8 @@
         "Raids"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/mainnet/HallOfChampions.sol": {
-      "lastModificationDate": 1639143775896,
+    "/home/omar/dev/working/etherOrcs-contracts/src/mainnet/HallOfChampions.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "475547a130e1532cc67e8e923ec405e7",
       "sourceName": "src/mainnet/HallOfChampions.sol",
       "solcConfig": {
@@ -1092,8 +1092,8 @@
         "HallOfChampionsFix"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/EtherorcsContracts.sol": {
-      "lastModificationDate": 1639174787765,
+    "/home/omar/dev/working/etherOrcs-contracts/src/EtherorcsContracts.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "fbd9cbd0e04fd1adfa22a4ef2d60f5d5",
       "sourceName": "src/EtherorcsContracts.sol",
       "solcConfig": {
@@ -1127,8 +1127,8 @@
         "EtherorcsContracts"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/EtherorcsContracts.t.sol": {
-      "lastModificationDate": 1639174787765,
+    "/home/omar/dev/working/etherOrcs-contracts/src/EtherorcsContracts.t.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "f71304b54eea83ce9865497c0c041f72",
       "sourceName": "src/EtherorcsContracts.t.sol",
       "solcConfig": {
@@ -1158,8 +1158,8 @@
       "versionPragmas": [],
       "artifacts": []
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/Inventory.sol": {
-      "lastModificationDate": 1639073719964,
+    "/home/omar/dev/working/etherOrcs-contracts/src/Inventory.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "d846c5d32baa79447f7d9110dc20054f",
       "sourceName": "src/Inventory.sol",
       "solcConfig": {
@@ -1189,8 +1189,8 @@
       "versionPragmas": [],
       "artifacts": []
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/InventoryAllies.sol": {
-      "lastModificationDate": 1639243350278,
+    "/home/omar/dev/working/etherOrcs-contracts/src/InventoryAllies.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "785e710e7afc74922802d13a80ed1553",
       "sourceName": "src/InventoryAllies.sol",
       "solcConfig": {
@@ -1236,8 +1236,8 @@
         "Offhands3"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/InventoryManager.sol": {
-      "lastModificationDate": 1638369150750,
+    "/home/omar/dev/working/etherOrcs-contracts/src/InventoryManager.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "bec050c56d03d9d85f566c449dcb2771",
       "sourceName": "src/InventoryManager.sol",
       "solcConfig": {
@@ -1272,8 +1272,8 @@
         "InventoryManager"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/InventoryManagerAllies.sol": {
-      "lastModificationDate": 1639349625470,
+    "/home/omar/dev/working/etherOrcs-contracts/src/InventoryManagerAllies.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "146ac707e516cc88cdc35ce7e19a7710",
       "sourceName": "src/InventoryManagerAllies.sol",
       "solcConfig": {
@@ -1308,8 +1308,8 @@
         "InventoryManagerAllies"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/MetadaMiddleware.sol": {
-      "lastModificationDate": 1638389338728,
+    "/home/omar/dev/working/etherOrcs-contracts/src/MetadaMiddleware.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "e3a2341d09ccebee6dfd5f4b6188e289",
       "sourceName": "src/MetadaMiddleware.sol",
       "solcConfig": {
@@ -1347,8 +1347,8 @@
         "NameHandlerLike"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/EtherOrcsItems.sol": {
-      "lastModificationDate": 1639311241036,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/EtherOrcsItems.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "f642a99e99201fb84e2baaa4f6eb35f3",
       "sourceName": "src/polygon/EtherOrcsItems.sol",
       "solcConfig": {
@@ -1386,8 +1386,8 @@
         "InvManLike"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/GamingOraclePoly.sol": {
-      "lastModificationDate": 1639144052859,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/GamingOraclePoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "b55242680ea493b814d4b85d217442dd",
       "sourceName": "src/polygon/GamingOraclePoly.sol",
       "solcConfig": {
@@ -1421,8 +1421,44 @@
         "GamingOraclePoly"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/InventoryManagerPoly.sol": {
-      "lastModificationDate": 1638389101223,
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/InventoryManagerItems.sol": {
+      "lastModificationDate": 1639521631293,
+      "contentHash": "ca3900dc4805bb0600ad7d87a893e6c7",
+      "sourceName": "src/polygon/InventoryManagerItems.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.7"
+      ],
+      "artifacts": [
+        "Base64",
+        "InventoryManagerItems"
+      ]
+    },
+    "/home/omar/dev/working/etherOrcs-contracts/src/polygon/InventoryManagerPoly.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "46fe2fc4cd8a14f5f70ff44882061f02",
       "sourceName": "src/polygon/InventoryManagerPoly.sol",
       "solcConfig": {
@@ -1457,8 +1493,8 @@
         "InventoryManager"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/Proxy.sol": {
-      "lastModificationDate": 1637756829615,
+    "/home/omar/dev/working/etherOrcs-contracts/src/Proxy.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "bc0664f621c969680e2893020dc76118",
       "sourceName": "src/Proxy.sol",
       "solcConfig": {
@@ -1492,8 +1528,8 @@
         "Proxy"
       ]
     },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/test/Integration.t.sol": {
-      "lastModificationDate": 1639405989332,
+    "/home/omar/dev/working/etherOrcs-contracts/src/test/Integration.t.sol": {
+      "lastModificationDate": 1639521631293,
       "contentHash": "1e6e12e2f68593ebad3dce3a5ebf2cdf",
       "sourceName": "src/test/Integration.t.sol",
       "solcConfig": {
@@ -1522,42 +1558,6 @@
       "imports": [],
       "versionPragmas": [],
       "artifacts": []
-    },
-    "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/InventoryManagerItems.sol": {
-      "lastModificationDate": 1639400636335,
-      "contentHash": "ca3900dc4805bb0600ad7d87a893e6c7",
-      "sourceName": "src/polygon/InventoryManagerItems.sol",
-      "solcConfig": {
-        "version": "0.8.7",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.7"
-      ],
-      "artifacts": [
-        "Base64",
-        "InventoryManagerItems"
-      ]
     }
   }
 }
