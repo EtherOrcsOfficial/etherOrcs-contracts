@@ -3,7 +3,7 @@ pragma solidity 0.8.7;
 
 /// @notice Modern and gas efficient ERC-721 + ERC-20/EIP-2612-like implementation,
 /// including the MetaData, and partially, Enumerable extensions.
-contract ERC721 {
+contract ERC721Poly {
 	/*///////////////////////////////////////////////////////////////
                                   EVENTS
     //////////////////////////////////////////////////////////////*/
@@ -38,6 +38,8 @@ contract ERC721 {
     //////////////////////////////////////////////////////////////*/
 
 	uint256 public totalSupply;
+	uint256 public oldSupply;
+	uint256 public minted;
 
 	mapping(address => uint256) public balanceOf;
 
@@ -59,11 +61,12 @@ contract ERC721 {
                               ERC-20-LIKE LOGIC
     //////////////////////////////////////////////////////////////*/
 
-	function transfer(address to, uint256 tokenId) external {
-		require(msg.sender == ownerOf[tokenId], "NOT_OWNER");
+	// function transfer(address to, uint256 tokenId) external {
+	//     require(msg.sender == ownerOf[tokenId], "NOT_OWNER");
 
-		_transfer(msg.sender, to, tokenId);
-	}
+	//     _transfer(msg.sender, to, tokenId);
+
+	// }
 
 	/*///////////////////////////////////////////////////////////////
                               ERC-721 LOGIC
@@ -77,73 +80,53 @@ contract ERC721 {
 		supported = interfaceId == 0x80ac58cd || interfaceId == 0x5b5e139f;
 	}
 
-	function approve(address spender, uint256 tokenId) external {
-		address owner_ = ownerOf[tokenId];
+	// function approve(address spender, uint256 tokenId) external {
+	//     address owner_ = ownerOf[tokenId];
 
-		require(
-			msg.sender == owner_ || isApprovedForAll[owner_][msg.sender],
-			"NOT_APPROVED"
-		);
+	//     require(msg.sender == owner_ || isApprovedForAll[owner_][msg.sender], "NOT_APPROVED");
 
-		getApproved[tokenId] = spender;
+	//     getApproved[tokenId] = spender;
 
-		emit Approval(owner_, spender, tokenId);
-	}
+	//     emit Approval(owner_, spender, tokenId);
+	// }
 
-	function setApprovalForAll(address operator, bool approved) external {
-		isApprovedForAll[msg.sender][operator] = approved;
+	// function setApprovalForAll(address operator, bool approved) external {
+	//     isApprovedForAll[msg.sender][operator] = approved;
 
-		emit ApprovalForAll(msg.sender, operator, approved);
-	}
+	//     emit ApprovalForAll(msg.sender, operator, approved);
+	// }
 
-	function transferFrom(
-		address from,
-		address to,
-		uint256 tokenId
-	) public {
-		require(
-			msg.sender == from ||
-				msg.sender == getApproved[tokenId] ||
-				isApprovedForAll[from][msg.sender],
-			"NOT_APPROVED"
-		);
+	// function transferFrom(address, address to, uint256 tokenId) public {
+	//     address owner_ = ownerOf[tokenId];
 
-		_transfer(from, to, tokenId);
-	}
+	//     require(
+	//         msg.sender == owner_
+	//         || msg.sender == getApproved[tokenId]
+	//         || isApprovedForAll[owner_][msg.sender],
+	//         "NOT_APPROVED"
+	//     );
 
-	function safeTransferFrom(
-		address from,
-		address to,
-		uint256 tokenId
-	) external {
-		safeTransferFrom(from, to, tokenId, "");
-	}
+	//     _transfer(owner_, to, tokenId);
 
-	function safeTransferFrom(
-		address from,
-		address to,
-		uint256 tokenId,
-		bytes memory data
-	) public {
-		transferFrom(from, to, tokenId);
+	// }
 
-		if (to.code.length != 0) {
-			// selector = `onERC721Received(address,address,uint,bytes)`
-			(, bytes memory returned) = to.staticcall(
-				abi.encodeWithSelector(
-					0x150b7a02,
-					msg.sender,
-					address(0),
-					tokenId,
-					data
-				)
-			);
+	// function safeTransferFrom(address, address to, uint256 tokenId) external {
+	//     safeTransferFrom(address(0), to, tokenId, "");
+	// }
 
-			bytes4 selector = abi.decode(returned, (bytes4));
+	// function safeTransferFrom(address, address to, uint256 tokenId, bytes memory data) public {
+	//     transferFrom(address(0), to, tokenId);
 
-			require(selector == 0x150b7a02, "NOT_ERC721_RECEIVER");
-		}
-	}
+	//     if (to.code.length != 0) {
+	//         // selector = `onERC721Received(address,address,uint,bytes)`
+	//         (, bytes memory returned) = to.staticcall(abi.encodeWithSelector(0x150b7a02,
+	//             msg.sender, address(0), tokenId, data));
+
+	//         bytes4 selector = abi.decode(returned, (bytes4));
+
+	//         require(selector == 0x150b7a02, "NOT_ERC721_RECEIVER");
+	//     }
+	// }
 
 	/*///////////////////////////////////////////////////////////////
                           INTERNAL UTILS
@@ -168,6 +151,9 @@ contract ERC721 {
 	function _mint(address to, uint256 tokenId) internal {
 		require(ownerOf[tokenId] == address(0), "ALREADY_MINTED");
 
+		uint256 supply = oldSupply + minted;
+		uint256 maxSupply = 5050;
+		require(supply <= maxSupply, "MAX SUPPLY REACHED");
 		totalSupply++;
 
 		// This is safe because the sum of all user

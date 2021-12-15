@@ -6,145 +6,148 @@ pragma solidity 0.8.7;
 /// Taken from Solmate: https://github.com/Rari-Capital/solmate
 
 abstract contract ERC20 {
-    /*///////////////////////////////////////////////////////////////
+	/*///////////////////////////////////////////////////////////////
                                   EVENTS
     //////////////////////////////////////////////////////////////*/
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+	event Transfer(address indexed from, address indexed to, uint256 value);
+	event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    /*///////////////////////////////////////////////////////////////
+	/*///////////////////////////////////////////////////////////////
                              METADATA STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    function name() external view virtual returns (string memory);
-    function symbol() external view virtual returns (string memory);
-    function decimals() external view virtual returns (uint8);
+	function name() external view virtual returns (string memory);
 
-    // string public constant name     = "ZUG";
-    // string public constant symbol   = "ZUG";
-    // uint8  public constant decimals = 18;
+	function symbol() external view virtual returns (string memory);
 
-    /*///////////////////////////////////////////////////////////////
+	function decimals() external view virtual returns (uint8);
+
+	// string public constant name     = "ZUG";
+	// string public constant symbol   = "ZUG";
+	// uint8  public constant decimals = 18;
+
+	/*///////////////////////////////////////////////////////////////
                              ERC20 STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    uint256 public totalSupply;
+	uint256 public totalSupply;
 
-    mapping(address => uint256) public balanceOf;
+	mapping(address => uint256) public balanceOf;
 
-    mapping(address => mapping(address => uint256)) public allowance;
+	mapping(address => mapping(address => uint256)) public allowance;
 
-    mapping(address => bool) public isMinter;
+	mapping(address => bool) public isMinter;
 
-    address public ruler;
+	address public ruler;
 
-    /*///////////////////////////////////////////////////////////////
+	/*///////////////////////////////////////////////////////////////
                               ERC20 LOGIC
     //////////////////////////////////////////////////////////////*/
 
-    constructor() { ruler = msg.sender;}
+	constructor() {
+		ruler = msg.sender;
+	}
 
-    function approve(address spender, uint256 value) external returns (bool) {
-        allowance[msg.sender][spender] = value;
+	function approve(address spender, uint256 value) external returns (bool) {
+		allowance[msg.sender][spender] = value;
 
-        emit Approval(msg.sender, spender, value);
+		emit Approval(msg.sender, spender, value);
 
-        return true;
-    }
+		return true;
+	}
 
-    function transfer(address to, uint256 value) external returns (bool) {
-        balanceOf[msg.sender] -= value;
+	function transfer(address to, uint256 value) external returns (bool) {
+		balanceOf[msg.sender] -= value;
 
-        // This is safe because the sum of all user
-        // balances can't exceed type(uint256).max!
-        unchecked {
-            balanceOf[to] += value;
-        }
+		// This is safe because the sum of all user
+		// balances can't exceed type(uint256).max!
+		unchecked {
+			balanceOf[to] += value;
+		}
 
-        emit Transfer(msg.sender, to, value);
+		emit Transfer(msg.sender, to, value);
 
-        return true;
-    }
+		return true;
+	}
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) external returns (bool) {
-        if (allowance[from][msg.sender] != type(uint256).max) {
-            allowance[from][msg.sender] -= value;
-        }
+	function transferFrom(
+		address from,
+		address to,
+		uint256 value
+	) external returns (bool) {
+		if (allowance[from][msg.sender] != type(uint256).max) {
+			allowance[from][msg.sender] -= value;
+		}
 
-        balanceOf[from] -= value;
+		balanceOf[from] -= value;
 
-        // This is safe because the sum of all user
-        // balances can't exceed type(uint256).max!
-        unchecked {
-            balanceOf[to] += value;
-        }
+		// This is safe because the sum of all user
+		// balances can't exceed type(uint256).max!
+		unchecked {
+			balanceOf[to] += value;
+		}
 
-        emit Transfer(from, to, value);
+		emit Transfer(from, to, value);
 
-        return true;
-    }
+		return true;
+	}
 
-    /*///////////////////////////////////////////////////////////////
+	/*///////////////////////////////////////////////////////////////
                              ORC PRIVILEGE
     //////////////////////////////////////////////////////////////*/
 
-    function mint(address to, uint256 value) external {
-        require(isMinter[msg.sender], "FORBIDDEN TO MINT");
-        _mint(to, value);
-    }
+	function mint(address to, uint256 value) external {
+		require(isMinter[msg.sender], "FORBIDDEN TO MINT");
+		_mint(to, value);
+	}
 
-    function burn(address from, uint256 value) external {
-        require(isMinter[msg.sender], "FORBIDDEN TO BURN");
-        _burn(from, value);
-    }
+	function burn(address from, uint256 value) external {
+		require(isMinter[msg.sender], "FORBIDDEN TO BURN");
+		_burn(from, value);
+	}
 
-    /*///////////////////////////////////////////////////////////////
+	/*///////////////////////////////////////////////////////////////
                          Ruler Function
     //////////////////////////////////////////////////////////////*/
 
-    function setMinter(address minter, bool status) external {
-        require(msg.sender == ruler, "NOT ALLOWED TO RULE");
+	function setMinter(address minter, bool status) external {
+		require(msg.sender == ruler, "NOT ALLOWED TO RULE");
 
-        isMinter[minter] = status;
-    }
+		isMinter[minter] = status;
+	}
 
-    function setRuler(address ruler_) external {
-        require(msg.sender == ruler ||ruler == address(0), "NOT ALLOWED TO RULE");
+	function setRuler(address ruler_) external {
+		require(msg.sender == ruler || ruler == address(0), "NOT ALLOWED TO RULE");
 
-        ruler = ruler_;
-    }
+		ruler = ruler_;
+	}
 
-
-    /*///////////////////////////////////////////////////////////////
+	/*///////////////////////////////////////////////////////////////
                           INTERNAL UTILS
     //////////////////////////////////////////////////////////////*/
 
-    function _mint(address to, uint256 value) internal {
-        totalSupply += value;
+	function _mint(address to, uint256 value) internal {
+		totalSupply += value;
 
-        // This is safe because the sum of all user
-        // balances can't exceed type(uint256).max!
-        unchecked {
-            balanceOf[to] += value;
-        }
+		// This is safe because the sum of all user
+		// balances can't exceed type(uint256).max!
+		unchecked {
+			balanceOf[to] += value;
+		}
 
-        emit Transfer(address(0), to, value);
-    }
+		emit Transfer(address(0), to, value);
+	}
 
-    function _burn(address from, uint256 value) internal {
-        balanceOf[from] -= value;
+	function _burn(address from, uint256 value) internal {
+		balanceOf[from] -= value;
 
-        // This is safe because a user won't ever
-        // have a balance larger than totalSupply!
-        unchecked {
-            totalSupply -= value;
-        }
+		// This is safe because a user won't ever
+		// have a balance larger than totalSupply!
+		unchecked {
+			totalSupply -= value;
+		}
 
-        emit Transfer(from, address(0), value);
-    }
+		emit Transfer(from, address(0), value);
+	}
 }

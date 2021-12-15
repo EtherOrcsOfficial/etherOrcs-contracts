@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-
 contract AdminSwitcher {
+	address implementation_;
+	address public admin;
 
-    address implementation_;
-    address public admin;
-
-    function switchAdmin(address newAdmin, address newImplementation) external {
-        admin = newAdmin;
-        implementation_ = newImplementation;
-    }
-
+	function switchAdmin(address newAdmin, address newImplementation) external {
+		admin = newAdmin;
+		implementation_ = newImplementation;
+	}
 }
 
 //new owner 0x37060d6C4B79e2982DcEd784379338eeB5ce87f5
