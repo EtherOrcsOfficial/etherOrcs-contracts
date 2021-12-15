@@ -6,7 +6,7 @@
 const hre = require("hardhat");
 const VERIFY = hre.network.name !== "localhost";
 
-const MUMBAI_FX_ROOT = "0xCf73231F28B7331BBe3124B907840A94851f9f11"
+const MUMBAI_FX_ROOT = "0xCf73231F28B7331BBe3124B907840A94851f9f11";
 
 async function main() {
 	console.log(hre.config.solidity.compilers[0]);
@@ -100,9 +100,10 @@ async function main() {
 	await hall.deployed();
 	console.log("Hall: ", hall.address);
 
-
 	//Deploy Potion Vendor
-	const PotionVendorFact = await hre.ethers.getContractFactory("PotionVendorPoly");
+	const PotionVendorFact = await hre.ethers.getContractFactory(
+		"PotionVendorPoly"
+	);
 	let potionVendorImpl = await PotionVendorFact.deploy();
 	await potionVendorImpl.deployed();
 	console.log("PotionVendor_impl: ", potionVendorImpl.address);
@@ -112,7 +113,9 @@ async function main() {
 	console.log("PotionVendor: ", potionVendor.address);
 
 	//Deploy Gaming Oracle
-	const GamingOracleFact = await hre.ethers.getContractFactory("GamingOraclePoly");
+	const GamingOracleFact = await hre.ethers.getContractFactory(
+		"GamingOraclePoly"
+	);
 	let gamingOracleImpl = await GamingOracleFact.deploy();
 	await gamingOracleImpl.deployed();
 	console.log("GamingOracle_impl: ", gamingOracleImpl.address);
@@ -141,11 +144,18 @@ async function main() {
 
 	allies = await hre.ethers.getContractAt("MumbaiAllies", allies.address);
 
-	await allies.initialize(zug.address, shr.address, items.address, raids.address, castle.address, gamingOracle.address);
+	await allies.initialize(
+		zug.address,
+		shr.address,
+		items.address,
+		raids.address,
+		castle.address,
+		gamingOracle.address
+	);
 	await allies.setAuth(castle.address, true);
 	await allies.setAuth(raids.address, true);
 	console.log("done allies");
- 
+
 	await zug.setMinter(castle.address, true);
 	await zug.setMinter(allies.address, true);
 	await zug.setMinter(orc.address, true);
@@ -166,10 +176,10 @@ async function main() {
 	items = await hre.ethers.getContractAt("EtherOrcsItems", items.address);
 	await items.setMinter(allies.address, true);
 	await items.setMinter(raids.address, true);
-	console.log("done items")
+	console.log("done items");
 
 	portal = await hre.ethers.getContractAt("PolylandPortal", portal.address);
-	await portal.setAuth([castle.address], true)
+	await portal.setAuth([castle.address], true);
 
 	castle = await hre.ethers.getContractAt("Castle", castle.address);
 	await castle.initialize(
@@ -189,10 +199,9 @@ async function main() {
 	console.log("done castle");
 	for (let i = 0; i < 5051; i += 505) {
 		await orc.initMint(orc.address, i, i + 505);
-		
 	}
 
-	//TODO 
+	//TODO
 	//initMint for allies
 
 	console.log("inited");

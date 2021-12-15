@@ -15,18 +15,21 @@ task("update", "Update a contract implementation")
 		"contract",
 		`Contract name. One of: ${Object.keys(PROXIES).join(" ")}`
 	)
-	.setAction(async (args, { ethers, run }) => {
-		run("compile");
+	.setAction(async (args, hre) => {
+		hre.run("compile");
 
 		const { contract } = args;
-		console.log("Deploying", contract);
+		if (!contract || !Object.keys(PROXIES).includes(contract))
+			throw new Error("contract not found ");
+
+		console.log("Deploying ", contract);
 		const implFact = await ethers.getContractFactory(contract);
 		const impl = await implFact.deploy();
 		console.log("Implementation: ", impl.address);
 
 		console.log("Updating proxy");
 		const proxy = await ethers.getContractAt("Proxy", PROXIES[contract]);
-
 		await proxy.setImplementation(impl.address);
+
 		console.log("Done updating");
 	});

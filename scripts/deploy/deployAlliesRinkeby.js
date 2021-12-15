@@ -5,57 +5,62 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
-
 async function deployInvManagerAlly() {
-  console.log("Deploying Inv Manager")
-  const InventoryManagerFactory = await hre.ethers.getContractFactory("InventoryManagerAllies");
-  let invMan = await InventoryManagerFactory.deploy();
-  console.log(invMan.address)
+	console.log("Deploying Inv Manager");
+	const InventoryManagerFactory = await hre.ethers.getContractFactory(
+		"InventoryManagerAllies"
+	);
+	let invMan = await InventoryManagerFactory.deploy();
+	console.log(invMan.address);
 
-  console.log("Deploying Proxy")
-  const ProxyFac = await hre.ethers.getContractFactory("Proxy");
-  let pp = await ProxyFac.deploy(invMan.address);
-  console.log(pp.address)
+	console.log("Deploying Proxy");
+	const ProxyFac = await hre.ethers.getContractFactory("Proxy");
+	let pp = await ProxyFac.deploy(invMan.address);
+	console.log(pp.address);
 
-  let a = await hre.ethers.getContractAt("InventoryManagerAllies", pp.address);
-  return a;
+	let a = await hre.ethers.getContractAt("InventoryManagerAllies", pp.address);
+	return a;
 }
 
 async function deployAllies() {
-  console.log("Deploying Allies")
-  const AlliesFact = await hre.ethers.getContractFactory("EtherOrcsAllies");
-  let alliesImpl = await AlliesFact.deploy();
-  console.log(alliesImpl.address)
+	console.log("Deploying Allies");
+	const AlliesFact = await hre.ethers.getContractFactory("EtherOrcsAllies");
+	let alliesImpl = await AlliesFact.deploy();
+	console.log(alliesImpl.address);
 
+	console.log("Deploying Proxy");
+	const ProxyFac = await hre.ethers.getContractFactory("Proxy");
+	let pp = await ProxyFac.deploy(alliesImpl.address);
+	console.log(pp.address);
 
-  console.log("Deploying Proxy")
-  const ProxyFac = await hre.ethers.getContractFactory("Proxy");
-  let pp = await ProxyFac.deploy(alliesImpl.address);
-  console.log(pp.address)
-
-  let a = await hre.ethers.getContractAt("EtherOrcsAllies", pp.address);
-  return [a, alliesImpl];
+	let a = await hre.ethers.getContractAt("EtherOrcsAllies", pp.address);
+	return [a, alliesImpl];
 }
 
 async function updateInvManagerAlly() {
-    console.log("Deploying Inv Manager")
-  const InventoryManagerFactory = await hre.ethers.getContractFactory("InventoryManagerAllies");
-  let invMan = await InventoryManagerFactory.deploy();
-  console.log(invMan.address)
+	console.log("Deploying Inv Manager");
+	const InventoryManagerFactory = await hre.ethers.getContractFactory(
+		"InventoryManagerAllies"
+	);
+	let invMan = await InventoryManagerFactory.deploy();
+	console.log(invMan.address);
 
-  console.log("Updating Impl")
-  let a = await hre.ethers.getContractAt("Proxy", "0xd9A6538553e333E664c9816F78b68C5f2804e09f");
+	console.log("Updating Impl");
+	let a = await hre.ethers.getContractAt(
+		"Proxy",
+		"0xd9A6538553e333E664c9816F78b68C5f2804e09f"
+	);
 
-  await a.setImplementation(invMan.address);
+	await a.setImplementation(invMan.address);
 }
 
 async function deployBoneShards() {
-  // Getting BoneShards
+	// Getting BoneShards
 	const BoneFact = await hre.ethers.getContractFactory("BoneShards");
 	let shr = await BoneFact.deploy();
 	await shr.deployed();
 	console.log("BoneShards", shr.address);
-  return shr;
+	return shr;
 }
 
 // async function main() {
@@ -66,7 +71,7 @@ async function deployBoneShards() {
 //   // console.log("Deploying Orcs")
 //   // let orc = await hre.ethers.getContractAt("EtherOrcs", "0x84698a8EE5B74eB29385134886b3a182660113e4");
 //   // console.log(orc.address)
-  
+
 //   // await orc.deployed();
 
 //   let inv = await deployInvManagerAlly()
@@ -84,7 +89,7 @@ async function deployBoneShards() {
 //   await shr.setMinter("0x1fEb609755F7C7d1dd4C05bf2589552Ed1217fe7",true);
 
 //   // Now deploy all of the art
-  
+
 //   let svgs = [{name: "Bodies1", ids: [1,10,11,2,3], type: 1},
 //               {name: "Bodies2", ids: [4,5,7,8,9], type:1},
 //               {name: "FeatA", ids: [1,10,11,12,13,14,15,16,17,18,19,20,2,21,3,4,5,6,7,8,9], type:5},
@@ -99,7 +104,7 @@ async function deployBoneShards() {
 //               {name: "Offhands2", ids : [33,34,35,36,37,38,39,4,40,41,42], type:4},
 //               {name: "Offhands3", ids : [43,44,45,46,47,48,49,5,50,6,7,8,9], type:4}
 //             ]
-  
+
 //   for (let index = 0; index < svgs.length; index++) {
 //     console.log("Deploying", svgs[index].name);
 //     const FAC = await hre.ethers.getContractFactory(svgs[index].name);
@@ -153,16 +158,14 @@ async function deployBoneShards() {
 // }
 
 async function main() {
+	await hre.run("compile");
 
-  await hre.run("compile");
-
-  await updateInvManagerAlly()
-
+	await updateInvManagerAlly();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+	console.error(error);
+	process.exitCode = 1;
 });

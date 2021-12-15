@@ -105,8 +105,12 @@ async function main() {
 	await orc.setAuth(castle.address, true);
 	console.log("done orc");
 
-	allies = await hre.ethers.getContractAt("EtherOrcsAllies", allies.address)
-	await allies.initialize(castle.address, shr.address,"0x2890bA17EfE978480615e330ecB65333b880928e")
+	allies = await hre.ethers.getContractAt("EtherOrcsAllies", allies.address);
+	await allies.initialize(
+		castle.address,
+		shr.address,
+		"0x2890bA17EfE978480615e330ecB65333b880928e"
+	);
 
 	hall = await hre.ethers.getContractAt("HallOfChampions", hall.address);
 	await hall.setAddresses(orc.address, zug.address);
@@ -135,7 +139,7 @@ async function main() {
 		zug.address,
 		shr.address
 	);
-	await castle.setAllies(allies.address)
+	await castle.setAllies(allies.address);
 
 	// await castle.setReflection(portal.address, portal.address);
 	// await castle.setReflection(zug.address, zug.address);
