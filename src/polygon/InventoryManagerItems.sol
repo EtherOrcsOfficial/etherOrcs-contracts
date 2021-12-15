@@ -22,7 +22,7 @@ contract InventoryManagerItems {
                     Base64.encode(
                         bytes(
                             abi.encodePacked(
-                                '{"name":"Potion", "description":"EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. Spawn new Orcs, battle your Orc to level up, and pillage different loot pools to get new weapons and gear which upgrades your Orc metadata. This Horde of Orcs will stand the test of time and live on the blockchain for eternity.", "image": "data:image/svg+xml;base64,',
+                                '{"name":"Potion", "description":"EtherOrcs Items is a collection of various consumables that aid Orcs and their Allies within the greater EtherOrcs ecosystem.", "image": "data:image/svg+xml;base64,',
                                 svg,
                                 '","attributes": []}'
                             )

@@ -66,7 +66,7 @@ contract InventoryManagerAllies {
 
 
     function _getUpper(uint256 id_) internal pure returns (bytes memory) {
-        return abi.encodePacked('{"name":"Shaman #',toString(id_),'", "description":"EtherOrcs is a collection of 5050 Orcs ready to pillage the blockchain. With no IPFS or API, these Orcs are the very first role-playing game that takes place 100% on-chain. Spawn new Orcs, battle your Orc to level up, and pillage different loot pools to get new weapons and gear which upgrades your Orc metadata. This Horde of Orcs will stand the test of time and live on the blockchain for eternity.", "image": "',
+        return abi.encodePacked('{"name":"Shaman #',toString(id_),'", "description":"EtherOrcs Allies is a collection of 12,000 100% on-chain warriors that aid Genesis Orcs in their conquest of Valkala. Four classes of Allies (Shamans, Tanks, Mages, and Rogues) each produce their own unique consumables as their entry point to the broader EtherOrcs game economy. Each Ally can participate in all aspects of gameplay within the ecosystem and will strengthen the Horde and solidify its place as champions in the on-chain metaverse.", "image": "',
                                 'data:image/svg+xml;base64,');
     } 
     

@@ -39,7 +39,7 @@ contract EtherOrcs is ERC721 {
     address public raids = 0x47DC8e20C15f6deAA5cBFeAe6cf9946aCC89af59;
     mapping(bytes4 => address) implementer;
 
-    address constant impl = 0x0e3978aeB3fe16d5E77ddcbe1552f5537F226560;
+    address constant impl = 0x7d98439fD9b5989D0897124A977869d9a678Ec85;
 
     address public castle;
 

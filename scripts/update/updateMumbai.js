@@ -29,17 +29,17 @@ let proxies  = {
     "PolylandPortal": "0xE5B8F12c9FC0DB0b56A8e8EF0f6025F1C6770401",
     "EtherOrcsItems": "0xD7E2cC5C5d2c20216dfCd0b915480Ef2a1171f53",
     "PotionVendorPoly": "0xf714249B531c75e3C915b1C14677FE82399Be05e",
-    "GamingOracle": "0x78A665c21203537aE336b6D42e623337A8844f17",
+    "GamingOraclePoly": "0x78A665c21203537aE336b6D42e623337A8844f17",
     "InventoryManagerAllies": "0x436c522E0db1382aF6C1bCC9a6d610704cFBAfF2"
 }
 
 async function main() {
   await hre.run("compile");
 
-
+  // await updateProxy("MumbaiAllies",proxies["MumbaiAllies"]);
   // await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
-  await updateProxy("MumbaiAllies",proxies["MumbaiAllies"]);
-  // await updateProxy("Castle",proxies["Castle"]);
+  await updateProxy("Castle",proxies["Castle"]);
+  // await updateProxy("EtherOrcsItems", proxies["EtherOrcsItems"]);
 
 }
 

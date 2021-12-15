@@ -15,7 +15,8 @@ interface PortalLike {
 }
 
 interface OracleLike {
-    function seedFor(uint256 blc) external view returns(bytes32 hs);
+    function request() external returns (uint64 key);
+    function getRandom(uint64 id) external view returns(uint256 rand);
 }
 
 interface MetadataHandlerLike {

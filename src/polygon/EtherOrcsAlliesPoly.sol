@@ -21,7 +21,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     address raids;
     address castle;
-    address backupOracle;
+    address gamingOracle;
 
     bytes32 internal entropySauce;
 
@@ -35,7 +35,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     struct Shaman {uint8 body; uint8 featA; uint8 featB; uint8 helm; uint8 mainhand; uint8 offhand;}
 
-    struct Journey {uint128 blockSeed; uint64 location; uint64 equipment;}
+    struct Journey {uint64 seed; uint64 location; uint64 equipment;}
 
     struct Location { 
         uint8  minLevel; uint8  skillCost; uint16  cost;
@@ -74,7 +74,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
                     PUBLIC FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function initialize(address zug_, address shr_, address potions_, address raids_, address castle_, address backupOracle_) external {
+    function initialize(address zug_, address shr_, address potions_, address raids_, address castle_, address gamingOracle_) external {
         require(msg.sender == admin);
 
         zug          = ERC20Like(zug_);
@@ -82,7 +82,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         boneShards   = ERC20Like(shr_);
         raids        = raids_;
         castle       = castle_;
-        backupOracle = backupOracle_;
+        gamingOracle = gamingOracle_;
 
         Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
         Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
@@ -200,7 +200,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     function startJourney(uint256 id, uint8 place, uint8 equipment) public isOwnerOfAlly(id) noCheaters {
         require(equipment < 3, "invalid equipment");
-        require(journeys[id].blockSeed == 0, "already ongoin journey");
+        require(journeys[id].seed == 0, "already ongoin journey");
 
         Ally     memory ally = allies[id];
         Location memory loc  = locations[place];
@@ -214,7 +214,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
             zug.burn(msg.sender, uint256(loc.cost) * 1 ether);
         } 
 
-        journeys[id] = Journey({blockSeed: uint128(block.number + 2), location: place, equipment: equipment});
+        journeys[id] = Journey({seed: OracleLike(gamingOracle).request(), location: place, equipment: equipment});
     }
 
     function endJourney(uint256 id) public isOwnerOfAlly(id) noCheaters {
@@ -222,11 +222,13 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         Shaman   memory shm = _shaman(allies[id].details);
         Location memory loc  = locations[jrn.location];
 
-        require(block.number > jrn.blockSeed, "too soon");
+        uint256 rdn = OracleLike(gamingOracle).getRandom(jrn.seed);
+        require(rdn != 0, "too soon");
+
         if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
 
 
-        bytes22 newDetails = _equipShaman(shm,loc,id,jrn.equipment, _blockhash(jrn.blockSeed));
+        bytes22 newDetails = _equipShaman(shm,loc,id,jrn.equipment, rdn);
 
         allies[id].details = newDetails;
         allies[id].modF    = _modF(newDetails);
@@ -317,9 +319,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         sh.offhand  = offhand;
     }
 
-    function _equipShaman(Shaman memory sh, Location memory loc, uint256 id, uint256 equipment, bytes32 hs) internal pure returns(bytes22 details) {
-        uint256 rdn = uint256(keccak256(abi.encode(hs, id)));
-        uint8 item  = _getItem(loc, _randomize(rdn,"JOURNEY", id));
+    function _equipShaman(Shaman memory sh, Location memory loc, uint256 id, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
+        uint8 item  = _getItem(loc, rdn);
 
         if (equipment == 0) sh.helm = item;
         if (equipment == 1) sh.mainhand = item;
@@ -378,18 +379,5 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         if (tier_ == 5) return 33;
         if (tier_ == 6) return 39;
         return 45;
-    }
-
-    function _blockhash(uint256 blc) internal view returns (bytes32 h) {
-        h = (blc > block.number - 255 ? blockhash(blc) : OracleLike(backupOracle).seedFor(blc));
-    }
-
-    /// @dev Create a bit more of randomness
-    function _randomize(uint256 rand, string memory val, uint256 spicy) internal pure returns (uint256) {
-        return uint256(keccak256(abi.encode(rand, val, spicy)));
-    }
-
-    function _rand() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.timestamp, entropySauce)));
     }
 }

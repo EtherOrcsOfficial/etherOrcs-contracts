@@ -26,11 +26,13 @@ contract RaidsPoly {
 
     bytes32 internal entropySauce;
 
-    ERC721Like allies;
-    ERC1155Like  potions;
+    ERC721Like  allies;
+    ERC1155Like potions;
 
     address vendor;
-    address backupOracle;
+    address gamingOracle;
+
+    uint256 seedCounter;
 
     uint256 public constant HND_PCT = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
     uint256 public constant VND_PCT = 500;
@@ -43,7 +45,7 @@ contract RaidsPoly {
         uint16 regReward; uint16 grtReward; uint16 supReward;uint16 minPotions; uint16 maxPotions; // Rewards are scale down to 100(= 1BS & 1=0.01) to fit uint16. 
     }    
 
-    struct Campaign { uint8 location; bool double; uint64 end; uint112 reward; uint64 blockSeed; }
+    struct Campaign { uint8 location; bool double; uint64 end; uint112 reward; uint64 seed; }
 
     event BossHit(uint256 orcId, uint256 damage, uint256 remainingHealth);
 
@@ -87,7 +89,7 @@ contract RaidsPoly {
         locations[4] = merfolkFortress;
     }
 
-    function init(address allies_, address vendor_, address potions_) external {
+    function init(address allies_, address vendor_, address potions_, address orcl) external {
         require(msg.sender == admin);
 
         locations[0].maxPotions = 4;
@@ -111,9 +113,10 @@ contract RaidsPoly {
         giantCrabHealth = 400000;
         dbl_discount    = 1_000;
 
-        vendor  = vendor_;
-        potions = ERC1155Like(potions_);
-        allies  = ERC721Like(allies_);
+        allies       = ERC721Like(allies_);
+        potions      = ERC1155Like(potions_);
+        gamingOracle = orcl;
+        vendor       = vendor_;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -169,14 +172,15 @@ contract RaidsPoly {
 
         if (cmp.reward > 0 && _ended(campaigns[id])) {
             uint256 reward = cmp.reward;
-            if (cmp.blockSeed != 0) {
+            if (cmp.seed != 0) {
                 // New case - calculate the result from seed
                 Raid memory raid = locations[cmp.location];
-            
-                uint16 level    = _getLevel(id);
-                bytes32 blcHash = _blockhash(cmp.blockSeed);
+                uint16 level     = _getLevel(id);
+                uint256 rdn      = OracleLike(gamingOracle).getRandom(cmp.seed);
+                
+                require(rdn != 0, "no random value yet");
 
-                reward = _getReward(raid, id, level, blcHash, "RAID") + (cmp.double ? _getReward(raid, id, level, blcHash, "DOUBLE RAID") : 0);
+                reward = _getReward(raid, id, level, rdn, "RAID") + (cmp.double ? _getReward(raid, id, level, rdn, "DOUBLE RAID") : 0);
             } 
             campaigns[id].reward = 0;
             boneShards.mint(commanders[id], reward);
@@ -228,7 +232,7 @@ contract RaidsPoly {
         campaigns[orcishId].location  = uint8(location_);
         campaigns[orcishId].reward   += reward;
         campaigns[orcishId].end       = uint64(block.timestamp + (duration * 1 hours));
-        campaigns[orcishId].blockSeed = _seedFor(duration * 1 hours);
+        campaigns[orcishId].seed      = requestSeed();
 
         _attackBoss(orcishId);
     }   
@@ -244,15 +248,15 @@ contract RaidsPoly {
     }
 
     function _ended(Campaign memory cmp) internal view returns(bool) {
-        return cmp.end == 0 || block.timestamp > (giantCrabHealth == 0 ? cmp.end - (cmp.double ? 2 days : 1 days) : cmp.end) && block.number > cmp.blockSeed;
+        return cmp.end == 0 || block.timestamp > (giantCrabHealth == 0 ? cmp.end - (cmp.double ? 2 days : 1 days) : cmp.end);
     }
 
-    function _seedFor(uint256 duration) internal view returns(uint64 seedBlock) {
-        seedBlock = uint64(block.number + (duration / 1700));
+    function requestSeed() internal returns(uint64 seed) {
+        return OracleLike(gamingOracle).request();
     }
 
-    function _getReward(Raid memory raid, uint256 orcId, uint16 orcLevel, bytes32 blcHash, string memory salt) internal view returns(uint176 reward) {
-        uint256 rdn = uint256(keccak256(abi.encode(blcHash, orcId, salt))) % 10_000 + 1;
+    function _getReward(Raid memory raid, uint256 orcId, uint16 orcLevel, uint256 ramdom, string memory salt) internal view returns(uint176 reward) {
+        uint256 rdn = uint256(keccak256(abi.encode(ramdom, orcId, salt))) % 10_000 + 1;
 
         uint256 champBonus = _getChampionBonus(uint16(orcId));
 
@@ -289,10 +293,6 @@ contract RaidsPoly {
         uint256 damage = _randomize(_rand(), "ATTACK", id) % 2000;
         giantCrabHealth = damage >= giantCrabHealth ? 0 : giantCrabHealth - damage;
         emit BossHit(id, damage, giantCrabHealth);
-    }
-
-    function _blockhash(uint256 blc) internal view returns (bytes32 h) {
-        h = (blc > block.number - 255 ? blockhash(blc) : OracleLike(backupOracle).seedFor(blc));
     }
 
     function _randomize(uint256 rand, string memory val, uint256 spicy) internal pure returns (uint256) {

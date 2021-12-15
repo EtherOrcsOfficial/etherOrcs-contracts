@@ -76,6 +76,8 @@ async function main() {
 	await items.deployed();
 	console.log("items:", items.address);
 
+	// TODO add items inv manager
+
 	// Getting Zug
 	const ZugFac = await hre.ethers.getContractFactory("ZugPoly");
 	let zug = await ZugFac.deploy();

@@ -78,26 +78,24 @@ contract ERC721 {
         emit ApprovalForAll(msg.sender, operator, approved);
     }
 
-    function transferFrom(address, address to, uint256 tokenId) public {
-        address owner_ = ownerOf[tokenId];
-        
+    function transferFrom(address from, address to, uint256 tokenId) public {        
         require(
-            msg.sender == owner_ 
+            msg.sender == from 
             || msg.sender == getApproved[tokenId]
-            || isApprovedForAll[owner_][msg.sender], 
+            || isApprovedForAll[from][msg.sender], 
             "NOT_APPROVED"
         );
         
-        _transfer(owner_, to, tokenId);
+        _transfer(from, to, tokenId);
         
     }
     
-    function safeTransferFrom(address, address to, uint256 tokenId) external {
-        safeTransferFrom(address(0), to, tokenId, "");
+    function safeTransferFrom(address from, address to, uint256 tokenId) external {
+        safeTransferFrom(from, to, tokenId, "");
     }
     
-    function safeTransferFrom(address, address to, uint256 tokenId, bytes memory data) public {
-        transferFrom(address(0), to, tokenId); 
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public {
+        transferFrom(from, to, tokenId); 
         
         if (to.code.length != 0) {
             // selector = `onERC721Received(address,address,uint,bytes)`

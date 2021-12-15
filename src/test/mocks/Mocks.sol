@@ -3,6 +3,8 @@ pragma solidity 0.8.7;
 
 import "../../ERC20.sol";
 import "../../polygon/PolylandPortal.sol";
+
+import "../../polygon/GamingOraclePoly.sol";
 import "../../mainnet/MainlandPortal.sol";
 
 contract MockERC20 is ERC20 {
@@ -18,16 +20,6 @@ contract MockHall {
         joined[id] = time;
     }
 }
-
-// contract MockRaids is EtherOrcsRaids {
-
-//     function getReward(uint256 raidId, uint256 orcId, uint16 orcLevel) external returns(uint176 reward){
-//         return _getReward(locations[raidId], orcId, orcLevel, "aaaaa");
-//     }
-
-//     // function getBaseOutcome(uint16 minLevel, uint16 maxLevel, uint16 minProb, uint16 maxProb, uint16 orcLevel) external returns (uint256 out) {} 
-
-// }
 
 interface PortalLikesish {
     function processMessageFromRoot(uint256 stateId, address rootMessageSender, bytes calldata data) external;
@@ -62,4 +54,20 @@ contract MockMainPortal is MainlandPortal {
     function receiveMessage(bytes calldata inputData) public override {
         _processMessageFromChild(inputData);
     }
+}
+
+
+
+contract MockGamingOracle is GamingOraclePoly {
+
+     function request() external override returns (uint64 key){
+        require(auth[msg.sender], "not authorized");
+        
+        key = uint64(uint256(keccak256(abi.encodePacked(msg.sender, salts[msg.sender]++))));
+        
+        bytes32 id = keccak256(abi.encodePacked(key, msg.sender));
+        keys[key] = id;
+        rands[keys[key]] = uint256(id); // 
+    }
+
 }
