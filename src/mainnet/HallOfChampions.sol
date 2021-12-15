@@ -1,22 +1,15 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.7;
 
-interface ERC20Like {
-    function burn(address from, uint256 amount) external;
-}
-
-interface EtherOrcLike {
-    function ownerOf(uint256 id) external view returns (address owner_);
-    function activities(uint256 id) external view returns (address owner, uint88 timestamp, uint8 action);
-}
-
+import "../interfaces/Interfaces.sol";
 
 contract HallOfChampions {
 
     address        implementation_;
     address public admin; 
     
-    ERC20Like    public zug;
-    EtherOrcLike public etherOrcs;
+    ERC20Like     public zug;
+    EtherOrcsLike public etherOrcs;
     
     uint256 public namingCost; 
 
@@ -93,7 +86,7 @@ contract HallOfChampions {
 
 	function setAddresses(address orcs_, address zug_) external {
 		require(msg.sender == admin);
-		etherOrcs = EtherOrcLike(orcs_);
+		etherOrcs = EtherOrcsLike(orcs_);
 		zug       = ERC20Like(zug_);
 	}
 
@@ -230,7 +223,7 @@ contract HallOfChampionsFix {
     address  admin; 
     
     ERC20Like    zug;
-    EtherOrcLike etherOrcs;
+    EtherOrcsLike etherOrcs;
     
     uint256 namingCost; 
 

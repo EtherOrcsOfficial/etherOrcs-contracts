@@ -1,16 +1,8 @@
 pragma solidity 0.8.7;
 
-interface ERC20Like {
-    function burn(address from, uint256 amount) external;
-}
+import "../interfaces/Interfaces.sol";
 
-interface EtherOrcLike {
-    function ownerOf(uint256 id) external view returns (address owner_);
-    function activities(uint256 id) external view returns (address owner, uint88 timestamp, uint8 action);
-}
-
-
-contract HallOfChampionsPolygon {
+contract HallOfChampionsPoly {
 
     address        implementation_;
     address public admin; 

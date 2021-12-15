@@ -4,26 +4,14 @@ pragma solidity 0.8.7;
 import "../ERC20.sol";
 import "./PolyERC721.sol"; 
 
+import "../interfaces/Interfaces.sol";
+
 //    ___ _   _               ___            
 //  | __| |_| |_  ___ _ _   / _ \ _ _ __ ___
 //  | _||  _| ' \/ -_) '_| | (_) | '_/ _(_-<
 //  |___|\__|_||_\___|_|    \___/|_| \__/__/
 //
 
-interface MetadataHandlerLike {
-    function getTokenURI(uint16 id, uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier) external view returns (string memory);
-}
-
-interface RaidsLike {
-    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_) external;
-    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_) external;
-    function commanders(uint256 id) external returns(address);
-    function unstake(uint256 id) external;
-}
-
-interface CastleLike {
-    function pullCallback(address owner, uint256[] calldata ids) external;
-}
 
 contract EtherOrcsPoly is PolyERC721 {
 
@@ -227,25 +215,25 @@ contract EtherOrcsPoly is PolyERC721 {
         activities[id].timestamp = uint88(block.timestamp + cooldown);
     } 
 
-    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
+    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED, msg.sender);
             _transfer(msg.sender, raids, ids[index]);
         }
-        RaidsLike(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_);
+        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_, potions_);
     }
 
-    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_) external noCheaters { 
+    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
-            require(msg.sender == RaidsLike(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
+            require(msg.sender == RaidsLikePoly(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
         }
-        RaidsLike(raids).startCampaignWithMany(ids, location_, double_);
+        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_);
     }
 
     function returnFromRaid(uint256[] calldata ids, Actions action_) external noCheaters { 
-        RaidsLike raidsContract = RaidsLike(raids);
+        RaidsLikePoly raidsContract = RaidsLikePoly(raids);
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == raidsContract.commanders(ids[index]), "not your orc");
             raidsContract.unstake(ids[index]);
