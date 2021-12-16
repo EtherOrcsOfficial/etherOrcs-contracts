@@ -16,7 +16,7 @@ contract PotionVendorPoly {
 
     uint256 public constant POTION_ID = 1; 
 
-    function init(address zug_, address potions_, uint256 rate_) external {
+    function initialize(address zug_, address potions_, uint256 rate_) external {
         require(msg.sender == admin);
 
         zug     = ERC20Like(zug_);

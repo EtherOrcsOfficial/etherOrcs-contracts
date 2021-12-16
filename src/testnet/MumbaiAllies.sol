@@ -49,11 +49,4 @@ contract MumbaiAllies is EtherOrcsAlliesPoly {
         });
     }
 
-    function initMint(address to, uint256 start, uint256 end) external {
-        require(msg.sender == admin);
-        for (uint256 i = start; i < end; i++) {
-            _mint( to, i);
-        }
-    }
-
 }

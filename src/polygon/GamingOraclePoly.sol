@@ -156,12 +156,12 @@ contract GamingOraclePoly is VRFRequestIDBase {
     bytes32 keyHash;
     uint256 fee; // 0.00001 LINK (Varies by network)
 
-    function initialize(address link_, address vrfCoordinator_) external {
+    function initialize(address link_, address vrfCoordinator_, bytes32 keyHash_) external {
         require(msg.sender == admin);
 
         LINK = LinkTokenInterface(link_);
         vrfCoordinator = vrfCoordinator_;
-        keyHash = 0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4;
+        keyHash = keyHash_;
         fee = 100000000000000; // 0.00001 LINK (Varies by network)
     }
 

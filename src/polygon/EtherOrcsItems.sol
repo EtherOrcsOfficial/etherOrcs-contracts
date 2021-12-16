@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-interface IERC1155 {
+interface IERC165 {
+    function supportsInterface(bytes4 _interfaceId) external view returns (bool);
+}
+
+interface IERC1155 is IERC165 {
   event TransferSingle(address indexed _operator, address indexed _from, address indexed _to, uint256 _id, uint256 _amount);
   event TransferBatch(address indexed _operator, address indexed _from, address indexed _to, uint256[] _ids, uint256[] _amounts);
   event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
@@ -12,7 +16,6 @@ interface IERC1155 {
   function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) external view returns (uint256[] memory);
   function setApprovalForAll(address _operator, bool _approved) external;
   function isApprovedForAll(address _owner, address _operator) external view returns (bool isOperator);
-  function supportsInterface(bytes4 _interfaceId) external view returns (bool);
 }
 
 interface IERC1155Metadata {
@@ -224,6 +227,10 @@ contract EtherOrcsItems is IERC1155 {
 
     function uri(uint256 _id) public view returns (string memory) {
         return InvManLike(inventoryManager).getTokenURI(_id);
+    }
+
+    function owner() external view returns(address own_) {
+        own_ = admin;
     }
 
 
