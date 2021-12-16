@@ -21,8 +21,9 @@ contract EtherOrcsAllies is ERC721 {
 
     MetadataHandlerAllies metadaHandler;
 
-    address castle;
-    bool public openForMint;
+    address public castle;
+    bool    public openForMint;
+    
     bytes32 internal entropySauce;
 
     struct Ally {uint8 class; uint16 level; uint32 lvlProgress; uint16 modF; uint8 skillCredits; bytes22 details;}

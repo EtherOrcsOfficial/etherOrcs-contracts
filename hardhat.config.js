@@ -10,6 +10,7 @@ const MUMBAI_KEY = process.env.GOERLI_KEY;
 const POLYGON_KEY = process.env.POLYGON_KEY;
 
 // URLs
+const MAINNET_URL = process.env.MAINNET_URL || "";
 const RINKEBY_URL = process.env.RINKEBY_URL || "";
 const GOERLI_URL = process.env.GOERLI_URL || "";
 const MUMBAI_URL = process.env.MUMBAI_URL || "";
@@ -52,7 +53,10 @@ module.exports = {
 		polygon: {
 			url: POLYGON_URL,
 			accounts: POLYGON_KEY !== undefined ? [POLYGON_KEY] : [],
-			gasPrice: 40000000000,
+		},
+		mainnet: {
+			url: MAINNET_URL,
+			accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
 		},
 	},
 	etherscan: {

@@ -70,7 +70,7 @@ contract Castle {
             }
 
             calls[currIndex + allieslen] = abi.encodeWithSelector(this.unstakeMany.selector, reflection[allies], msg.sender,  alliesIds);
-            currIndex += currIndex + allieslen + 1;
+            currIndex = currIndex + allieslen + 1;
         }
 
         if (zugAmount > 0) {

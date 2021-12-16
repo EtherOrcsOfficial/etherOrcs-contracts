@@ -127,3 +127,108 @@ Raids_impl:     0x39f943Ebf546b73d04A31622F40323158bf67b7F
 Portal_impl:    0x9715f8B0b7a8b8F93493784167a96de812899F77
 Hall_Impl:      0x60dfC72Bd565f65EEe85f8b56302A3b03CF704DB
 ```
+
+
+Inv Mainnet
+bodies 0x3719a5E8138F84F78702bbFCe381cdf9424E7129
+Deploying Bodies2
+address 0x97053f88f3Bda9C2C3CCeA2d4883c67Aec4a858c
+Setting as Bodies
+Deploying FeatA
+address 0xcD19feE45acAe960b8fa235ae1432BD0fc80b0d3
+Setting as featA
+Deploying FeatB
+address 0xD49a92d2E354D7f2fF86404D1d047936Dcb282c2
+Setting as featB
+Deploying Helms1
+address 0x81169cCa13390504a8c6a86b1D21bEE58A87a5F5
+Setting as Helms
+Deploying Helms2
+address 0xfe170B5ED24d072FB0cf29335554cb1563476919
+Setting as Helms
+Deploying Helms3
+address 0x9baaC2082A2BBbECb82eD0e7C31f3748B64a84c8
+Setting as Helms
+Deploying Mainhands1
+address 0x32F1ce03d4AEeBa35D5F4D529420cb89f879222a
+Setting as Mainhands
+Deploying Mainhands2
+address 0x25FcE46005D6197276702ca2611306b63C3f043C
+Setting as Mainhands
+Deploying Mainhands3
+address 0x1beE6BA5ef5912eB832f0e343BE2634c23f2d4dB
+Setting as Mainhands
+Deploying Offhands1
+address 0x1F791d41CDFcBf9d16D376AF6879512CC9c4faa7
+Setting as Offhands
+Deploying Offhands2
+address 0x03d7b4a48d5731cF547Bf6A545Fe9D87F11e5c1b
+Setting as Offhands
+Deploying Offhands3
+address 0xa4884880BaEbdde12D30E24dB0F909c3441686c9
+Setting as Offhands
+
+Allies_impl: 0xb97eFDe37A8fc84889EA9bD1bE8EF49B6A8732cD
+Allies:  0x62674b8aCe7D939bB07bea6d32c55b74650e0eaA
+Castle_impl: 0x8f425eC1FD3b35f1f1333623b52A9C8581534fa0
+
+
+INV POLY
+Deploying Inv Manager
+0xaDc51fff2794D77BB5be2f77F91dFE1E8b0c6Ac4
+Deploying Proxy
+0xA873dF562Eb39A3c560038Fc2c3D5b1C09C03b82
+Deploying Bodies1
+address 0xCF6c563D8817c49750E6300d30B1a2d4dC9F01f1
+Setting as Bodies
+Deploying Bodies2
+address 0x929D887b14af4a0A35B847B36D7b88FF036014c2
+Setting as Bodies
+Deploying FeatA
+address 0xa89aebD24286752FD82533916C54d99dFc56A6c7
+Setting as featA
+Deploying FeatB
+address 0x2Abe8Ba8eBBE1AbeAbd25E59C557eA4c5a4bAF2C
+Setting as featB
+Deploying Helms1
+address 0xD8883e5D719641f0F0342cCe052DCd883E6382bd
+Setting as Helms
+Deploying Helms2
+address 0x92Dcd422875508bE4A5c96E026e0fd87E91Dce22
+Setting as Helms
+Deploying Helms3
+address 0x7dbD960b115B911799631015b96B6fb97FfC6CD0
+Setting as Helms
+Deploying Mainhands1
+address 0xF960eE2C6d589D21a05007e0856c610B9B1cBa24
+Setting as Mainhands
+Deploying Mainhands2
+address 0x99457563Ca723592fF360fAa25e678f15F4b78E0
+Setting as Mainhands
+Deploying Mainhands3
+address 0x56620950144A31ab72C60Ef2274F1ebD8ddd6Ef4
+Setting as Mainhands
+Deploying Offhands1
+address 0x9f40bEe4d33d2939bFc3ddA77F6ddC254c480955
+Setting as Offhands
+Deploying Offhands2
+address 0xD3EA234aBAbA7fdca40e320B7fa2e4E43bbD5C88
+Setting as Offhands
+Deploying Offhands3
+address 0xda11cc98ebEC540414d0467016A1d3fF50d09b03
+
+Deploying  EtherOrcsAlliesPoly
+_implFactory: 0xCd67bB563dc6BdC461C8c9a65a0987263a57c36c
+EtherOrcsAlliesPoly :  0xbFF91E8592e5Ba6A2a3e035097163A22e8f9113A
+Deploying  PotionVendorPoly
+_implFactory: 0xEB6Bb0B242F533Fe10C7f12bfF5E83fFF1d4d992
+PotionVendorPoly :  0xBb477E51A4E28280cB1839cb2F8AB551b24834Ae
+Deploying  GamingOraclePoly
+_implFactory: 0xC645Dfe0C40a8471cAacA2Ba8579cE6f5859A5D2
+GamingOraclePoly :  0x04A0B7E35828c985e78E2F1107e0B1C3FE39a837
+Deploying  EtherOrcsItems
+_implFactory: 0x4BA7F433260399b1a353A922AEbA26fd78959eF5
+EtherOrcsItems :  0xd769705e0F6265F12c13CE85aEB7a1218D655cfD
+Deploying  InventoryManagerItems
+_implFactory: 0x25D3A08E3a54E9083Bdb484502D3a53D6fA87847
+InventoryManagerItems :  0xb5845385B08F23c0Dc679e982B6408F456de7826
