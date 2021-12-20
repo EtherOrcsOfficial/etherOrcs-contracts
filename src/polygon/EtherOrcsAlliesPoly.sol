@@ -202,6 +202,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         require(equipment < 3, "invalid equipment");
         require(journeys[id].seed == 0, "already ongoin journey");
 
+        if(activities[id].timestamp < block.timestamp) _claim(id);
+
         Ally     memory ally = allies[id];
         Location memory loc  = locations[place];
 

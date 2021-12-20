@@ -276,7 +276,7 @@ contract RaidsPoly {
 
     function _getBaseOutcome(uint256 minLevel, uint256 maxLevel, uint256 minProb, uint256 maxProb, uint256 orcishLevel) internal pure returns(uint256 prob) {
         orcishLevel = orcishLevel > maxLevel ? maxLevel : orcishLevel;
-        prob = minProb + ((orcishLevel - minLevel)  * HND_PCT / (maxLevel - minLevel) * (maxProb - minProb)) / HND_PCT;
+        prob = minProb + ((orcishLevel - minLevel)  * HND_PCT / maxLevel == minLevel ? 1 : (maxLevel - minLevel) * (maxProb - minProb)) / HND_PCT;
     }
 
     function _getLevelBonus(uint256 maxLevel, uint256 orcishLevel) internal pure returns (uint256 prob){
