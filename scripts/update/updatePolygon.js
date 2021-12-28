@@ -26,17 +26,13 @@ let proxies  = {
     "EtherOrcsAlliesPoly": "0xbFF91E8592e5Ba6A2a3e035097163A22e8f9113A",
     "EtherOrcsPoly": "0x84698a8EE5B74eB29385134886b3a182660113e4",
     "Castle": "0xaF8884f29a4421d7CA847895Be4d2edE40eD6ad9",
-    "RaidsPoly": "0x2EeC5C9DfD2a8630fBAa8973357a9ac8393721D4"
+    "RaidsPoly": "0x2EeC5C9DfD2a8630fBAa8973357a9ac8393721D4",
+    "InventoryManagerAllies": "0xA873dF562Eb39A3c560038Fc2c3D5b1C09C03b82"
 }
 
 async function main() {
   await hre.run("compile");
-
-  await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
-  // await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
-  // await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
-  // await updateProxy("EtherOrcsItems", proxies["EtherOrcsItems"]);
-
+  await updateProxy("InventoryManagerAllies",proxies["InventoryManagerAllies"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

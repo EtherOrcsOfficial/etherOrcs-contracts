@@ -303,7 +303,7 @@ contract InventoryManagerAllies {
                 if (id == 41) return "Primal Horns +6";
                 if (id == 42) return "Cursed Fishman Helm +6";
                 if (id == 43) return "Possessed Mask +6";
-                if (id == 44) return "Wolf Soul +7";
+                if (id == 44) return "Wolf Soul +6";
                 if (id == 45) return "Orb the Elk +7";
                 if (id == 46) return "Bear Soul +7";
                 if (id == 47) return "Antlers of Power +7";
@@ -472,8 +472,8 @@ function getOffhandName(uint256 id) public pure returns (string memory) {
         if (id == 6) return "None";
         if (id == 7) return "Facial Hair 7";
         if (id == 8) return "Facial Hair 8";
-        if (id == 9) return "None";
-        if (id == 10) return "Facial Hair 10";
+        if (id == 9) return "Facial Hair 9";
+        if (id == 10) return "None";
         if (id == 11) return "Facial Hair 11";
         if (id == 12) return "Facial Hair 12";
         if (id == 13) return "Facial Hair 13";
