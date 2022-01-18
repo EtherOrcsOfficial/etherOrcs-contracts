@@ -55,6 +55,15 @@ contract MainlandPortal {
         }
     }
 
+    function initialize(address fxRoot_, address checkpointManager_, address polylandPortal_) external {
+        require(msg.sender == admin);
+
+        fxRoot            = IFxStateSender(fxRoot_);
+        checkpointManager = ICheckpointManager(checkpointManager_);
+        
+        polylandPortal = polylandPortal_;
+    }
+
     /*///////////////////////////////////////////////////////////////
                     PORTAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/

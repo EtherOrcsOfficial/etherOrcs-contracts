@@ -32,7 +32,7 @@ let proxies  = {
 
 async function main() {
   await hre.run("compile");
-  await updateProxy("InventoryManagerAllies",proxies["InventoryManagerAllies"]);
+  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -30,7 +30,11 @@ let proxies  = {
 async function main() {
   await hre.run("compile");
 
-  await updateProxy("MainlandPortal",proxies["MainlandPortal"]);
+  const ImplFact = await hre.ethers.getContractFactory("OrcsFix");
+  let impl = await ImplFact.deploy();
+  console.log(impl.address)
+
+  // await updateProxy("MainlandPortal",proxies["MainlandPortal"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
