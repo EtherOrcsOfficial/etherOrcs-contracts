@@ -2,7 +2,7 @@
 pragma solidity 0.8.7;
 
 import "../ERC20.sol";
-import "./ERC721.sol"; 
+import "./ERC721-Orcs.sol"; 
 
 import "../interfaces/Interfaces.sol";
 
@@ -12,7 +12,7 @@ import "../interfaces/Interfaces.sol";
 //  |___|\__|_||_\___|_|    \___/|_| \__/__/
 //
 
-contract EtherOrcs is ERC721 {
+contract EtherOrcs is ERC721O {
 
     /*///////////////////////////////////////////////////////////////
                     Global STATE

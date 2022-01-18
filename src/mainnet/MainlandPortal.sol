@@ -48,21 +48,20 @@ contract MainlandPortal {
                     ADMIN FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function initialize(address fxRoot_, address checkpointManager_, address polylandPortal_) external {
-        // Just for testnets, on mainnet the admin is already set
-        admin = msg.sender;
-
-        fxRoot            = IFxStateSender(fxRoot_);
-        checkpointManager = ICheckpointManager(checkpointManager_);
-        
-        polylandPortal = polylandPortal_;
-    }
-
     function setAuth(address[] calldata adds_, bool status) external {
         require(msg.sender == admin, "not admin");
         for (uint256 index = 0; index < adds_.length; index++) {
             auth[adds_[index]] = status;
         }
+    }
+
+    function initialize(address fxRoot_, address checkpointManager_, address polylandPortal_) external {
+        require(msg.sender == admin);
+
+        fxRoot            = IFxStateSender(fxRoot_);
+        checkpointManager = ICheckpointManager(checkpointManager_);
+        
+        polylandPortal = polylandPortal_;
     }
 
     /*///////////////////////////////////////////////////////////////

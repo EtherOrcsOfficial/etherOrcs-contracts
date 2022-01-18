@@ -23,16 +23,18 @@ async function updateProxy(contractName, address) {
 
 let proxies  = {
     "Castle": "0xaF8884f29a4421d7CA847895Be4d2edE40eD6ad9",
+    "InventoryManagerAllies":"0xf286aa8c83609328811319af2f223bcc5b6db028",
+    "MainlandPortal": "0xcf586c68661c4a0358c79D33961C8FFeB59Ee162"
 }
 
 async function main() {
   await hre.run("compile");
 
-  // await updateProxy("MumbaiAllies",proxies["MumbaiAllies"]);
-  // await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
-  await updateProxy("Castle",proxies["Castle"]);
-  // await updateProxy("EtherOrcsItems", proxies["EtherOrcsItems"]);
+  const ImplFact = await hre.ethers.getContractFactory("OrcsFix");
+  let impl = await ImplFact.deploy();
+  console.log(impl.address)
 
+  // await updateProxy("MainlandPortal",proxies["MainlandPortal"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

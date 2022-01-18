@@ -89,7 +89,7 @@ contract RaidsPoly {
         locations[4] = merfolkFortress;
     }
 
-    function init(address allies_, address vendor_, address potions_, address orcl) external {
+     function init(address allies_, address vendor_, address potions_, address orcl) external {
         require(msg.sender == admin);
 
         locations[0].maxPotions = 4;
@@ -276,7 +276,7 @@ contract RaidsPoly {
 
     function _getBaseOutcome(uint256 minLevel, uint256 maxLevel, uint256 minProb, uint256 maxProb, uint256 orcishLevel) internal pure returns(uint256 prob) {
         orcishLevel = orcishLevel > maxLevel ? maxLevel : orcishLevel;
-        prob = minProb + ((orcishLevel - minLevel)  * HND_PCT / maxLevel == minLevel ? 1 : (maxLevel - minLevel) * (maxProb - minProb)) / HND_PCT;
+        prob = minProb + ((orcishLevel - minLevel) * (maxProb - minProb)/(maxLevel == minLevel ? 1 : (maxLevel - minLevel))) ;
     }
 
     function _getLevelBonus(uint256 maxLevel, uint256 orcishLevel) internal pure returns (uint256 prob){
@@ -304,4 +304,3 @@ contract RaidsPoly {
     }
 
 }
-
