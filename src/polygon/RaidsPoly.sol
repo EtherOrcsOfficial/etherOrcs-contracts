@@ -92,17 +92,12 @@ contract RaidsPoly {
      function init(address allies_, address vendor_, address potions_, address orcl) external {
         require(msg.sender == admin);
 
-        locations[0].maxPotions = 4;
-        locations[1].maxPotions = 4;
-        locations[2].maxPotions = 4;
-        locations[3].maxPotions = 4;
-        locations[4].maxPotions = 4;
-
         Raid memory crookedCrabBeach  = Raid({ minLevel:  5, maxLevel: 5,  duration:  48, cost: 60, grtAtMin: 0, grtAtMax: 0, supAtMin: 400, supAtMax: 400, regReward: 100, grtReward: 100, supReward: 3000, minPotions: 0, maxPotions: 0});
         Raid memory twistedPirateCove = Raid({ minLevel: 15, maxLevel: 25, duration:  30, cost: 45, grtAtMin: 0, grtAtMax: 0, supAtMin: 200, supAtMax: 400, regReward: 100, grtReward: 100, supReward: 2000, minPotions: 0, maxPotions: 0});
         Raid memory warpedSpiderDen   = Raid({ minLevel: 25, maxLevel: 35, duration:  72, cost: 90, grtAtMin: 1000, grtAtMax: 1500, supAtMin: 0, supAtMax: 500, regReward: 200, grtReward: 1000, supReward: 3000, minPotions: 0, maxPotions: 1});
         Raid memory toxicQuagmire     = Raid({ minLevel: 45, maxLevel: 45, duration:  96, cost: 170, grtAtMin: 1500, grtAtMax: 0, supAtMin: 0, supAtMax: 0, regReward: 1100, grtReward: 1200, supReward: 1300, minPotions: 1, maxPotions: 1});
         Raid memory evilMerfolkCastle = Raid({ minLevel: 50, maxLevel: 75, duration: 144, cost: 225, grtAtMin: 1500, grtAtMax: 3000, supAtMin: 200, supAtMax: 1500, regReward: 1200, grtReward: 1800, supReward: 3200, minPotions: 2, maxPotions: 2});
+
 
         locations[5] = crookedCrabBeach;
         locations[6] = twistedPirateCove;

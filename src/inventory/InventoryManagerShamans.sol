@@ -33,9 +33,6 @@ contract InventoryManagerAllies {
             footer ));
     }
 
-
-    constructor() { manager = msg.sender;}
-
     function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
         if (class_ == 1) {
             // It's a shaman

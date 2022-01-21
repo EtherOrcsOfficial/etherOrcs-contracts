@@ -29,6 +29,7 @@ contract EtherOrcsAllies is ERC721 {
     struct Ally {uint8 class; uint16 level; uint32 lvlProgress; uint16 modF; uint8 skillCredits; bytes22 details;}
 
     struct Shaman {uint8 body; uint8 featA; uint8 featB; uint8 helm; uint8 mainhand; uint8 offhand;}
+    struct Ogre   {uint8 body; uint8 mouth; uint8 nose;  uint8 eyes; uint8 armor; uint8 mainhand; uint8 offhand;}
 
     modifier noCheaters() {
         uint256 size = 0;
@@ -78,6 +79,19 @@ contract EtherOrcsAllies is ERC721 {
         _mintShaman(_rand());
     } 
 
+    function mintOgres(uint256 amount) external {
+        for (uint256 i = 0; i < amount; i++) {
+            mintOgre();
+        }
+    }
+
+    function mintOgre() public noCheaters {
+        require(openForMint || auth[msg.sender], "not open for mint");
+        boneShards.burn(msg.sender, 60 ether);
+
+        _mintOgre(_rand());
+    } 
+
     function pull(address owner_, uint256[] calldata ids) external {
         require (msg.sender == castle, "not castle");
         for (uint256 index = 0; index < ids.length; index++) {
@@ -124,6 +138,40 @@ contract EtherOrcsAllies is ERC721 {
         sh.offhand  = offhand;
     }
 
+    function ogres(uint256 id) external view returns(uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 mouth, uint8 nose, uint8 eyes, uint8 armor, uint8 mainhand, uint8 offhand) {
+        Ally memory ally = allies[id];
+        level        = ally.level;
+        lvlProgress  = ally.lvlProgress;
+        modF         = ally.modF;
+        skillCredits = ally.skillCredits;
+
+        Ogre memory og = _ogre(ally.details);
+        body     = og.body;
+        mouth    = og.mouth;
+        nose     = og.nose;
+        eyes     = og.eyes;
+        armor    = og.armor;
+        mainhand = og.mainhand;
+        offhand  = og.offhand;
+    }
+
+    function _ogre(bytes22 details) internal pure returns(Ogre memory og) {
+        uint8 body     = uint8(bytes1(details));
+        uint8 mouth    = uint8(bytes1(details << 8));
+        uint8 nose     = uint8(bytes1(details << 16));
+        uint8 eye      = uint8(bytes1(details << 24));
+        uint8 armor    = uint8(bytes1(details << 32));
+        uint8 mainhand = uint8(bytes1(details << 40));
+        uint8 offhand  = uint8(bytes1(details << 48));
+
+        og.body     = body;
+        og.mouth    = mouth;
+        og.nose     = nose;
+        og.eyes     = eye;
+        og.armor    = armor;
+        og.mainhand = mainhand;
+        og.offhand  = offhand;
+    }
 
     function _mintShaman(uint256 rand) internal returns (uint16 id) {
         id = uint16(shSupply + 1 + startId); //check that supply is less than 3000
@@ -141,6 +189,25 @@ contract EtherOrcsAllies is ERC721 {
         _mint(msg.sender, id);
 
         allies[id] = Ally({class: 1, level: 25, lvlProgress: 25000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, featA, featB, helm, mainhand, offhand))});
+    }
+
+    function _mintOgre(uint256 rand) internal returns (uint16 id) {
+        id = uint16(ogSupply + 3001 + startId); //check that supply is less than 3000
+        require(ogSupply++ <= 6000, "max supply reached");
+
+        // Getting Random traits
+        uint8 body = uint8(_randomize(rand, "BODY", id) % 8) + 1; 
+
+        uint8 mouth    = uint8(_randomize(rand, "MOUTH",    id) % 3) + 1 + ((body - 1) * 3); 
+        uint8 nose     = uint8(_randomize(rand, "NOSE",     id) % 3) + 1 + ((body - 1) * 3); 
+        uint8 eyes     = uint8(_randomize(rand, "EYES",     id) % 3) + 1 + ((body - 1) * 3); 
+        uint8 armor    = uint8(_randomize(rand, "ARMOR",    id) % 6) + 1;
+        uint8 mainhand = uint8(_randomize(rand, "MAINHAND", id) % 6) + 1; 
+        uint8 offhand  = uint8(_randomize(rand, "OFFHAND",  id) % 6) + 1;
+
+        _mint(msg.sender, id);
+
+        allies[id] = Ally({class: 2, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, mouth, nose, eyes, armor, mainhand, offhand))});
     }
 
     function _getBody(uint256 rand) internal pure returns (uint8) {
