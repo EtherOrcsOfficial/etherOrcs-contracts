@@ -14,8 +14,6 @@ contract PotionVendorPoly {
 
     uint256 public rate;
 
-    uint256 public constant POTION_ID = 1; 
-
     function initialize(address zug_, address potions_, uint256 rate_) external {
         require(msg.sender == admin);
 
@@ -24,11 +22,11 @@ contract PotionVendorPoly {
         rate    = rate_;
     }
 
-    function swap(uint256 _amt) external {
+    function swap(uint256 _amt, uint256 itemId) external {
         require(rate != 0, "no rate set");
 
         uint256 amt = _amt * 1 ether;
-        potions.burn(msg.sender, POTION_ID, amt);
+        potions.burn(msg.sender, itemId, amt);
         zug.transfer(msg.sender, amt * rate);
     }
 

@@ -8,6 +8,7 @@ interface OrcishLike {
     function orcs(uint256 id) external view returns(uint8 body, uint8 helm, uint8 mainhand, uint8 offhand, uint16 level, uint16 zugModifier, uint32 lvlProgress);
     function allies(uint256 id) external view returns (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details);
     function adjustAlly(uint256 id, uint8 class_, uint16 level_, uint32 lvlProgress_, uint16 modF_, uint8 skillCredits_, bytes22 details_) external;
+    function claim(uint256[] calldata ids) external;
 }
 
 interface PortalLike {
@@ -59,8 +60,10 @@ interface ERC20Like {
 }
 
 interface ERC1155Like {
+    function balanceOf(address _owner, uint256 _id) external view returns (uint256);
     function mint(address to, uint256 id, uint256 amount) external;
     function burn(address from, uint256 id, uint256 amount) external;
+    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _amount, bytes memory _data) external;
 }
 
 interface ERC721Like {

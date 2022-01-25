@@ -8,7 +8,7 @@ contract MumbaiAllies is EtherOrcsAlliesPoly {
     uint256 constant startId = 5050;
 
     function getItem(uint8 location, uint256 rand) external  view returns(uint8 item){
-        item = _getItem(locations[location], rand);
+        item = _getItemSh(locations[location], rand);
     }
 
     function setZug(address z_) external {

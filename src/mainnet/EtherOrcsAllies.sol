@@ -12,10 +12,10 @@ contract EtherOrcsAllies is ERC721 {
     mapping(uint256 => Ally) public allies;
     mapping(address => bool) public auth;
 
-    uint16 shSupply;
-    uint16 ogSupply;
-    uint16 mgSupply;
-    uint16 rgSupply;
+    uint16 public shSupply;
+    uint16 public ogSupply;
+    uint16 public mgSupply;
+    uint16 public rgSupply;
 
     ERC20 boneShards;
 

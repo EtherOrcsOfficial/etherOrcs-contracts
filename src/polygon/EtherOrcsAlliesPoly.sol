@@ -86,29 +86,49 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         castle       = castle_;
         gamingOracle = gamingOracle_;
 
-        Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
-        Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
-        Location memory jungleHealerHut   = Location({minLevel:35, skillCost: 25, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:4, tier_3:5});
-        Location memory monkTemple        = Location({minLevel:35, skillCost: 20, cost:  0, classAllowed: 1, tier_1Prob:80, tier_2Prob:20, tier_3Prob:0, tier_1:2, tier_2:5, tier_3:5});
-        Location memory forgottenDesert   = Location({minLevel:40, skillCost: 35, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:4, tier_2:5, tier_3:6});
-        Location memory moldyCitadel      = Location({minLevel:45, skillCost: 30, cost:  0, classAllowed: 1, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:6});
-        Location memory swampEnchanterDen = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:40, tier_2Prob:60, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:0});
-        Location memory theFallsOfTruth   = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:70, tier_2Prob:30, tier_3Prob:0, tier_1:4, tier_2:7, tier_3:0});
-        Location memory ethereanPlains    = Location({minLevel:60, skillCost: 50, cost:  200, classAllowed: 1, tier_1Prob:80, tier_2Prob:15, tier_3Prob:5, tier_1:5, tier_2:6, tier_3:7});
-        Location memory djinnOasis        = Location({minLevel:60, skillCost: 10, cost:  150, classAllowed: 1, tier_1Prob:70, tier_2Prob:25, tier_3Prob:5, tier_1:2, tier_2:3, tier_3:4});
-        Location memory spiritWorld       = Location({minLevel:70, skillCost: 60, cost:  300, classAllowed: 1, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:5, tier_2:6, tier_3:7});
-
-        locations[0] = swampHealerHut;
-        locations[1] = enchantedGrove;
-        locations[2] = jungleHealerHut;
-        locations[3] = monkTemple;
-        locations[4] = forgottenDesert;
-        locations[5] = moldyCitadel;
-        locations[6] = swampEnchanterDen;
-        locations[7] = theFallsOfTruth;
-        locations[8] = ethereanPlains;
-        locations[9] = djinnOasis;
-        locations[10] = spiritWorld;
+        // {
+        //     Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
+        //     Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
+        //     Location memory jungleHealerHut   = Location({minLevel:35, skillCost: 25, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:4, tier_3:5});
+        //     Location memory monkTemple        = Location({minLevel:35, skillCost: 20, cost:  0, classAllowed: 1, tier_1Prob:80, tier_2Prob:20, tier_3Prob:0, tier_1:2, tier_2:5, tier_3:5});
+        //     Location memory forgottenDesert   = Location({minLevel:40, skillCost: 35, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:4, tier_2:5, tier_3:6});
+        //     Location memory moldyCitadel      = Location({minLevel:45, skillCost: 30, cost:  0, classAllowed: 1, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:6});
+        //     Location memory swampEnchanterDen = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:40, tier_2Prob:60, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:0});
+        //     Location memory theFallsOfTruth   = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:70, tier_2Prob:30, tier_3Prob:0, tier_1:4, tier_2:7, tier_3:0});
+        //     Location memory ethereanPlains    = Location({minLevel:60, skillCost: 50, cost:  200, classAllowed: 1, tier_1Prob:80, tier_2Prob:15, tier_3Prob:5, tier_1:5, tier_2:6, tier_3:7});
+        //     Location memory djinnOasis        = Location({minLevel:60, skillCost: 10, cost:  150, classAllowed: 1, tier_1Prob:70, tier_2Prob:25, tier_3Prob:5, tier_1:2, tier_2:3, tier_3:4});
+        //     locations[0] = swampHealerHut;
+        //     locations[1] = enchantedGrove;
+        //     locations[2] = jungleHealerHut;
+        //     locations[3] = monkTemple;
+        //     locations[4] = forgottenDesert;
+        //     locations[5] = moldyCitadel;
+        //     locations[6] = swampEnchanterDen;
+        //     locations[7] = theFallsOfTruth;
+        //     locations[8] = ethereanPlains;
+        //     locations[9] = djinnOasis;
+        // }
+        
+        {
+            Location memory spiritWorld       = Location({minLevel:70, skillCost: 60, cost:  300, classAllowed: 1, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:5, tier_2:6, tier_3:7});
+            Location memory assassin          = Location({minLevel:30, skillCost: 5, cost:  25, classAllowed: 2, tier_1Prob:92, tier_2Prob:0, tier_3Prob:8, tier_1:1, tier_2:1, tier_3:5}); 
+            Location memory plainsGolem       = Location({minLevel:35, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:2, tier_2:3, tier_3:4}); 
+            Location memory lostYeti          = Location({minLevel:45, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:55, tier_2Prob:40, tier_3Prob:5, tier_1:2, tier_2:4, tier_3:5}); 
+            Location memory giantSpider       = Location({minLevel:45, skillCost: 20, cost:  0, classAllowed: 2, tier_1Prob:65, tier_2Prob:25, tier_3Prob:10, tier_1:3, tier_2:4, tier_3:5}); 
+            Location memory wolf              = Location({minLevel:50, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:90, tier_2Prob:0, tier_3Prob:10, tier_1:3, tier_2:3, tier_3:5}); 
+            Location memory beholder          = Location({minLevel:50, skillCost: 10, cost:  45, classAllowed: 2, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:5, tier_3:6}); 
+            Location memory serpent           = Location({minLevel:60, skillCost: 15, cost:  60, classAllowed: 2, tier_1Prob:90, tier_2Prob:0, tier_3Prob:10, tier_1:3, tier_2:3, tier_3:6}); 
+            Location memory machine           = Location({minLevel:65, skillCost: 35, cost:  90, classAllowed: 2, tier_1Prob:60, tier_2Prob:20, tier_3Prob:20, tier_1:3, tier_2:5, tier_3:6});
+            locations[10] = spiritWorld;
+            locations[11] = assassin;
+            locations[12] = plainsGolem;
+            locations[13] = lostYeti;
+            locations[14] = giantSpider;
+            locations[15] = wolf;
+            locations[16] = beholder;
+            locations[17] = serpent;
+            locations[18] = machine;
+        }
     }
 
     function setAuth(address add_, bool status) external {
@@ -242,16 +262,16 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     function startBattle(uint256 id, uint8 place, uint8 equipment) public isOwnerOfAlly(id) noCheaters {
         require(equipment < 3, "invalid equipment");
-        require(journeys[id].seed == 0, "already ongoin journey");
+        require(journeys[id].seed == 0, "already ongoin battle");
 
         if(activities[id].timestamp < block.timestamp) _claim(id);
 
         Ally     memory ally = allies[id];
         Location memory loc  = locations[place];
 
-        require(loc.classAllowed == 2, "not a ogre journey");
+        require(loc.classAllowed == 2, "not a ogre battle");
         require(ally.level >= uint16(loc.minLevel), "below minimum level");
-        require(ally.class == 2, "only ogre can journey");
+        require(ally.class == 2, "only ogre can battle");
         
         allies[id].skillCredits -= loc.skillCost;
   
@@ -418,7 +438,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     }
 
     function _equipOgre(Ogre memory og, Location memory loc, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
-        uint8 item  = _getItemSh(loc, rdn);
+        uint8 item  = _getItemOg(loc, rdn);
 
         if (equipment == 0) og.armor = item;
         if (equipment == 1) og.mainhand = item;
@@ -435,11 +455,26 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         mod = _tierSh(helm) + _tierSh(mainhand) + _tierSh(offhand);
     }
 
+    function _modFOg(bytes32 details_) internal pure returns (uint16 mod) {
+        uint8 armor    = uint8(bytes1(details_ << 32));
+        uint8 mainhand = uint8(bytes1(details_ << 40));
+        uint8 offhand  = uint8(bytes1(details_ << 48));
+
+        mod = _tierOg(armor) + _tierOg(mainhand) + _tierOg(offhand);
+    }
+
     function _getItemSh(Location memory loc, uint256 rand) internal pure returns (uint8 item) {
         uint256 draw = uint256(rand % 100) + 1;
 
         uint8 tier = uint8(draw <= loc.tier_3Prob ? loc.tier_3 : draw <= loc.tier_2Prob + loc.tier_3Prob? loc.tier_2 : loc.tier_1);
         item = uint8(rand % _tierItemsSh(tier) + _startForTierSh(tier));
+    }
+
+    function _getItemOg(Location memory loc, uint256 rand) internal pure returns (uint8 item) {
+        uint256 draw = uint256(rand % 100) + 1;
+
+        uint8 tier = uint8(draw <= loc.tier_3Prob ? loc.tier_3 : draw <= loc.tier_2Prob + loc.tier_3Prob? loc.tier_2 : loc.tier_1);
+        item = uint8(rand % _tierItemsOg(tier) + _startForTierOg(tier));
     }
 
     function _claimable(uint256 timeDiff, uint256 herbalism_) internal pure returns (uint256 potionAmount) {

@@ -19,7 +19,8 @@ contract InventoryManagerAllies {
     string public constant header = '<svg id="orc" width="100%" height="100%" version="1.1" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">';
     string public constant footer = '<style>#orc{shape-rendering: crispedges; image-rendering: -webkit-crisp-edges; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor;}</style></svg>';
 
-    function getSVG(uint8 body_, uint8 mouth_, uint8 nose_, uint8 eyes_, uint8 armor_, uint8 mainhand_, uint8 offhand_) public view returns(string memory) {
+    function getSVG(bytes22 details_) public view returns(string memory) {
+        (uint8 body_, uint8 mouth_, uint8 nose_, uint8 eyes_, uint8 armor_, uint8 mainhand_, uint8 offhand_) = _ogre(details_);
 
         return string(abi.encodePacked(
             header,
@@ -33,9 +34,21 @@ contract InventoryManagerAllies {
             footer ));
     }
 
-    function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
-        (uint8 body_, uint8 mouth_, uint8 nose_, uint8 eyes_, uint8 armor_, uint8 mainhand_, uint8 offhand_) = _ogre(details_);
-        return _buildOgreURI(_getUpper(id_), getSVG(body_,mouth_, nose_, armor_,mainhand_,offhand_), getAttributes(details_, level_, modF_, skillCredits_));
+    function getSVGDetailed(uint8 body_, uint8 mouth_, uint8 nose_, uint8 eyes_, uint8 armor_, uint8 mainhand_, uint8 offhand_) public view returns(string memory) {
+        return string(abi.encodePacked(
+            header,
+            get(Part.body, body_), 
+            get(Part.mouth, mouth_),
+            get(Part.nose, nose_),
+            get(Part.eyes, eyes_),
+            get(Part.armor, armor_),
+            get(Part.offhand, offhand_),
+            get(Part.mainhand, mainhand_),
+            footer ));
+    }
+
+    function getTokenURI(uint256 id_, uint256 , uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
+        return _buildOgreURI(_getUpper(id_), getSVG(details_), getAttributes(details_, level_, modF_, skillCredits_));
     }
 
     function _buildOgreURI(bytes memory upper, string memory svg, string memory attributes) internal pure returns (string memory) {
@@ -207,9 +220,6 @@ contract InventoryManagerAllies {
        return string(abi.encodePacked(
            '"attributes": [',
             getBodyAttributes(body_),         ',',
-            getMouthAttributes(mouth_),       ',',
-            getNoseAttributes(nose_),         ',',
-            getEyesAttributes(eyes_),         ',',
             getArmorAttributes(armor_),        ',',
             getMainhandAttributes(mainhand_), ',',
             getOffhandAttributes(offhand_)));
@@ -223,18 +233,6 @@ contract InventoryManagerAllies {
 
     function getBodyAttributes(uint256 body_) internal pure returns(string memory) {
         return string(abi.encodePacked('{"trait_type":"Body","value":"',getBodyName(body_),'"}'));
-    }
-
-    function getMouthAttributes(uint256 mouth_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Mouth","value":"',getHairName(mouth_),'"}'));
-    }
-
-    function getNoseAttributes(uint256 nose_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Nose","value":"',getFacialHairName(nose_),'"}'));
-    }
-
-    function getEyesAttributes(uint256 nose_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Eyes","value":"',getFacialHairName(nose_),'"}'));
     }
 
     function getArmorAttributes(uint256 armor_) internal pure returns(string memory) {
