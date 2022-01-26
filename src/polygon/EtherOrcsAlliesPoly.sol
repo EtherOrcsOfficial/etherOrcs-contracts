@@ -7,11 +7,11 @@ import "../interfaces/Interfaces.sol";
 
 contract EtherOrcsAlliesPoly is PolyERC721 {
 
-    mapping(uint256 => Ally)     public allies;
-    mapping(address => bool)     public auth;
-    mapping(uint256 => Action)   public activities;
-    mapping(uint256 => Location) public locations;
-    mapping(uint256 => Journey)  public journeys;
+    mapping(uint256 => Ally)      public allies;
+    mapping(address => bool)      public auth;
+    mapping(uint256 => Action)    public activities;
+    mapping(uint256 => Location)  public locations;
+    mapping(uint256 => Adventure) public adventures;
 
     ERC20Like   zug;
     ERC20Like   boneShards;
@@ -36,9 +36,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     struct Shaman {uint8 body; uint8 featA; uint8 featB; uint8 helm; uint8 mainhand; uint8 offhand;}
     struct Ogre   {uint8 body; uint8 mouth; uint8 nose;  uint8 eyes; uint8 armor; uint8 mainhand; uint8 offhand;}
 
-    struct Journey {uint64 seed; uint64 location; uint64 equipment;}
+    struct Adventure {uint64 seed; uint64 location; uint64 equipment;}
 
-    // TODO storage was messed up from previous release, all journeys will need to be re-added
     struct Location { 
         uint8  minLevel; uint8  skillCost; uint16  cost; uint8 classAllowed;
         uint8 tier_1Prob;uint8 tier_2Prob; uint8 tier_3Prob; uint8 tier_1; uint8 tier_2; uint8 tier_3; 
@@ -85,29 +84,33 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         raids        = raids_;
         castle       = castle_;
         gamingOracle = gamingOracle_;
+    }
 
-        // {
-        //     Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
-        //     Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
-        //     Location memory jungleHealerHut   = Location({minLevel:35, skillCost: 25, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:4, tier_3:5});
-        //     Location memory monkTemple        = Location({minLevel:35, skillCost: 20, cost:  0, classAllowed: 1, tier_1Prob:80, tier_2Prob:20, tier_3Prob:0, tier_1:2, tier_2:5, tier_3:5});
-        //     Location memory forgottenDesert   = Location({minLevel:40, skillCost: 35, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:4, tier_2:5, tier_3:6});
-        //     Location memory moldyCitadel      = Location({minLevel:45, skillCost: 30, cost:  0, classAllowed: 1, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:6});
-        //     Location memory swampEnchanterDen = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:40, tier_2Prob:60, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:0});
-        //     Location memory theFallsOfTruth   = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:70, tier_2Prob:30, tier_3Prob:0, tier_1:4, tier_2:7, tier_3:0});
-        //     Location memory ethereanPlains    = Location({minLevel:60, skillCost: 50, cost:  200, classAllowed: 1, tier_1Prob:80, tier_2Prob:15, tier_3Prob:5, tier_1:5, tier_2:6, tier_3:7});
-        //     Location memory djinnOasis        = Location({minLevel:60, skillCost: 10, cost:  150, classAllowed: 1, tier_1Prob:70, tier_2Prob:25, tier_3Prob:5, tier_1:2, tier_2:3, tier_3:4});
-        //     locations[0] = swampHealerHut;
-        //     locations[1] = enchantedGrove;
-        //     locations[2] = jungleHealerHut;
-        //     locations[3] = monkTemple;
-        //     locations[4] = forgottenDesert;
-        //     locations[5] = moldyCitadel;
-        //     locations[6] = swampEnchanterDen;
-        //     locations[7] = theFallsOfTruth;
-        //     locations[8] = ethereanPlains;
-        //     locations[9] = djinnOasis;
-        // }
+    function setLocations() external {
+        require(msg.sender == admin, "not admin");
+
+        {
+            Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
+            Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
+            Location memory jungleHealerHut   = Location({minLevel:35, skillCost: 25, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:4, tier_3:5});
+            Location memory monkTemple        = Location({minLevel:35, skillCost: 20, cost:  0, classAllowed: 1, tier_1Prob:80, tier_2Prob:20, tier_3Prob:0, tier_1:2, tier_2:5, tier_3:5});
+            Location memory forgottenDesert   = Location({minLevel:40, skillCost: 35, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:4, tier_2:5, tier_3:6});
+            Location memory moldyCitadel      = Location({minLevel:45, skillCost: 30, cost:  0, classAllowed: 1, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:6});
+            Location memory swampEnchanterDen = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:40, tier_2Prob:60, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:0});
+            Location memory theFallsOfTruth   = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:70, tier_2Prob:30, tier_3Prob:0, tier_1:4, tier_2:7, tier_3:0});
+            Location memory ethereanPlains    = Location({minLevel:60, skillCost: 50, cost:  200, classAllowed: 1, tier_1Prob:80, tier_2Prob:15, tier_3Prob:5, tier_1:5, tier_2:6, tier_3:7});
+            Location memory djinnOasis        = Location({minLevel:60, skillCost: 10, cost:  150, classAllowed: 1, tier_1Prob:70, tier_2Prob:25, tier_3Prob:5, tier_1:2, tier_2:3, tier_3:4});
+            locations[0] = swampHealerHut;
+            locations[1] = enchantedGrove;
+            locations[2] = jungleHealerHut;
+            locations[3] = monkTemple;
+            locations[4] = forgottenDesert;
+            locations[5] = moldyCitadel;
+            locations[6] = swampEnchanterDen;
+            locations[7] = theFallsOfTruth;
+            locations[8] = ethereanPlains;
+            locations[9] = djinnOasis;
+        }
         
         {
             Location memory spiritWorld       = Location({minLevel:70, skillCost: 60, cost:  300, classAllowed: 1, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:5, tier_2:6, tier_3:7});
@@ -129,6 +132,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
             locations[17] = serpent;
             locations[18] = machine;
         }
+
     }
 
     function setAuth(address add_, bool status) external {
@@ -153,7 +157,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         _transfer(msg.sender, to, tokenId);
     }
 
-    function doAction(uint256 id, uint8 action_) public ownerOfAlly(id, msg.sender) noCheaters {
+    function doAction(uint256 id, uint8 action_) public ownerOfAlly(id, msg.sender) {
        _doAction(id, msg.sender, action_, msg.sender);
     }
 
@@ -184,15 +188,15 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         }
     }
 
-    function startJourneyWithMany(uint256[] calldata ids, uint8 place, uint8 equipment) external {
+    function startAdventureWithMany(uint256[] calldata ids, uint8 place, uint8 equipment) external {
         for (uint256 index = 0; index < ids.length; index++) {
-            startJourney(ids[index], place, equipment);
+            startAdventure(ids[index], place, equipment);
         }
     }
 
-    function endJourneyWithMany(uint256[] calldata ids) external {
+    function endAdventureWithMany(uint256[] calldata ids) external {
         for (uint256 index = 0; index < ids.length; index++) {
-            endJourney(ids[index]);
+            endAdventure(ids[index]);
         }
     }
 
@@ -202,7 +206,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         }
     }
 
-    function _claim(uint256 id) internal noCheaters {
+    function _claim(uint256 id) internal {
         Action memory action = activities[id];
         Ally   memory ally   = allies[id];
 
@@ -220,18 +224,17 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         activities[id].timestamp = uint88(block.timestamp);
     }
 
-    function startJourney(uint256 id, uint8 place, uint8 equipment) public isOwnerOfAlly(id) noCheaters {
+    function startAdventure(uint256 id, uint8 place, uint8 equipment) public isOwnerOfAlly(id) {
         require(equipment < 3, "invalid equipment");
-        require(journeys[id].seed == 0, "already ongoin journey");
+        require(adventures[id].seed == 0, "already ongoin journey");
 
         if(activities[id].timestamp < block.timestamp) _claim(id);
 
         Ally     memory ally = allies[id];
         Location memory loc  = locations[place];
 
-        require(loc.classAllowed == 1, "not a shaman journey");
+        require(loc.classAllowed == ally.class, "wrong location for class");
         require(ally.level >= uint16(loc.minLevel), "below minimum level");
-        require(ally.class == 1, "only shaman can journey");
         
         allies[id].skillCredits -= loc.skillCost;
   
@@ -239,70 +242,28 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
             zug.burn(msg.sender, uint256(loc.cost) * 1 ether);
         } 
 
-        journeys[id] = Journey({seed: OracleLike(gamingOracle).request(), location: place, equipment: equipment});
+        adventures[id] = Adventure({seed: OracleLike(gamingOracle).request(), location: place, equipment: equipment});
     }
 
-    function endJourney(uint256 id) public isOwnerOfAlly(id) noCheaters {
-        Journey  memory jrn = journeys[id];
-        Shaman   memory shm = _shaman(allies[id].details);
-        Location memory loc  = locations[jrn.location];
+    function endAdventure(uint256 id) public isOwnerOfAlly(id) {
+        Adventure memory adv  = adventures[id];
+        Ally      memory ally = allies[id];
+        Location  memory loc  = locations[adv.location];
 
-        uint256 rdn = OracleLike(gamingOracle).getRandom(jrn.seed);
+        uint256 rdn = OracleLike(gamingOracle).getRandom(adv.seed);
         require(rdn != 0, "too soon");
 
         if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
 
-        bytes22 newDetails = _equipShaman(shm,loc,jrn.equipment, rdn);
+        bytes22 newDetails = ally.class == 1 ? _equipShaman(loc, ally.details, adv.equipment, rdn) : _equipOgre(loc, ally.details, adv.equipment, rdn);
 
         allies[id].details = newDetails;
-        allies[id].modF    = _modFSh(newDetails);
+        allies[id].modF    = ally.class == 1 ? _modFSh(newDetails) : _modFOg(newDetails);
 
-        delete journeys[id];
+        delete adventures[id];
     }
 
-    function startBattle(uint256 id, uint8 place, uint8 equipment) public isOwnerOfAlly(id) noCheaters {
-        require(equipment < 3, "invalid equipment");
-        require(journeys[id].seed == 0, "already ongoin battle");
-
-        if(activities[id].timestamp < block.timestamp) _claim(id);
-
-        Ally     memory ally = allies[id];
-        Location memory loc  = locations[place];
-
-        require(loc.classAllowed == 2, "not a ogre battle");
-        require(ally.level >= uint16(loc.minLevel), "below minimum level");
-        require(ally.class == 2, "only ogre can battle");
-        
-        allies[id].skillCredits -= loc.skillCost;
-  
-        if (loc.cost > 0) {
-            zug.burn(msg.sender, uint256(loc.cost) * 1 ether);
-        } 
-
-        journeys[id] = Journey({seed: OracleLike(gamingOracle).request(), location: place, equipment: equipment});
-    }
-
-    function endBattle(uint256 id) public isOwnerOfAlly(id) noCheaters {
-        Journey  memory jrn = journeys[id];
-        Ogre     memory ogr = _ogre(allies[id].details);
-        Location memory loc  = locations[jrn.location];
-
-        uint256 rdn = OracleLike(gamingOracle).getRandom(jrn.seed);
-        require(rdn != 0, "too soon");
-
-        if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
-
-
-        bytes22 newDetails = _equipOgre(ogr,loc,jrn.equipment, rdn);
-
-        allies[id].details = newDetails;
-        allies[id].modF    = _modFOg(newDetails);
-
-        delete journeys[id];
-    }
-
-
-    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_,uint256[] calldata potions_) external noCheaters { 
+    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_,uint256[] calldata potions_) external { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != 0) _doAction(ids[index], msg.sender, 0, msg.sender);
@@ -311,7 +272,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_,potions_ );
     }
 
-    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_,  uint256[] calldata potions_) external noCheaters { 
+    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_,  uint256[] calldata potions_) external { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == RaidsLikePoly(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
@@ -319,7 +280,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_);
     }
 
-    function returnFromRaid(uint256[] calldata ids, uint8 action_) external noCheaters { 
+    function returnFromRaid(uint256[] calldata ids, uint8 action_) external { 
         require(action_ < 3, "invalid action");
         RaidsLikePoly raidsContract = RaidsLikePoly(raids);
         for (uint256 index = 0; index < ids.length; index++) {
@@ -427,8 +388,10 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         og.offhand  = offhand;
     }
 
-    function _equipShaman(Shaman memory sh, Location memory loc, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
+    function _equipShaman(Location memory loc, bytes22 details_, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
         uint8 item  = _getItemSh(loc, rdn);
+
+        Shaman memory sh = _shaman(details_);
 
         if (equipment == 0) sh.helm = item;
         if (equipment == 1) sh.mainhand = item;
@@ -437,8 +400,10 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         details = bytes22(abi.encodePacked(sh.body, sh.featA, sh.featB, sh.helm, sh.mainhand, sh.offhand));
     }
 
-    function _equipOgre(Ogre memory og, Location memory loc, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
+    function _equipOgre(Location memory loc, bytes22 details_, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
         uint8 item  = _getItemOg(loc, rdn);
+
+        Ogre memory og = _ogre(details_);
 
         if (equipment == 0) og.armor = item;
         if (equipment == 1) og.mainhand = item;

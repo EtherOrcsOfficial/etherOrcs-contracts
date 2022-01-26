@@ -38,7 +38,7 @@ async function main() {
   await hre.run("compile");
 
   // await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
-  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
+  await updateProxy("PotionVendorPoly",proxies["PotionVendorPoly"]);
   // await updateProxy("Castle",proxies["Castle"]);
   // await updateProxy("EtherOrcsItems", proxies["EtherOrcsItems"]);
 

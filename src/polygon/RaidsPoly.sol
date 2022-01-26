@@ -111,8 +111,7 @@ contract RaidsPoly {
         Raid memory evilMerfolkCastle = Raid({ minLevel:  50, maxLevel: 75,  duration:  144, cost: 275, grtAtMin: 1500, grtAtMax: 3000, supAtMin: 200, supAtMax: 1500, regReward: 1000, grtReward: 1600, supReward: 2400, minPotions: 3, maxPotions: 3});
 
         Raid memory werewolf = Raid({ minLevel:  90, maxLevel: 90,  duration:  144, cost: 90, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 300, grtReward: 500, supReward: 1000, minPotions: 0, maxPotions: 4});
-        Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 240, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 2, maxPotions: 6});
-        Raid memory leviathan = Raid({ minLevel:  150, maxLevel: 175,  duration:  192, cost: 365, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 1000, grtReward: 2600, supReward: 6000, minPotions: 3, maxPotions: 5});
+        Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 240, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 2, maxPotions: 4});        Raid memory leviathan = Raid({ minLevel:  150, maxLevel: 175,  duration:  192, cost: 365, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 1000, grtReward: 2600, supReward: 6000, minPotions: 3, maxPotions: 5});
         Raid memory lavaTitan = Raid({ minLevel:  190, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 6, maxPotions: 6});
 
         locations[10] = crookedCrabBeach;

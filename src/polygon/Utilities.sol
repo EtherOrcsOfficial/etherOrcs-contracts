@@ -9,6 +9,12 @@ contract HoardeUtilities {
     address allies;
     address items;
 
+    constructor(address orcs_, address allies_, address items_) {
+        orcs = orcs_;
+        allies = allies_;
+        items = items_;
+    }
+
     function claimForTheHoarde(uint256[] calldata ids) external {
         OrcishLike(orcs).claim(ids);
         OrcishLike(allies).claim(ids);
