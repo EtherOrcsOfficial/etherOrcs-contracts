@@ -4,7 +4,7 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
-
+const VERIFY = hre.network.name !== "localhost";
 
 async function deployProxied(contractName) {
   console.log("Deploying", contractName)
@@ -22,7 +22,7 @@ async function deployProxied(contractName) {
 }
 
 async function deploy(contractName) {
-  console.log("Deploying Inv Manager")
+  console.log("Deploying", contractName)
   const Fact = await hre.ethers.getContractFactory(contractName);
   let impl = await Fact.deploy();
   console.log(impl.address)
@@ -31,29 +31,14 @@ async function deploy(contractName) {
 
 
 async function main() {
+	await hre.run("compile");
 
-  await hre.run("compile");
 
-  // Update Items
-  console.log("Deplpoying Inv Man")
-  let invMan = await deployProxied("InventoryManagerItems")
-
-  console.log("Deploying Potion")
-  let potion = await deploy("Potion");
-  await invMan.setSvg(1, potion.address);
-
-  console.log("Deploying Dummy")
-  let dummy = await deploy("Dummy");
-  await invMan.setSvg(2, dummy.address);
-
-  console.log("Deploying LavaRock")
-  let lavaRock = await deploy("LavaRock");
-   await invMan.setSvg(99, lavaRock.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+	console.error(error);
+	process.exitCode = 1;
 });

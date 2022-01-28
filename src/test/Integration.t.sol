@@ -22,7 +22,7 @@
 // import "../polygon/EtherOrcsItems.sol";
 // import "../polygon/HallOfChampionsPoly.sol";
 // import "../polygon/PotionVendorPoly.sol";  
-// import "../polygon/InventoryManagerItems.sol";  
+// // import "../polygon/InventoryManagerItems.sol";  
 
 // import "../polygon/GamingOraclePoly.sol";
 
@@ -197,7 +197,9 @@
 
 //         itemsPoly.setMinter(address(alliesPoly), true);
 //         itemsPoly.setMinter(address(raidsPoly), true);
-//          itemsPoly.setMinter(address(potionVendor), true);
+//         itemsPoly.setMinter(address(potionVendor), true);
+//         itemsPoly.setMinter(address(this), true);
+//         itemsPoly.mint(address(raidsPoly), 99, 90 ether);
 
 //         portalPoly.initialize(address(fxRoot), address(portalMain));
 
@@ -217,6 +219,7 @@
 
 //         raidsPoly.initialize(address(orcsPoly), address(pzug), address(pBoneShards), address(hallPoly));
 //         raidsPoly.init(address(alliesPoly), address(potionVendor), address(itemsPoly), address(gamingOracle));
+//         raidsPoly.setRaids();
 
 //         gamingOracle.setAuth(address(raidsPoly), true);
 //         gamingOracle.setAuth(address(alliesPoly), true);
@@ -486,7 +489,6 @@
 //     }
 // }
 
-
 // contract TestRaids is OrcsBaseTest {
 
 //     uint256[] myIds;
@@ -719,22 +721,35 @@
 //         raidsPoly.claim(myIds);
 //     }
 
- 
+//     function test_getSuperb() public {
+
+//         orcsPoly.sendToRaid(myIds, 18, true, new uint256[](myIds.length));
+
+//         hevm.warp(block.timestamp + (500 * 1 hours));
+
+//         raidsPoly.claim(myIds);
+
+
+//         fail();
+//     }
+
+//     function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4){
+//         return 0xf23a6e61;
+//     }
 
 // }
 
+// // contract ItemsTest is OrcsBaseTest {
 
-// contract ItemsTest is OrcsBaseTest {
+// //     function setUp() external {
+// //         init();
+// //     }
 
-//     function setUp() external {
-//         init();
-//     }
+// //     function testMetadata() external {
+// //         InventoryManagerItems inv = new InventoryManagerItems();
 
-//     function testMetadata() external {
-//         InventoryManagerItems inv = new InventoryManagerItems();
+// //         itemsPoly.setInventoryManager(address(inv));
 
-//         itemsPoly.setInventoryManager(address(inv));
-
-//         emit log_string(itemsPoly.uri(1));
-//     }
-// }
+// //         emit log_string(itemsPoly.uri(1));
+// //     }
+// // }

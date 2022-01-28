@@ -49,7 +49,6 @@ module.exports = {
 		mumbai: {
 			url: MUMBAI_URL,
 			accounts: MUMBAI_KEY !== undefined ? [MUMBAI_KEY] : [],
-			gasPrice: 40000000000
 		},
 		polygon: {
 			url: POLYGON_URL,

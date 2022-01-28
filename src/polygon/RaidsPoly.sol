@@ -92,6 +92,19 @@ contract RaidsPoly {
      function init(address allies_, address vendor_, address potions_, address orcl) external {
         require(msg.sender == admin);
 
+
+        giantCrabHealth = 400000;
+        dbl_discount    = 200;
+
+        allies       = ERC721Like(allies_);
+        items      = ERC1155Like(potions_);
+        gamingOracle = orcl;
+        vendor       = vendor_;
+    }
+
+    function setRaids() external {
+        require(msg.sender == admin);
+
         //disable all old raids
         locations[0].cost = type(uint16).max;
         locations[1].cost = type(uint16).max;
@@ -112,7 +125,7 @@ contract RaidsPoly {
 
         Raid memory werewolf = Raid({ minLevel:  90, maxLevel: 90,  duration:  144, cost: 90, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 300, grtReward: 500, supReward: 1000, minPotions: 0, maxPotions: 4});
         Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 240, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 2, maxPotions: 4});        Raid memory leviathan = Raid({ minLevel:  150, maxLevel: 175,  duration:  192, cost: 365, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 1000, grtReward: 2600, supReward: 6000, minPotions: 3, maxPotions: 5});
-        Raid memory lavaTitan = Raid({ minLevel:  190, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 6, maxPotions: 6});
+        Raid memory lavaTitan = Raid({ minLevel:  0, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 0, maxPotions: 6});
 
         locations[10] = crookedCrabBeach;
         locations[11] = twistedPirateCove;
@@ -124,13 +137,7 @@ contract RaidsPoly {
         locations[17] = leviathan;
         locations[18] = lavaTitan;
 
-        giantCrabHealth = 400000;
         dbl_discount    = 200;
-
-        allies       = ERC721Like(allies_);
-        items      = ERC1155Like(potions_);
-        gamingOracle = orcl;
-        vendor       = vendor_;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -314,7 +321,7 @@ contract RaidsPoly {
         uint256 rdn1 = uint256(keccak256(abi.encode(ramdom, orcId, "RAID"))) % 10_000 + 1;
         uint256 rdn2 = cmp.double ? (uint256(keccak256(abi.encode(ramdom, orcId, "DOUBLE RAID"))) % 10_000 + 1) : type(uint256).max;
 
-        if (cmp.location == 13) {
+        if (cmp.location == 18) {
             uint256 supOutcome = _getBaseOutcome(raid.minLevel, raid.maxLevel, raid.supAtMin, raid.supAtMax, orcLevel);
             uint256 bal = items.balanceOf(address(this), 99);
             if (rdn1 <= supOutcome && bal > 0) items.safeTransferFrom(address(this), commanders[orcId], 99, 1, new bytes(0));

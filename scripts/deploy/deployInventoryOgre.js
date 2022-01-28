@@ -21,19 +21,28 @@ async function deployInvManagerOgre() {
   return a;
 }
 
+async function deployProxied(contractName) {
+  console.log("Deploying", contractName)
+  const InventoryManagerFactory = await hre.ethers.getContractFactory(contractName);
+  let invMan = await InventoryManagerFactory.deploy();
+  console.log(invMan.address)
+
+  console.log("Deploying Proxy")
+  const ProxyFac = await hre.ethers.getContractFactory("Proxy");
+  let pp = await ProxyFac.deploy(invMan.address);
+  console.log(pp.address)
+
+  let a = await hre.ethers.getContractAt(contractName, pp.address);
+  return a;
+}
+
 async function main() {
 
   await hre.run("compile");
 
-  // Deploy Orcs
-  // console.log("Deploying Orcs")
-  // let orc = await hre.ethers.getContractAt("EtherOrcs", "0x84698a8EE5B74eB29385134886b3a182660113e4");
-  // console.log(orc.address)
-  
-  // await orc.deployed();
+  let genInv = await deployProxied("InventoryManagerAllies");
 
-
-  let inv = await deployInvManagerOgre()
+  let inv = await deployProxied("InventoryManagerOgres");
 
 
   // Now deploy all of the art
