@@ -33,6 +33,8 @@ async function deploy(contractName) {
 async function main() {
 	await hre.run("compile");
 
+  await deployProxied("HordeUtilities")
+
 
 }
 

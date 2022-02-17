@@ -57,7 +57,6 @@ contract MockMainPortal is MainlandPortal {
 }
 
 
-
 contract MockGamingOracle is GamingOraclePoly {
 
      function request() external override returns (uint64 key){

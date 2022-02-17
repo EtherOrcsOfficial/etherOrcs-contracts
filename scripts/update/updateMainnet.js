@@ -12,6 +12,7 @@ async function updateProxy(contractName, address) {
   const ImplFact = await hre.ethers.getContractFactory(contractName);
   let impl = await ImplFact.deploy();
   console.log(impl.address)
+  await impl.deployed();
 
   console.log("Updating Impl")
   let a = await hre.ethers.getContractAt("Proxy", address);
@@ -32,13 +33,7 @@ let proxies  = {
 
 async function main() {
   await hre.run("compile");
-
-  // const ImplFact = await hre.ethers.getContractFactory("OrcsFix");
-  // let impl = await ImplFact.deploy();
-  // console.log(impl.address)
-
-  // await updateProxy("InventoryManagerShamans",proxies["InventoryInventoryManagerShamansManagerOgres"]);
-  await updateProxy("InventoryManagerOgres",proxies["InventoryManagerOgres"]);
+  await updateProxy("MainlandPortal",proxies["MainlandPortal"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

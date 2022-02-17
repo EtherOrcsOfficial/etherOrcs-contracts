@@ -35,7 +35,7 @@ contract RaidsPoly {
     uint256 seedCounter;
 
     uint256 public constant HND_PCT = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
-    uint256 public constant VND_PCT = 500;
+    uint256 public constant VND_PCT = 1500;
     uint256 public constant POTION_ID = 1; 
 
     // All that in a single storage slot. Fuck yeah!
@@ -125,7 +125,7 @@ contract RaidsPoly {
 
         Raid memory werewolf = Raid({ minLevel:  90, maxLevel: 90,  duration:  144, cost: 90, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 300, grtReward: 500, supReward: 1000, minPotions: 0, maxPotions: 4});
         Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 240, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 2, maxPotions: 4});        Raid memory leviathan = Raid({ minLevel:  150, maxLevel: 175,  duration:  192, cost: 365, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 1000, grtReward: 2600, supReward: 6000, minPotions: 3, maxPotions: 5});
-        Raid memory lavaTitan = Raid({ minLevel:  0, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 0, maxPotions: 6});
+        Raid memory lavaTitan = Raid({ minLevel:  190, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 6, maxPotions: 6});
 
         locations[10] = crookedCrabBeach;
         locations[11] = twistedPirateCove;

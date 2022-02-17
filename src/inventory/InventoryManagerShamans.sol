@@ -216,7 +216,7 @@ contract InventoryManagerShamans {
 
     function _getBottomAtt(uint256 level_, uint256 sc_, uint256 modF_) internal pure returns (string memory) {
         return string(abi.encodePacked(',{"trait_type": "level", "value":', toString(level_),
-            '},{"trait_type": "Class", "value":"Shaman"},{"trait_type": "skillCredits", "value":', toString(sc_),'},{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
+            '},{"trait_type": "Type", "value":"Shaman"},{"trait_type": "skillCredits", "value":', toString(sc_),'},{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
             toString(modF_),'}]'));
     }
 

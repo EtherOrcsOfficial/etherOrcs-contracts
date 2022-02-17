@@ -27,10 +27,13 @@ let proxies  = {
     "RaidsPoly": "0x2EeC5C9DfD2a8630fBAa8973357a9ac8393721D4",
     "PotionVendor": "0xBb477E51A4E28280cB1839cb2F8AB551b24834Ae",
     "InventoryManagerAllies": "0xA873dF562Eb39A3c560038Fc2c3D5b1C09C03b82",
+    "InventoryManagerOgres": "0x0Ad561F3E4a39c72e0AEE345D1590600F22cE1b2",
+    "HordeUtilities": "0x6FFFa8692B29e982B9668B35ed998570BeB64C79",
 }
 
 async function main() {
   await hre.run("compile");
+
   await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
 }
 
