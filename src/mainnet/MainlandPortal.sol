@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-// import {RLPReaderRef as RLPReader} from "../../extLib/FxPortal/lib/RLPReaderRef.sol";
 import {MerklePatriciaProof} from "../../extLib/FxPortal/lib/MerklePatriciaProof.sol";
 import {Merkle} from "../../extLib/FxPortal/lib/Merkle.sol";
 import "../../extLib/FxPortal/lib/ExitPayloadReader.sol";
