@@ -24,6 +24,7 @@ async function updateProxy(contractName, address) {
 let proxies  = {
     "PolyOrcs": "0x9Ee5F6C8B02908a29f111cA9B7B93e61d2374ab1",
     "MumbaiAllies": "0x31d5CdDEfFb400634362411a770443dD13000dF0",
+    "EtherOrcsAlliesPoly": "0x31d5CdDEfFb400634362411a770443dD13000dF0",
     "Castle": "0x5a035d0c1E023dECa259E2450cA476dD6d2b2d3e",
     "RaidsPoly": "0x88720b5f026f0905d40664E185Ef3081Bd420d5B",
     "PolylandPortal": "0xE5B8F12c9FC0DB0b56A8e8EF0f6025F1C6770401",
@@ -36,9 +37,9 @@ let proxies  = {
 async function main() {
   await hre.run("compile");
 
-  // await updateProxy("MumbaiAllies",proxies["MumbaiAllies"]);
-  // await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
-  await updateProxy("Castle",proxies["Castle"]);
+  // await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
+  await updateProxy("PotionVendorPoly",proxies["PotionVendorPoly"]);
+  // await updateProxy("Castle",proxies["Castle"]);
   // await updateProxy("EtherOrcsItems", proxies["EtherOrcsItems"]);
 
 }

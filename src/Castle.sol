@@ -94,8 +94,6 @@ contract Castle {
         require(succ);
     }
 
-    event D(uint tt);
-    event DAD(address al);
     function callAllies(bytes calldata data) external {
         _onlyPortal();
         
@@ -106,10 +104,7 @@ contract Castle {
     function unstakeMany(address token, address owner, uint256[] calldata ids) external {
         _onlyPortal();
 
-        emit DAD(token);
-
         for (uint256 i = 0; i < ids.length; i++) {  
-            emit D(ids[i]);
             if (token == orcs)   delete orcOwner[ids[i]];
             if (token == allies) delete allyOwner[ids[i]];
             ERC721Like(token).transfer(owner, ids[i]);

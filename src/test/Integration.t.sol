@@ -7,7 +7,7 @@
 
 // import "../Castle.sol";
 // import "../Proxy.sol";
-// import "../InventoryManagerAllies.sol";  
+// import "../inventory/InventoryManagerAllies.sol";  
 
 // import "../testnet/Rinkorc.sol";
 // import "../testnet/PolyOrc.sol";
@@ -22,7 +22,7 @@
 // import "../polygon/EtherOrcsItems.sol";
 // import "../polygon/HallOfChampionsPoly.sol";
 // import "../polygon/PotionVendorPoly.sol";  
-// import "../polygon/InventoryManagerItems.sol";  
+// // import "../polygon/InventoryManagerItems.sol";  
 
 // import "../polygon/GamingOraclePoly.sol";
 
@@ -197,7 +197,9 @@
 
 //         itemsPoly.setMinter(address(alliesPoly), true);
 //         itemsPoly.setMinter(address(raidsPoly), true);
-//          itemsPoly.setMinter(address(potionVendor), true);
+//         itemsPoly.setMinter(address(potionVendor), true);
+//         itemsPoly.setMinter(address(this), true);
+//         itemsPoly.mint(address(raidsPoly), 99, 90 ether);
 
 //         portalPoly.initialize(address(fxRoot), address(portalMain));
 
@@ -217,6 +219,7 @@
 
 //         raidsPoly.initialize(address(orcsPoly), address(pzug), address(pBoneShards), address(hallPoly));
 //         raidsPoly.init(address(alliesPoly), address(potionVendor), address(itemsPoly), address(gamingOracle));
+//         raidsPoly.setRaids();
 
 //         gamingOracle.setAuth(address(raidsPoly), true);
 //         gamingOracle.setAuth(address(alliesPoly), true);
@@ -345,7 +348,7 @@
 //         boneShards.mint(address(this), 10000000 ether);
 //     }
 
-//     function test_mint() external {
+//     function test_mint_shaman() external {
 //         uint256 balBefore = boneShards.balanceOf(address(this));
 
 //         alliesMain.mintShaman();
@@ -366,33 +369,25 @@
 //         assertTrue(offhand > 0 && offhand <= 7);
 //     }
 
-//     function test_mint_probabilities() external {
+//     function test_mint_ogre() external {
+//         uint256 balBefore = boneShards.balanceOf(address(this));
 
-//         uint256[7] memory bodies =    [uint256(0),0,0,0,0,0,0];
-//         uint256[7] memory helms =     [uint256(0),0,0,0,0,0,0];
-//         uint256[7] memory mainhands = [uint256(0),0,0,0,0,0,0];
-//         uint256[7] memory offhands =  [uint256(0),0,0,0,0,0,0];
+//         alliesMain.mintOgre();
 
-//         for (uint256 i = 0; i < 8051; i++) {
-//             alliesMain.mintShaman();
+//         uint256 balAfter = boneShards.balanceOf(address(this));
 
-//             (uint16 l, uint32 lvl, uint16 mF, uint8 sc, uint8 b, uint8 fA, uint8 fB, uint8 h, uint8 m, uint8 o) = alliesMain.shamans(i + 5051);
-//             bodies[b - 1]++;
-//             helms[h - 1]++;
-//             mainhands[m - 1]++;
-//             offhands[o - 1]++;
-//         }
+//         (uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 mouth, uint8 nose, uint8 eyes, uint8 armor, uint8 mainhand, uint8 offhand) = alliesMain.ogres(8051);
 
-//         // Not a precise a test, but close
-//         for (uint256 i = 0; i < 7; i++) {
-//             emit log_named_uint("index", i);
-//             assertTrue(bodies[i] / 100 == 3 || bodies[i] / 100 == 4, "failed for bodies");
-//             assertTrue(helms[i] / 100 == 3 || helms[i] / 100 == 4, "failed for helm");
-//             assertTrue(mainhands[i] / 100 == 3 || mainhands[i] / 100 == 4, "failed for mainhand");
-//             assertTrue(offhands[i] / 100 == 3 || offhands[i] / 100 == 4, "failed for offhand");
-//         }   
-
-//         try alliesMain.mintShaman() { fail(); } catch { }
+//         assertEq(balBefore - balAfter, 60 ether);
+//         assertEq(alliesMain.ownerOf(8051), address(this));
+//         assertEq(skillCredits, 100);
+//         assertEq(level, 30);
+//         assertEq(lvlProgress, 30000);
+//         assertEq(modF, 0);
+//         assertTrue(body > 0 && body <= 8);
+//         assertTrue(armor > 0 && armor <= 6);
+//         assertTrue(mainhand > 0 && mainhand <= 6);
+//         assertTrue(offhand > 0 && offhand <= 6);
 //     }
 
 //     function testFail_mint_failWithoutBS() external {
@@ -493,7 +488,6 @@
 //         assertTrue(l2 > l1);
 //     }
 // }
-
 
 // contract TestRaids is OrcsBaseTest {
 
@@ -727,22 +721,35 @@
 //         raidsPoly.claim(myIds);
 //     }
 
- 
+//     function test_getSuperb() public {
+
+//         orcsPoly.sendToRaid(myIds, 18, true, new uint256[](myIds.length));
+
+//         hevm.warp(block.timestamp + (500 * 1 hours));
+
+//         raidsPoly.claim(myIds);
+
+
+//         fail();
+//     }
+
+//     function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4){
+//         return 0xf23a6e61;
+//     }
 
 // }
 
+// // contract ItemsTest is OrcsBaseTest {
 
-// contract ItemsTest is OrcsBaseTest {
+// //     function setUp() external {
+// //         init();
+// //     }
 
-//     function setUp() external {
-//         init();
-//     }
+// //     function testMetadata() external {
+// //         InventoryManagerItems inv = new InventoryManagerItems();
 
-//     function testMetadata() external {
-//         InventoryManagerItems inv = new InventoryManagerItems();
+// //         itemsPoly.setInventoryManager(address(inv));
 
-//         itemsPoly.setInventoryManager(address(inv));
-
-//         emit log_string(itemsPoly.uri(1));
-//     }
-// }
+// //         emit log_string(itemsPoly.uri(1));
+// //     }
+// // }

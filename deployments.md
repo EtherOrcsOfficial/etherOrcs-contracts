@@ -232,3 +232,216 @@ EtherOrcsItems :  0xd769705e0F6265F12c13CE85aEB7a1218D655cfD
 Deploying  InventoryManagerItems
 _implFactory: 0x25D3A08E3a54E9083Bdb484502D3a53D6fA87847
 InventoryManagerItems :  0xb5845385B08F23c0Dc679e982B6408F456de7826
+
+
+25 Jan 2022 
+
+MUMBAI
+Deploying Inv Manager
+0x1f2dDd62104c4A96B6a0C4CbAbfa909f9d676b75
+Deploying Proxy
+0xe7eF1dED4Aad14cA34C96f5d08d8620A436Dc33b
+Deploying Bodies1
+address 0xB8F2606024c3900114e8FF8C6700F9f1f6a4B0c3
+Setting as Bodies
+Deploying Bodies2
+address 0x2a64e3ec6b66A7a15aaEaAa9294051528F1e7332
+Setting as Bodies
+Deploying Mouths1
+address 0x77571f96112DeCa815EfD44D97eDF15A97dFc160
+Setting as Mouths
+Deploying Mouths2
+address 0x60D08029632D4aA0135D85Dda33D220204147B5B
+Setting as Mouths
+Deploying Noses1
+address 0x0D4Ff8b4c777795fFC702a84BDfBc683B8BA8b23
+Setting as Noses
+Deploying Noses2
+address 0x6eCE776101278D7498195B7F1321D9f4Bf1589C4
+Setting as Noses
+Deploying Eyes1
+address 0xf550B42F8098da157672cFdFE6935Ac02E021b0a
+Setting as Eyes
+Deploying Eyes2
+address 0x0fc7120642c4972CAC013A2AdE403Db917D516C4
+Setting as Eyes
+Deploying Armors1
+address 0xea7bcC5dAc716Eb71eBAebaA7bfE71E6e4D096BB
+Setting as Armors
+Deploying Armors2
+address 0xcCC19C12Ab89a2E9eF1b0449A4DB6AF0595490cf
+Setting as Armors
+Deploying Armors3
+address 0xa680E9555C28B82643B623b0261820BEDC4AEF19
+Setting as Armors
+Deploying Mainhands1
+address 0xF1BB1089D6611C0cE6F6AFeA4ad1DcF1d9BF6782
+Setting as Mainhands
+Deploying Mainhands2
+address 0x83a9D325b8E5330F88C36aBdd8dEAaC4f200B30D
+Setting as Mainhands
+Deploying Mainhands3
+address 0x4EC8E625aB209eb7a411e923De09270d4E563bb9
+Setting as Mainhands
+Deploying Offhands1
+address 0x054E43213c3c2557f51a60e18d32783b7D03dc79
+Setting as Offhands
+Deploying Offhands2
+address 0x588A5F8998bA9c3d0e2F77fb888c69ae262df1f0
+Setting as Offhands
+Deploying Offhands3
+address 0xC2510C6CF16C1dc00AA071feeeF00E484154885D
+Setting as Offhands
+
+Deplpoying Inv Man
+0x00edcA2c1242DDC151926efa24fD44a44035296c
+Deploying Proxy
+0x988aBc9217eFF24ECAdF9eE2C7bf582545B17E93
+Deploying Potion
+0xa3FB786DAA3fAB8e7382CE2b417C6153F61E05F9
+Deploying Dummy
+0x9FAa7C3f93BC203943bf17A9C59bc7288d11B36F
+Deploying LavaRock
+0x4e8Ff49cc88c0D4DBA73D5be6063c25fd32F0E07
+
+
+Mainnet 26 Jan 2022
+othing to compile
+Deploying InventoryManagerAllies
+0x3273B10A025b5E55a2B4776bC6b4489e26e224E4
+Deploying Proxy
+0xAA6647e4C507b2E30b4816963ABB2887585157eD
+Deploying InventoryManagerOgres
+0x1291679A9180bBFDedbD7a1b664a3f92C62C5930
+Deploying Proxy
+0x81FA8559D8861F7b748db745C2C8dfdf6B3DFF68
+Deploying Bodies1
+address 0x26E5BaE23776Ab7a0AD6DBb0473D50f98bF72C8c
+Setting as Bodies
+Deploying Bodies2
+address 0x8311C85E7f63dA27f015a9A23e40fc4F3CC8650c
+Setting as Bodies
+Deploying Mouths1
+address 0xe30Ad5CE7C66f03C56430728F0f9C42A32029802
+Setting as Mouths
+Deploying Mouths2
+address 0x75152Aac71d6a191052Ac2DF89B08DCfdEec29f9
+Setting as Mouths
+Deploying Noses1
+address 0x72D60367ADC6CF65C32a2E7d5681575b3e2596ae
+Setting as Noses
+Deploying Noses2
+address 0x6Aa4009Be2E89fDC9F925eE631764f170a54404d
+Setting as Noses
+Deploying Eyes1
+address 0x6Af7CeaD0B2a03e2099A8e7812650307A54FCb86
+Setting as Eyes
+Deploying Eyes2
+address 0x3a86DA7A816ed3800E42dA6B2abA9dE104741273
+Setting as Eyes
+Deploying Armors1
+address 0x7d23B1881199502309b9713999e78d4b3Fca3E38
+Setting as Armors
+Deploying Armors2
+address 0x35A8c2192DD6FCca461E8C047C96A53CfA4Efbde
+Setting as Armors
+Deploying Armors3
+address 0xf29c34DDA00A4c962e142E42f5AC94013399856e
+Setting as Armors
+Deploying Mainhands1
+address 0x8c01295197F23685b0186371aAfDE06Db77d6069
+Setting as Mainhands
+Deploying Mainhands2
+address 0xf8e913e43b1459ac1531F7395f8db29ad2996D7E
+Setting as Mainhands
+Deploying Mainhands3
+address 0xc6891723B2476a97a81AF137d43a9cAd793da8C6
+Setting as Mainhands
+Deploying Offhands1
+address 0x46FA228D18E6Fc817802B7F00f8d5aD639670879
+Setting as Offhands
+Deploying Offhands2
+address 0x566d6286975e840Ac05C485D3ea0F5B792eb155F
+Setting as Offhands
+Deploying Offhands3
+address 0xeBab4A6Efb8D917bC618c80cFCC703AD77d13486
+Setting as Offhands
+
+
+POLYGON
+Compilation finished successfully
+Nothing to compile
+Deploying InventoryManagerAllies
+0x0BCf639418Af1f7aa3b427353666803d3Ea1a25b
+Deploying Proxy
+0xa44dE708c9a79A9465463C08f2980077b0808B06
+Deploying InventoryManagerOgres
+0xf1C161926ED46D7A841E448077e43ad10c4d01A0
+Deploying Proxy
+0x0Ad561F3E4a39c72e0AEE345D1590600F22cE1b2
+Deploying Bodies1
+address 0x0CbA7358db0bBE64055caBe3df6CF01Cb526D7Fe
+Setting as Bodies
+Deploying Bodies2
+address 0xA5358Ff3890a7D9A510629170b84c0e1ffa66f97
+Setting as Bodies
+Deploying Mouths1
+address 0xFB6468b2d909Af5e20418c1274305f730F3395e6
+Setting as Mouths
+Deploying Mouths2
+address 0xf518F2DA4686D94246D4Baf99BD1B604187bc4f0
+Setting as Mouths
+Deploying Noses1
+address 0xeBC650bd9F7c2611EEf79E6ABed5c10a824B9A9d
+Setting as Noses
+Deploying Noses2
+address 0x6Dd97271C6333d262791CcDb32748dEeB358097E
+Setting as Noses
+Deploying Eyes1
+address 0x7E2cAFb43ba64449319649cca0a032bCf4eE86E1
+Setting as Eyes
+Deploying Eyes2
+address 0x233A236de9560E6C05907E9731A8E6A54e06B09c
+Setting as Eyes
+Deploying Armors1
+address 0xADaD0302D32b7cF1bc5921aE5F38920ae76282Ad
+Setting as Armors
+Deploying Armors2
+address 0xb8FA80305E38878d6D1ab485291d7035214FA883
+Setting as Armors
+Deploying Armors3
+address 0x98FaCd1Abe12881E86f89608ae3975f0f31C2d9F
+Setting as Armors
+Deploying Mainhands1
+address 0x1da23407834D6f8420F97F9D8Af0452c566F7a2d
+Setting as Mainhands
+Deploying Mainhands2
+address 0x0EB280DAf48310a761e659E2e0fC9a3a2cEa5F55
+Setting as Mainhands
+Deploying Mainhands3
+address 0x492B975B4f06F9f1949e011fD1f6Db55A150C94e
+Setting as Mainhands
+Deploying Offhands1
+address 0x9229Ecaf8c4f8d57906Da9db39B6d6197660Ed77
+Setting as Offhands
+Deploying Offhands2
+address 0xD19db30FffaBa35f27E9e33c896a69C38C0a7C56
+Setting as Offhands
+Deploying Offhands3
+address 0x6d9E2547B9c4e868C4E3fFDDab554C5cD6924c5A
+Setting as Offhands
+
+Utilities
+0x2F34416ED0E47E9fA23161583D19d26401716895
+
+Deplpoying Inv Man
+Deploying InventoryManagerItems
+0x3548B43AD3A709Cf61C41eD02804F8ecec5fe25F
+Deploying Proxy
+0x6e0c15a29851814D0e88E4AeaA359bae67e89676
+Deploying Potion
+0x67CdCc0dc0fDCbB6aD628f185e10a48793F1D8aB
+Deploying Dummy
+0x6a2039d21D59a2687601F61CcBF2743d21C55A03
+Deploying LavaRock
+0x2966f315e7C6506969519AFceFF71c9a225dC90C

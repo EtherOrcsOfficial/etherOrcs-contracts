@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-contract InventoryManagerAllies {
+contract InventoryManagerShamans {
 
     address impl_;
     address public manager;
@@ -32,9 +32,6 @@ contract InventoryManagerAllies {
             get(Part.mainhand, mainhand_),
             footer ));
     }
-
-
-    constructor() { manager = msg.sender;}
 
     function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
         if (class_ == 1) {
@@ -219,7 +216,7 @@ contract InventoryManagerAllies {
 
     function _getBottomAtt(uint256 level_, uint256 sc_, uint256 modF_) internal pure returns (string memory) {
         return string(abi.encodePacked(',{"trait_type": "level", "value":', toString(level_),
-            '},{"trait_type": "skillCredits", "value":', toString(sc_),'},{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
+            '},{"trait_type": "Type", "value":"Shaman"},{"trait_type": "skillCredits", "value":', toString(sc_),'},{"display_type": "boost_number","trait_type": "Herbalism", "value":', 
             toString(modF_),'}]'));
     }
 

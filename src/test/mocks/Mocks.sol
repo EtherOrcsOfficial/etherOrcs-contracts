@@ -57,7 +57,6 @@ contract MockMainPortal is MainlandPortal {
 }
 
 
-
 contract MockGamingOracle is GamingOraclePoly {
 
      function request() external override returns (uint64 key){
@@ -67,7 +66,7 @@ contract MockGamingOracle is GamingOraclePoly {
         
         bytes32 id = keccak256(abi.encodePacked(key, msg.sender));
         keys[key] = id;
-        rands[keys[key]] = uint256(id); // 
+        rands[keys[key]] = uint256(1); // 
     }
 
 }

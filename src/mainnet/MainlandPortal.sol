@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
-import {RLPReader} from "../../extLib/FxPortal/lib/RLPReader.sol";
 import {MerklePatriciaProof} from "../../extLib/FxPortal/lib/MerklePatriciaProof.sol";
 import {Merkle} from "../../extLib/FxPortal/lib/Merkle.sol";
 import "../../extLib/FxPortal/lib/ExitPayloadReader.sol";
@@ -75,10 +74,15 @@ contract MainlandPortal {
         fxRoot.sendMessageToChild(polylandPortal, message_);
     }
 
-     function replayCall(address target, bytes memory data, bool reqSuccess) external {
+    function replayCall(address target, bytes memory data, bool reqSuccess) external {
         require(msg.sender == admin, "not allowed");
         (bool succ, ) = target.call(data);
         if (reqSuccess) require(succ, "call failed");
+    }
+
+    function forceProcessMessageFromChild(bytes memory data_) external {
+        require(msg.sender == admin, "not allowed");
+        _processMessageFromChild(data_);
     }
 
     /// @dev executed when we receive a message from Polygon
