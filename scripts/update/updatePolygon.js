@@ -29,12 +29,13 @@ let proxies  = {
     "InventoryManagerAllies": "0xA873dF562Eb39A3c560038Fc2c3D5b1C09C03b82",
     "InventoryManagerOgres": "0x0Ad561F3E4a39c72e0AEE345D1590600F22cE1b2",
     "HordeUtilities": "0x6FFFa8692B29e982B9668B35ed998570BeB64C79",
+    "GamingOraclePoly": "0x04A0B7E35828c985e78E2F1107e0B1C3FE39a837"
 }
 
 async function main() {
   await hre.run("compile");
 
-  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
+  await updateProxy("GamingOraclePoly",proxies["GamingOraclePoly"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
