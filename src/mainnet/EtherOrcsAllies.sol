@@ -200,7 +200,7 @@ contract EtherOrcsAllies is ERC721 {
 
         _mint(msg.sender, id);
 
-        allies[id] = Ally({class: 2, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, face, boots, pants, shirt, hair, armor, mainhand, offhand))});
+        allies[id] = Ally({class: 3, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, face, boots, pants, shirt, hair, armor, mainhand, offhand))});
     }
 
     /// @dev Create a bit more of randomness

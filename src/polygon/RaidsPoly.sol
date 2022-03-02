@@ -124,7 +124,7 @@ contract RaidsPoly {
         Raid memory evilMerfolkCastle = Raid({ minLevel:  50, maxLevel: 75,  duration:  144, cost: 275, grtAtMin: 1500, grtAtMax: 3000, supAtMin: 200, supAtMax: 1500, regReward: 1000, grtReward: 1600, supReward: 2400, minPotions: 3, maxPotions: 3});
 
         Raid memory werewolf = Raid({ minLevel:  90, maxLevel: 90,  duration:  144, cost: 90, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 300, grtReward: 500, supReward: 1000, minPotions: 0, maxPotions: 4});
-        Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 240, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 2, maxPotions: 4});       
+        Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 0, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 0, maxPotions: 4});       
         Raid memory leviathan = Raid({ minLevel:  150, maxLevel: 175,  duration:  192, cost: 365, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 1000, grtReward: 2600, supReward: 6000, minPotions: 3, maxPotions: 5});
         Raid memory lavaTitan = Raid({ minLevel:  190, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 6, maxPotions: 6});
 
@@ -189,6 +189,28 @@ contract RaidsPoly {
                    INTERNAl HELPERS  
     //////////////////////////////////////////////////////////////*/
 
+    event DEBUG(uint j);
+    function MOCKclaim(uint256 id) external returns (uint256 reward1,uint256 reward2) {
+        Campaign memory cmp = campaigns[id]; 
+        if (cmp.reward > 0 && _ended(campaigns[id])) {
+            reward1 = cmp.reward;
+            if (cmp.seed != 0) {
+                // New case - calculate the result from seed
+                Raid memory raid = locations[cmp.location];
+                uint16 level     = _getLevel(id);
+                uint256 rdn      = OracleLike(gamingOracle).getRandom(cmp.seed);
+                
+                require(rdn != 0, "no random value yet");
+
+                reward1 = _getReward(raid, id, level, rdn, "RAID") /**+ (cmp.double ? _getReward(raid, id, level, rdn, "DOUBLE RAID") : 0)*/;
+                reward2 = (cmp.double ? _getReward(raid, id, level, rdn, "DOUBLE RAID") : 0);
+                _foundSomething(raid, cmp, id, level, rdn);
+            } 
+            campaigns[id].reward = 0;
+            boneShards.mint(commanders[id], reward1 + reward2);
+        }
+    }
+
     function _claim(uint256 id) internal {
         Campaign memory cmp = campaigns[id]; 
 
@@ -223,7 +245,7 @@ contract RaidsPoly {
         address owner = commanders[orcishId];
 
         require(potions_ <= (double ? raid.maxPotions * 2 : raid.maxPotions), "too much potions");
-        require(potions_ >= (double ? raid.minPotions * 2 : raid.minPotions), "too much potions");
+        require(potions_ >= (double ? raid.minPotions * 2 : raid.minPotions), "too few potions");
         require(msg.sender == (orcishId < 5051 ? address(orcs) : address(allies)), "Not allowed");
         require(_ended(campaigns[orcishId]),   "Currently on campaign");
 

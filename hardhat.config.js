@@ -67,5 +67,6 @@ module.exports = {
 
 	paths: {
 		sources: "./src",
+		cache: "hh-cache",
 	},
 };
