@@ -66,18 +66,18 @@ contract EtherOrcsAllies is ERC721 {
         return metadaHandler.getTokenURI(id, ally.class, ally.level, ally.modF, ally.skillCredits, ally.details);
     }
 
-    function mintShamans(uint256 amount) external {
-        for (uint256 i = 0; i < amount; i++) {
-            mintShaman();
-        }
-    }
+    // function mintShamans(uint256 amount) external {
+    //     for (uint256 i = 0; i < amount; i++) {
+    //         mintShaman();
+    //     }
+    // }
 
-    function mintShaman() public noCheaters {
-        require(openForMint || auth[msg.sender], "not open for mint");
-        boneShards.burn(msg.sender, 60 ether);
+    // function mintShaman() public noCheaters {
+    //     require(openForMint || auth[msg.sender], "not open for mint");
+    //     boneShards.burn(msg.sender, 60 ether);
 
-        _mintShaman(_rand());
-    } 
+    //     _mintShaman(_rand());
+    // } 
 
     function mintOgres(uint256 amount) external {
         for (uint256 i = 0; i < amount; i++) {
@@ -193,7 +193,7 @@ contract EtherOrcsAllies is ERC721 {
 
     function _mintOgre(uint256 rand) internal returns (uint16 id) {
         id = uint16(ogSupply + 3001 + startId); //check that supply is less than 3000
-        require(ogSupply++ <= 6000, "max supply reached");
+        require(ogSupply++ <= 3000, "max supply reached");
 
         // Getting Random traits
         uint8 body = uint8(_randomize(rand, "BODY", id) % 8) + 1; 

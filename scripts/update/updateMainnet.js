@@ -33,7 +33,7 @@ let proxies  = {
 
 async function main() {
   await hre.run("compile");
-  await updateProxy("MainlandPortal",proxies["MainlandPortal"]);
+  await updateProxy("EtherOrcsAllies",proxies["EtherOrcsAllies"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
