@@ -33,8 +33,8 @@ contract RaidsPoly {
     address public gamingOracle;
 
     uint256 seedCounter;
-    uint256 public vendorPct = 1500;
-    uint256 runeBoost = 200;
+    uint256 public vendorPct;
+    uint256 runeBoost;
 
     uint256 public constant HND_PCT   = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
     uint256 public constant POTION_ID = 1;
@@ -71,6 +71,7 @@ contract RaidsPoly {
 
         giantCrabHealth = 400000;
         dbl_discount    = 200;
+        runeBoost       = 200;
 
         allies       = ERC721Like(allies_);
         items        = ERC1155Like(potions_);
@@ -119,6 +120,12 @@ contract RaidsPoly {
         vendorPct = pct;
     }
 
+    function setRuneBoost(uint256 pct) external {
+        require(msg.sender == admin, "not authed");
+
+        runeBoost = pct;
+    }
+
     /*///////////////////////////////////////////////////////////////
                    PUBLIC FUNCTIONS 
     //////////////////////////////////////////////////////////////*/
@@ -164,7 +171,6 @@ contract RaidsPoly {
                    INTERNAl HELPERS  
     //////////////////////////////////////////////////////////////*/
 
-
     function _claim(uint256 id) public returns(uint256 reward){
         Campaign memory cmp = campaigns[id]; 
 
@@ -175,16 +181,14 @@ contract RaidsPoly {
                 Raid memory raid = locations[cmp.location];
                 uint16 level     = _getLevel(id);
                 uint256 rdn      = OracleLike(gamingOracle).getRandom(cmp.seed);
+                
                 require(rdn != 0, "no random value yet");
-
-                uint256 r1 = _getRandom(id, rdn, "RAID") - (((cmp.runesUsed - 100) / 2) * runeBoost);
-                reward     = _getReward(raid, id, level, r1);
-
+                
+                reward = _getReward(raid, id, level, _getBoosted(cmp, _getRandom(id, rdn, "RAID")));
                 emit RaidOutcome(id, level, cmp.location, reward);
 
                 if (cmp.double) {
-                    uint256 r2 = _getRandom(id, rdn, "DOUBLE RAID") - (((cmp.runesUsed - 100) / 2) * runeBoost);
-                    uint256 reward2 = _getReward(raid, id, level, r2);
+                    uint256 reward2 = _getReward(raid, id, level, _getBoosted(cmp, _getRandom(id, rdn, "DOUBLE RAID")));
                     reward += reward2;
                     _foundSomething(raid, cmp, _getRandom(id, rdn, "FIRST TRY"));
                     emit RaidOutcome(id, level, cmp.location, reward2);
@@ -271,6 +275,11 @@ contract RaidsPoly {
         uint256 superbProb = _getBaseOutcome(raid.minLevel, raid.maxLevel, raid.supAtMin, raid.supAtMax, orcLevel) + champBonus;
 
         reward = uint176(rdn <= superbProb ? raid.supReward  : rdn <= greatProb + superbProb ? raid.grtReward : raid.regReward) * 1e16;
+    }
+
+    function _getBoosted(Campaign memory cmp, uint256 rdn) internal view returns (uint256 boosted) {
+        uint256 boost = uint256((uint256(cmp.runesUsed) - 100) / (cmp.double ? 2 : 1) * runeBoost);
+        boosted = boost < rdn ? rdn - boost : 0;
     }
 
     function _getRandom(uint256 orcId, uint256 ramdom, string memory salt) internal pure returns (uint256 rdn) {

@@ -519,7 +519,7 @@ contract TestRaids is OrcsBaseTest {
         orcsPoly.setAuth(address(this), true);
 
         boneShards.mint(address(this), 10000 ether);
-        pzug.mint(address(this), 1000000 ether);
+        pzug.mint(address(this), 1000000000000 ether);
 
         alliesMain.mintRogues(3);
 
@@ -536,6 +536,9 @@ contract TestRaids is OrcsBaseTest {
         }
         
         castleMain.travel(myIds, myAllyIds, 0 , 0);
+
+        itemsPoly.setMinter(address(this), true);
+
     }
 
     function logCampaing(uint256 id) internal returns ( uint8 location, bool double, uint64 end, uint112 reward, uint64 blockSeed) {
@@ -754,12 +757,35 @@ contract TestRaids is OrcsBaseTest {
         orcsPoly.claim(myIds);
     }
 
-    // function test_runes_outcomes() public {
+    
+    mapping (uint256 => uint256) rewardsCount;
 
-    //     for (uint256 i = 0; i < array.length; i++) {
-            
-    //     }
-    // }
+    function test_raidsOutcomes() public {
+
+        raidsPoly.setRuneBoost(200);
+
+        /// 10k raids different ids
+        alliesPoly.adjustAlly(11051,1,35,1,2,3,"0x");
+        alliesPoly.sendToRaid(getArray(11051), 19, false, getArray(0), getArray(0));
+        uint256 reward1 = raidsPoly._claim(11051);
+        rewardsCount[reward1]++;
+        hevm.warp(block.timestamp + 200 hours);
+        uint256 runs = 10000;
+
+        emit log_named_uint("runs:", runs);
+        emit log("orc level : twice the max");
+        emit log("Desired %: 10% supber, 20% great, 70% regurlar");
+        for (uint256 i = 0; i < runs; i++) {
+            itemsPoly.mint(address(this), 3, 3 ether);
+            alliesPoly.startRaidCampaign(getArray(11051), 19, false, getArray(0), getArray(3));
+            hevm.warp(block.timestamp + 400 hours);
+            reward1 = raidsPoly._claim(11051);
+            rewardsCount[reward1]++;
+        }
+        emit log_named_uint("regs  :", rewardsCount[3000000000000000000]);
+        emit log_named_uint("greats:", rewardsCount[7000000000000000000]);
+        emit log_named_uint("sup   :", rewardsCount[15000000000000000000]);
+    }
 
     
 
