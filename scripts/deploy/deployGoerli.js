@@ -45,14 +45,14 @@ async function main() {
 	console.log("Castle:", castle.address);
 
 	//Deploying Raids
-	console.log("Deploying Raids");
-	const RaidsFact = await hre.ethers.getContractFactory("Raids");
-	let raidsImpl = await RaidsFact.deploy();
-	await raidsImpl.deployed();
-	console.log("Raids_impl:", raidsImpl.address);
+	// console.log("Deploying Raids");
+	// const RaidsFact = await hre.ethers.getContractFactory("Raids");
+	// let raidsImpl = await RaidsFact.deploy();
+	// await raidsImpl.deployed();
+	// console.log("Raids_impl:", raidsImpl.address);
 
-	let raids = await ProxyFac.deploy(raidsImpl.address);
-	console.log("Raids:", raids.address);
+	// let raids = await ProxyFac.deploy(raidsImpl.address);
+	// console.log("Raids:", raids.address);
 
 	// Getting existing Portal
 	const PortalFactory = await hre.ethers.getContractFactory("MainlandPortal");
@@ -77,14 +77,14 @@ async function main() {
 	console.log("BoneShards", shr.address);
 
 	// getting Hall of Champions
-	const HallFact = await hre.ethers.getContractFactory("HallOfChampions");
-	let hallImpl = await HallFact.deploy();
-	await hallImpl.deployed();
-	console.log("Hall_impl: ", hallImpl.address);
+	// const HallFact = await hre.ethers.getContractFactory("HallOfChampions");
+	// let hallImpl = await HallFact.deploy();
+	// await hallImpl.deployed();
+	// console.log("Hall_impl: ", hallImpl.address);
 
-	let hall = await ProxyFac.deploy(hallImpl.address);
-	await hall.deployed();
-	console.log("Hall: ", hall.address);
+	// let hall = await ProxyFac.deploy(hallImpl.address);
+	// await hall.deployed();
+	// console.log("Hall: ", hall.address);
 
 	// Config everything
 	console.log("Starting config");
@@ -100,7 +100,7 @@ async function main() {
 
 	orc = await hre.ethers.getContractAt("Rinkorc", orc.address);
 	await orc.setCastle(castle.address);
-	await orc.setRaids(raids.address);
+	// await orc.setRaids(raids.address);
 	await orc.setZug(zug.address);
 	await orc.setAuth(castle.address, true);
 	console.log("done orc");
@@ -108,24 +108,24 @@ async function main() {
 	allies = await hre.ethers.getContractAt("EtherOrcsAllies", allies.address)
 	await allies.initialize(castle.address, shr.address,"0x2890bA17EfE978480615e330ecB65333b880928e")
 
-	hall = await hre.ethers.getContractAt("HallOfChampions", hall.address);
-	await hall.setAddresses(orc.address, zug.address);
-	console.log("done hall");
+	// hall = await hre.ethers.getContractAt("HallOfChampions", hall.address);
+	// await hall.setAddresses(orc.address, zug.address);
+	// console.log("done hall");
 
 	await zug.setMinter(castle.address, true);
 	await zug.setMinter(orc.address, true);
 	await zug.setMinter(allies.address, true);
-	await zug.setMinter(hall.address, true);
-	await zug.setMinter(raids.address, true);
+	// await zug.setMinter(hall.address, true);
+	// await zug.setMinter(raids.address, true);
 	console.log("done zug");
 
-	raids = await hre.ethers.getContractAt("Raids", raids.address);
-	await raids.initialize(orc.address, zug.address, shr.address, hall.address);
-	console.log("done raids");
+	// raids = await hre.ethers.getContractAt("Raids", raids.address);
+	// await raids.initialize(orc.address, zug.address, shr.address, hall.address);
+	// console.log("done raids");
 
 	await shr.setMinter(castle.address, true);
 	await shr.setMinter(allies.address, true);
-	await shr.setMinter(raids.address, true);
+	// await shr.setMinter(raids.address, true);
 	console.log("done boneshards");
 
 	castle = await hre.ethers.getContractAt("Castle", castle.address);
@@ -155,39 +155,39 @@ async function main() {
 		await hre.run("verify:verify", {
 			address: orcImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: orc.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: orc.address,
+		// });
 		await hre.run("verify:verify", {
 			address: castleImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: castle.address,
-		});
-		await hre.run("verify:verify", {
-			address: raidsImpl.address,
-		});
-		await hre.run("verify:verify", {
-			address: raids.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: castle.address,
+		// });
+		// await hre.run("verify:verify", {
+		// 	address: raidsImpl.address,
+		// });
+		// await hre.run("verify:verify", {
+		// 	address: raids.address,
+		// });
 		await hre.run("verify:verify", {
 			address: portalImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: portal.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: portal.address,
+		// });
 		await hre.run("verify:verify", {
 			address: zug.address,
 		});
 		await hre.run("verify:verify", {
 			address: shr.address,
 		});
-		await hre.run("verify:verify", {
-			address: hallImpl.address,
-		});
-		await hre.run("verify:verify", {
-			address: hall.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: hallImpl.address,
+		// });
+		// await hre.run("verify:verify", {
+		// 	address: hall.address,
+		// });
 	}
 }
 

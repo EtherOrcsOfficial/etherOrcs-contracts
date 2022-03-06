@@ -499,6 +499,8 @@ contract TestRaids is OrcsBaseTest {
     uint256[] myIds;
     uint256[] myAllyIds;
 
+    uint8 raidLocaction = 19;
+
     function setUp() external {
         init();
 
@@ -530,7 +532,7 @@ contract TestRaids is OrcsBaseTest {
         for (uint256 index = 1; index < 10; index++) {
             orcsMain.initMint(address(this), index, index + 1 );
             myIds.push(index);
-            orcsMain.updateOrc(index, 1, 1, 1, 1, 10, 1, 1000);
+            orcsMain.updateOrc(index, 1, 1, 1, 1, 1000, 1, 100000);
         }
         
         castleMain.travel(myIds, myAllyIds, 0 , 0);
@@ -546,7 +548,7 @@ contract TestRaids is OrcsBaseTest {
     }
 
     function test_sendToRaid() public {
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         for (uint256 index = 0; index < myIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -554,7 +556,7 @@ contract TestRaids is OrcsBaseTest {
             assertEq(end, 1636580705 + 16 days);
         }
 
-        alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+        alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myAllyIds.length), new uint256[](myIds.length));
         for (uint256 index = 0; index < myAllyIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
             (,, uint256 end, ,) = logCampaing(index + 1);
@@ -565,7 +567,7 @@ contract TestRaids is OrcsBaseTest {
     function test_sendToRaidStaked() public {
         orcsPoly.doActionWithManyOrcs(myIds, EtherOrcsPoly.Actions.FARMING);
 
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         for (uint256 index = 0; index < myIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -576,7 +578,7 @@ contract TestRaids is OrcsBaseTest {
         emit log_named_address("allies add", address(alliesPoly));
         alliesPoly.doActionWithManyAllies(myAllyIds, 1);
 
-        alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+        alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
         for (uint256 index = 0; index < myAllyIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 5051), address(this));
             (,, uint256 end, ,) = logCampaing(index + 5051);
@@ -585,7 +587,7 @@ contract TestRaids is OrcsBaseTest {
     }
 
     function testFail_sendToRaidAndBackOrcs() public {
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         for (uint256 index = 0; index < myIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -597,7 +599,7 @@ contract TestRaids is OrcsBaseTest {
     }
 
     function testFail_sendToRaidAndBackAllies() public {
-        alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+        alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myAllyIds.length), new uint256[](myIds.length));
         for (uint256 index = 0; index < myAllyIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
             (,, uint256 end, ,) = logCampaing(index + 1);
@@ -608,7 +610,7 @@ contract TestRaids is OrcsBaseTest {
     }
 
     function test_sendToRaidAndBack() public {
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         uint256 endBlock;
         for (uint256 index = 0; index < myIds.length; index++) {
@@ -618,7 +620,7 @@ contract TestRaids is OrcsBaseTest {
             assertEq(end, 1636580705 + 16 days);
         }
 
-        alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+        alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myAllyIds.length), new uint256[](myIds.length));
         for (uint256 index = 0; index < myAllyIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
             (,, uint256 end, ,) = logCampaing(index + 1);
@@ -638,12 +640,13 @@ contract TestRaids is OrcsBaseTest {
         itemsPoly.mint(address(this), 1, 10 ether);
 
         uint256[] memory pt = new uint256[](myIds.length);
-        pt[0] = 2;
-        orcsPoly.sendToRaid(myIds, 10, false, pt);
+        pt[0] = 1;
+        orcsPoly.sendToRaid(myIds, raidLocaction, false, pt, new uint256[](myIds.length));
+    
     }
 
     function testFail_sendToRaidAndBackDirectly() public {
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
         uint256 endB;
         for (uint256 index = 0; index < myIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -659,11 +662,11 @@ contract TestRaids is OrcsBaseTest {
     }
 
     function testFail_stake() public {
-        raidsPoly.stakeManyAndStartCampaign(myIds, address(this), 0, false, new uint256[](myIds.length));
+        raidsPoly.stakeManyAndStartCampaign(myIds, address(this), 0, false, new uint256[](myIds.length), new uint256[](myIds.length));
     }
 
     function test_multipleRaids() public {
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         for (uint256 index = 0; index < myIds.length; index++) {
             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -675,7 +678,7 @@ contract TestRaids is OrcsBaseTest {
         hevm.warp(block.timestamp + 16 days + 1);
         hevm.roll(endBlock + 1);
 
-        orcsPoly.startRaidCampaign(myIds, 0, true, new uint256[](myIds.length));
+        orcsPoly.startRaidCampaign(myIds, 0, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         logCampaing(2);
 
@@ -684,7 +687,7 @@ contract TestRaids is OrcsBaseTest {
     function test_getClaim() public {
 
         emit log_named_uint("blanceof", pzug.balanceOf(address(this)) / 1 ether);
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         hevm.warp(block.timestamp + 16 days + 1);
 
@@ -694,7 +697,7 @@ contract TestRaids is OrcsBaseTest {
     function testFail_noLevel() public {
         orcsPoly.updateOrc(1, 1, 1, 1, 1, 1, 1, 1000);
 
-        orcsPoly.sendToRaid(myIds, 10, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
     }
 
     function getArray(uint256 id) internal pure returns (uint256[] memory ids) {
@@ -704,71 +707,61 @@ contract TestRaids is OrcsBaseTest {
     }
 
     function test_allRaidPlaces() public {
-        uint256[] memory one = getArray(1);
-        orcsPoly.sendToRaid(one, 0, true, new uint256[](myIds.length));
+        // uint256[] memory one = getArray(1);
+        // orcsPoly.sendToRaid(one, 0, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-        orcsPoly.updateOrc(2, 2, 2, 2, 2, 20, 20, 20);
-        uint256[] memory two = getArray(2);
-        orcsPoly.sendToRaid(two, 1, true, new uint256[](myIds.length));
+        // orcsPoly.updateOrc(2, 2, 2, 2, 2, 20, 20, 20);
+        // uint256[] memory two = getArray(2);
+        // orcsPoly.sendToRaid(two, 1, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-        orcsPoly.updateOrc(3, 2, 2, 2, 2, 20, 20, 20);
-        uint256[] memory thr = getArray(3);
-        orcsPoly.sendToRaid(thr, 2, true, new uint256[](myIds.length));
+        // orcsPoly.updateOrc(3, 2, 2, 2, 2, 20, 20, 20);
+        // uint256[] memory thr = getArray(3);
+        // orcsPoly.sendToRaid(thr, 2, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-        orcsPoly.updateOrc(4, 2, 2, 2, 2, 35, 20, 20);
-        uint256[] memory frr = getArray(4);
-        orcsPoly.sendToRaid(frr, 3, true, new uint256[](myIds.length));
+        // orcsPoly.updateOrc(4, 2, 2, 2, 2, 35, 20, 20);
+        // uint256[] memory frr = getArray(4);
+        // orcsPoly.sendToRaid(frr, 3, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-        orcsPoly.updateOrc(5, 2, 2, 2, 2, 55, 20, 20);
-        uint256[] memory fv = getArray(5);
-        orcsPoly.sendToRaid(fv, 4, true, new uint256[](myIds.length));
+        // orcsPoly.updateOrc(5, 2, 2, 2, 2, 55, 20, 20);
+        // uint256[] memory fv = getArray(5);
+        // orcsPoly.sendToRaid(fv, 4, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-        hevm.warp(block.timestamp + 17 days);
+        // hevm.warp(block.timestamp + 17 days);
 
-        raidsPoly.claim(myIds);
+        // raidsPoly.claim(myIds);
     }
 
     function test_getSuperb() public {
 
-        orcsPoly.sendToRaid(myIds, 18, true, new uint256[](myIds.length));
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
         hevm.warp(block.timestamp + (500 * 1 hours));
 
         raidsPoly.claim(myIds);
     }
 
-    mapping (uint256 => uint256) rewardsCount;
+    function test_runes() public {
+        itemsPoly.setMinter(address(this), true);
 
-    function test_raidsOutcomes() public {
+        itemsPoly.mint(address(this), 3, 10 ether);
 
-        /// 10k raids different ids
-        alliesPoly.adjustAlly(11051,1,250,1,2,3,"0x");
-        alliesPoly.sendToRaid(getArray(11051), 16, false, getArray(0));
-        (uint256 reward1, uint256 reward2) = raidsPoly.MOCKclaim(11051);
-        rewardsCount[reward1]++;
-        rewardsCount[reward2]++;
-        hevm.warp(block.timestamp + 200 hours);
-        uint256 runs = 5000;
+        uint256[] memory pt = new uint256[](myIds.length);
+        pt[0] = 2;
+        orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), pt );
 
-        emit log_named_uint("runs:", runs);
-        emit log("orc level : twice the max");
-        emit log("Desired %: 15% supber, 30% great, 55% regurlar");
-        for (uint256 i = 0; i < runs; i++) {
-            alliesPoly.startRaidCampaign(getArray(11051), 16, true, getArray(0));
-            hevm.warp(block.timestamp + 400 hours);
-            ( reward1,  reward2) = raidsPoly.MOCKclaim(11051);
-            rewardsCount[reward1]++;
-            rewardsCount[reward2]++;
-        }
-        emit log_named_uint("regs  :", rewardsCount[8000000000000000000]);
-        emit log_named_uint("greats:", rewardsCount[16000000000000000000]);
-        emit log_named_uint("sup   :", rewardsCount[28000000000000000000]);
+        hevm.warp(block.timestamp + (500 * 1 hours));
+
+        orcsPoly.claim(myIds);
     }
 
+    // function test_runes_outcomes() public {
 
+    //     for (uint256 i = 0; i < array.length; i++) {
+            
+    //     }
+    // }
 
-
-
+    
 
     function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4){
         return 0xf23a6e61;

@@ -37,8 +37,8 @@ interface RaidsLike {
 }
 
 interface RaidsLikePoly {
-    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_, uint256[] calldata potions_) external;
-    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_,  uint256[] calldata potions_) external;
+    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_, uint256[] calldata potions_, uint256[] calldata runes_) external;
+    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_,  uint256[] calldata potions_, uint256[] calldata runes_) external;
     function commanders(uint256 id) external returns(address);
     function unstake(uint256 id) external;
 }

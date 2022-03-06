@@ -194,13 +194,10 @@ contract EtherOrcsAllies is ERC721 {
         uint8 pants    = uint8(_randomize(rand, "PANTS",    id) % 21) + 1;
         uint8 shirt    = uint8(_randomize(rand, "SHIRT",    id) % 20) + 1;
         uint8 hair     = uint8(_randomize(rand, "HAIR",     id) % 21) + 1;
-        uint8 armor    = uint8(_randomize(rand, "ARMOR",    id) % 6) + 1;
-        uint8 mainhand = uint8(_randomize(rand, "MAINHAND", id) % 6) + 1; 
-        uint8 offhand  = uint8(_randomize(rand, "OFFHAND",  id) % 6) + 1;
 
         _mint(msg.sender, id);
 
-        allies[id] = Ally({class: 3, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, face, boots, pants, shirt, hair, armor, mainhand, offhand))});
+        allies[id] = Ally({class: 3, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, face, boots, pants, shirt, hair, uint8(0), uint8(0), uint8(0)))});
     }
 
     /// @dev Create a bit more of randomness
@@ -212,3 +209,4 @@ contract EtherOrcsAllies is ERC721 {
         return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.basefee, block.timestamp, entropySauce)));
     }
 }
+
