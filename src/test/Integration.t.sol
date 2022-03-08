@@ -352,18 +352,19 @@ contract TestAlliesMain is OrcsBaseTest {
     function test_mint_rogue() external {
         uint256 balBefore = boneShards.balanceOf(address(this));
 
-        alliesMain.mintRogue();
+        alliesMain.mintRogues(100);
+        fail();
 
-        uint256 balAfter = boneShards.balanceOf(address(this));
+        // uint256 balAfter = boneShards.balanceOf(address(this));
 
-        (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = alliesMain.allies(11051);
+        // (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = alliesMain.allies(11051);
 
-        EtherOrcsAllies.Rogue memory rg = alliesMain.rogue(details);
+        // EtherOrcsAllies.Rogue memory rg = alliesMain.rogue(details);
 
-        assertEq(balBefore - balAfter, 60 ether);
-        assertEq(alliesMain.ownerOf(11051), address(this));
-        assertEq(skillCredits, 100);
-        assertEq(level, 30);
+        // assertEq(balBefore - balAfter, 60 ether);
+        // assertEq(alliesMain.ownerOf(11051), address(this));
+        // assertEq(skillCredits, 100);
+        // assertEq(level, 30);
         // assertEq(lvlProgress, 25000);
         // assertEq(modF, 0);
         // assertTrue(body > 0 && body <= 7);
@@ -760,32 +761,32 @@ contract TestRaids is OrcsBaseTest {
     
     mapping (uint256 => uint256) rewardsCount;
 
-    function test_raidsOutcomes() public {
+    // function test_raidsOutcomes() public {
 
-        raidsPoly.setRuneBoost(200);
+    //     raidsPoly.setRuneBoost(200);
 
-        /// 10k raids different ids
-        alliesPoly.adjustAlly(11051,1,35,1,2,3,"0x");
-        alliesPoly.sendToRaid(getArray(11051), 19, false, getArray(0), getArray(0));
-        uint256 reward1 = raidsPoly._claim(11051);
-        rewardsCount[reward1]++;
-        hevm.warp(block.timestamp + 200 hours);
-        uint256 runs = 10000;
+    //     /// 10k raids different ids
+    //     alliesPoly.adjustAlly(11051,1,35,1,2,3,"0x");
+    //     alliesPoly.sendToRaid(getArray(11051), 19, false, getArray(0), getArray(0));
+    //     uint256 reward1 = raidsPoly._claim(11051);
+    //     rewardsCount[reward1]++;
+    //     hevm.warp(block.timestamp + 200 hours);
+    //     uint256 runs = 10000;
 
-        emit log_named_uint("runs:", runs);
-        emit log("orc level : twice the max");
-        emit log("Desired %: 10% supber, 20% great, 70% regurlar");
-        for (uint256 i = 0; i < runs; i++) {
-            itemsPoly.mint(address(this), 3, 3 ether);
-            alliesPoly.startRaidCampaign(getArray(11051), 19, false, getArray(0), getArray(3));
-            hevm.warp(block.timestamp + 400 hours);
-            reward1 = raidsPoly._claim(11051);
-            rewardsCount[reward1]++;
-        }
-        emit log_named_uint("regs  :", rewardsCount[3000000000000000000]);
-        emit log_named_uint("greats:", rewardsCount[7000000000000000000]);
-        emit log_named_uint("sup   :", rewardsCount[15000000000000000000]);
-    }
+    //     emit log_named_uint("runs:", runs);
+    //     emit log("orc level : twice the max");
+    //     emit log("Desired %: 10% supber, 20% great, 70% regurlar");
+    //     for (uint256 i = 0; i < runs; i++) {
+    //         itemsPoly.mint(address(this), 3, 3 ether);
+    //         alliesPoly.startRaidCampaign(getArray(11051), 19, false, getArray(0), getArray(3));
+    //         hevm.warp(block.timestamp + 400 hours);
+    //         reward1 = raidsPoly._claim(11051);
+    //         rewardsCount[reward1]++;
+    //     }
+    //     emit log_named_uint("regs  :", rewardsCount[3000000000000000000]);
+    //     emit log_named_uint("greats:", rewardsCount[7000000000000000000]);
+    //     emit log_named_uint("sup   :", rewardsCount[15000000000000000000]);
+    // }
 
     
 

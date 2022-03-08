@@ -29,7 +29,7 @@ contract InventoryManagerRogues {
             footer ));
     }
 
-    function getTokenURI(uint256 id_, uint256 , uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
+    function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
         return _buildRogueURI(_getUpper(id_), getSVG(details_), getAttributes(details_, level_, modF_, skillCredits_));
     }
 
@@ -143,15 +143,15 @@ contract InventoryManagerRogues {
                     INTERNAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function _rogueLower(bytes22 details) internal pure returns(uint8 body_, uint8 shirt_, uint8 boot_, uint8 pant_) {
+    function _rogueLower(bytes22 details) public pure returns(uint8 body_, uint8 shirt_, uint8 boot_, uint8 pant_) {
         body_  = uint8(bytes1(details));
         shirt_ = uint8(bytes1(details << 32));
         boot_  = uint8(bytes1(details << 16));
         pant_  = uint8(bytes1(details << 24));
     }
 
-    function _rogueUpper(bytes22 details) internal pure returns(uint8 face_, uint8 hair_, uint8 armor_, uint8 mainhand_, uint8 offhand_) {
-        face_ = uint8(bytes1(details << 8));
+    function _rogueUpper(bytes22 details) public pure returns(uint8 face_, uint8 hair_, uint8 armor_, uint8 mainhand_, uint8 offhand_) {
+        face_     = uint8(bytes1(details << 8));
         hair_     = uint8(bytes1(details << 40));
         armor_    = uint8(bytes1(details << 48));
         mainhand_ = uint8(bytes1(details << 56));
@@ -163,9 +163,9 @@ contract InventoryManagerRogues {
 
         return string(abi.encodePacked(
             get(Part.body,  body_), 
-            get(Part.pant,  pant_),
+            get(Part.shirt, shirt_),
             get(Part.boot,  boot_),
-            get(Part.shirt, shirt_)
+            get(Part.pant,  pant_)
             ));
     }
 
@@ -210,7 +210,7 @@ contract InventoryManagerRogues {
             part == Part.body     ? "body"     :
             part == Part.face     ? "face"     :
             part == Part.boot     ? "boot"     :
-            part == Part.pant     ? "pant"     :
+            part == Part.pant     ? "pants"     :
             part == Part.shirt    ? "shirt"    :
             part == Part.hair     ? "hair"     :
             part == Part.armor    ? "armor"    :
@@ -252,16 +252,12 @@ contract InventoryManagerRogues {
         (uint8 body_, uint8 shirt_, uint8 boot_, uint8 pant_) = _rogueLower(details_);
        return string(abi.encodePacked(
            '"attributes": [',
-            getBodyAttributes(body_),   ',',
-            getShirtAttributes(shirt_), ',',
-            getBootAttributes(boot_),   ',',
-            getPantAttributes(pant_),   ','));
+            getBodyAttributes(body_),   ','));
     }
 
     function _getUpperAtt(bytes22 details_) internal pure returns (string memory) {
         (, uint8 hair_, uint8 armor_, uint8 mainhand_, uint8 offhand_) = _rogueUpper(details_);
        return string(abi.encodePacked(
-            getHairAttributes(hair_),        ',',
             getArmorAttributes(armor_),      ',',
             getMainhandAttributes(offhand_), ',',
             getOffhandAttributes(mainhand_)));
@@ -275,22 +271,6 @@ contract InventoryManagerRogues {
 
     function getBodyAttributes(uint256 body_) internal pure returns(string memory) {
         return string(abi.encodePacked('{"trait_type":"Body","value":"',getBodyName(body_),'"}'));
-    }
-
-    function getBootAttributes(uint256 boots_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Boots","value":"',getBootsName(boots_),'"}'));
-    }
-
-    function getPantAttributes(uint256 pants_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Pants","value":"',getPantsName(pants_),'"}'));
-    }
-
-    function getShirtAttributes(uint256 shirt_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Shirts","value":"',getShirtsName(shirt_),'"}'));
-    }
-
-    function getHairAttributes(uint256 hair_) internal pure returns(string memory) {
-        return string(abi.encodePacked('{"trait_type":"Hairs","value":"',getHairsName(hair_),'"}'));
     }
 
     function getArmorAttributes(uint256 armor_) internal pure returns(string memory) {
@@ -317,323 +297,125 @@ contract InventoryManagerRogues {
     } 
 
     function getArmorName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) return "None";
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Iron Cap +1";
-                if (id == 8)  return "Horned Crown +1";
-                if (id == 9)  return "Protective Visor +1";
-                if (id == 10)  return "Spiked Cap +2";
-                if (id == 11)  return "Footsoldier Helm +2";
-                if (id == 12)  return "Steel Pad +2";
-                if (id == 13)  return "Leather Strap +2";
-                if (id == 14)  return "Leather Pad +2";
-                if (id == 15)  return "Centurion Cap +3";
-            } else {
-                if (id == 16)  return "Knight Helm +3";
-                if (id == 17)  return "Strange Mask +3";
-                if (id == 18)  return "Gladiator Visor +3";
-                if (id == 19)  return "Conqueror Helm +3";
-                if (id == 20)  return "Bone Mask +3";
-                if (id == 21)  return "Champion Helm +4";
-                if (id == 22)  return "Skull Crown +4";
-                if (id == 23)  return "Gladiator Helm +4";
-                if (id == 24)  return "Mercenary Steel +4";
-                if (id == 25)  return "Stolen Artifact +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Tribelord Mask +4";
-                if (id == 27)  return "Deathstalker Cowl +5";
-                if (id == 28)  return "Helm of the Victor +5";
-                if (id == 29)  return "Bonemaster Skull +5";
-                if (id == 30)  return "Demon Visage +5";
-                if (id == 31)  return "Resolve of the Champion +5";
-                if (id == 32)  return "Wargod Crown +6";
-                if (id == 33)  return "Cthulus Wrath +6";
-                if (id == 34)  return "Iron Maiden +6";
-                if (id == 35)  return "Mantle of Destruction +6";
-            }
-        }
+        if (id == 0)  return "None";
+        if (id == 1)  return "Leather Bracers +2";
+        if (id == 2)  return "Leather Vambraces +2";
+        if (id == 3)  return "Leather Gauntlets +2";
+        if (id == 4)  return "Bronze Bracers +2";
+        if (id == 5)  return "Elven Gauntlets +2";
+        if (id == 6)  return "Lucky Gauntlets +3";
+        if (id == 7)  return "Wanderers Gauntlets +3";
+        if (id == 8)  return "Stealth Vambraces +3";
+        if (id == 9)  return "Phantom Vambraces +3";
+        if (id == 10)  return "Elders Gauntlets +3";
+        if (id == 11)  return "Turtle Shell Vambraces +3";
+        if (id == 12)  return "Golden Bracers +3";
+        if (id == 13)  return "Last Gambit +3";
+        if (id == 14)  return "Royal Vambraces +3";
+        if (id == 15)  return "Hard Leather Vambraces +3";
+        if (id == 16)  return "Thieves Spaulers +4";
+        if (id == 17)  return "Spaulders of Unholy Fire +4";
+        if (id == 18)  return "Armor of Remorse +4";
+        if (id == 19)  return "Outlaws Protection +4";
+        if (id == 20)  return "Snakes Carapace +4";
+        if (id == 21)  return "Mantle of Malice +4";
+        if (id == 22)  return "Assassins Cape +5";
+        if (id == 23)  return "Cape of the Elders +5";
+        if (id == 24)  return "Nightstalker Cape +5";
+        if (id == 25)  return "Harbinger Cape +5";
+        if (id == 26)  return "Shadowskin Cape +5";
+        if (id == 27)  return "Serpent Cape +5";
+        if (id == 28)  return "Cape of Thieves +5";
+        if (id == 29)  return "Wraith Cloak +6";
+        if (id == 30)  return "Gilded Shadow Cloak +6";
+        if (id == 31)  return "Cloak of Undying +6";
+        if (id == 32)  return "Enchanted Duelists Cloak +6";
+        if (id == 33)  return "Oathbringer +6";
+        if (id == 34)  return "Dawnbringer +6";
+        if (id == 35)  return "Frost Cloak +6";
     }
-
-    function getBootsName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) return "None";
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Iron Cap +1";
-                if (id == 8)  return "Horned Crown +1";
-                if (id == 9)  return "Protective Visor +1";
-                if (id == 10)  return "Spiked Cap +2";
-                if (id == 11)  return "Footsoldier Helm +2";
-                if (id == 12)  return "Steel Pad +2";
-                if (id == 13)  return "Leather Strap +2";
-                if (id == 14)  return "Leather Pad +2";
-                if (id == 15)  return "Centurion Cap +3";
-            } else {
-                if (id == 16)  return "Knight Helm +3";
-                if (id == 17)  return "Strange Mask +3";
-                if (id == 18)  return "Gladiator Visor +3";
-                if (id == 19)  return "Conqueror Helm +3";
-                if (id == 20)  return "Bone Mask +3";
-                if (id == 21)  return "Champion Helm +4";
-                if (id == 22)  return "Skull Crown +4";
-                if (id == 23)  return "Gladiator Helm +4";
-                if (id == 24)  return "Mercenary Steel +4";
-                if (id == 25)  return "Stolen Artifact +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Tribelord Mask +4";
-                if (id == 27)  return "Deathstalker Cowl +5";
-                if (id == 28)  return "Helm of the Victor +5";
-                if (id == 29)  return "Bonemaster Skull +5";
-                if (id == 30)  return "Demon Visage +5";
-                if (id == 31)  return "Resolve of the Champion +5";
-                if (id == 32)  return "Wargod Crown +6";
-                if (id == 33)  return "Cthulus Wrath +6";
-                if (id == 34)  return "Iron Maiden +6";
-                if (id == 35)  return "Mantle of Destruction +6";
-            }
-        }
-    }
-
-    function getPantsName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) return "None";
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Iron Cap +1";
-                if (id == 8)  return "Horned Crown +1";
-                if (id == 9)  return "Protective Visor +1";
-                if (id == 10)  return "Spiked Cap +2";
-                if (id == 11)  return "Footsoldier Helm +2";
-                if (id == 12)  return "Steel Pad +2";
-                if (id == 13)  return "Leather Strap +2";
-                if (id == 14)  return "Leather Pad +2";
-                if (id == 15)  return "Centurion Cap +3";
-            } else {
-                if (id == 16)  return "Knight Helm +3";
-                if (id == 17)  return "Strange Mask +3";
-                if (id == 18)  return "Gladiator Visor +3";
-                if (id == 19)  return "Conqueror Helm +3";
-                if (id == 20)  return "Bone Mask +3";
-                if (id == 21)  return "Champion Helm +4";
-                if (id == 22)  return "Skull Crown +4";
-                if (id == 23)  return "Gladiator Helm +4";
-                if (id == 24)  return "Mercenary Steel +4";
-                if (id == 25)  return "Stolen Artifact +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Tribelord Mask +4";
-                if (id == 27)  return "Deathstalker Cowl +5";
-                if (id == 28)  return "Helm of the Victor +5";
-                if (id == 29)  return "Bonemaster Skull +5";
-                if (id == 30)  return "Demon Visage +5";
-                if (id == 31)  return "Resolve of the Champion +5";
-                if (id == 32)  return "Wargod Crown +6";
-                if (id == 33)  return "Cthulus Wrath +6";
-                if (id == 34)  return "Iron Maiden +6";
-                if (id == 35)  return "Mantle of Destruction +6";
-            }
-        }
-    }
-
-    function getShirtsName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) return "None";
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Iron Cap +1";
-                if (id == 8)  return "Horned Crown +1";
-                if (id == 9)  return "Protective Visor +1";
-                if (id == 10)  return "Spiked Cap +2";
-                if (id == 11)  return "Footsoldier Helm +2";
-                if (id == 12)  return "Steel Pad +2";
-                if (id == 13)  return "Leather Strap +2";
-                if (id == 14)  return "Leather Pad +2";
-                if (id == 15)  return "Centurion Cap +3";
-            } else {
-                if (id == 16)  return "Knight Helm +3";
-                if (id == 17)  return "Strange Mask +3";
-                if (id == 18)  return "Gladiator Visor +3";
-                if (id == 19)  return "Conqueror Helm +3";
-                if (id == 20)  return "Bone Mask +3";
-                if (id == 21)  return "Champion Helm +4";
-                if (id == 22)  return "Skull Crown +4";
-                if (id == 23)  return "Gladiator Helm +4";
-                if (id == 24)  return "Mercenary Steel +4";
-                if (id == 25)  return "Stolen Artifact +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Tribelord Mask +4";
-                if (id == 27)  return "Deathstalker Cowl +5";
-                if (id == 28)  return "Helm of the Victor +5";
-                if (id == 29)  return "Bonemaster Skull +5";
-                if (id == 30)  return "Demon Visage +5";
-                if (id == 31)  return "Resolve of the Champion +5";
-                if (id == 32)  return "Wargod Crown +6";
-                if (id == 33)  return "Cthulus Wrath +6";
-                if (id == 34)  return "Iron Maiden +6";
-                if (id == 35)  return "Mantle of Destruction +6";
-            }
-        }
-    }
-
-    function getHairsName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) return "None";
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Iron Cap +1";
-                if (id == 8)  return "Horned Crown +1";
-                if (id == 9)  return "Protective Visor +1";
-                if (id == 10)  return "Spiked Cap +2";
-                if (id == 11)  return "Footsoldier Helm +2";
-                if (id == 12)  return "Steel Pad +2";
-                if (id == 13)  return "Leather Strap +2";
-                if (id == 14)  return "Leather Pad +2";
-                if (id == 15)  return "Centurion Cap +3";
-            } else {
-                if (id == 16)  return "Knight Helm +3";
-                if (id == 17)  return "Strange Mask +3";
-                if (id == 18)  return "Gladiator Visor +3";
-                if (id == 19)  return "Conqueror Helm +3";
-                if (id == 20)  return "Bone Mask +3";
-                if (id == 21)  return "Champion Helm +4";
-                if (id == 22)  return "Skull Crown +4";
-                if (id == 23)  return "Gladiator Helm +4";
-                if (id == 24)  return "Mercenary Steel +4";
-                if (id == 25)  return "Stolen Artifact +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Tribelord Mask +4";
-                if (id == 27)  return "Deathstalker Cowl +5";
-                if (id == 28)  return "Helm of the Victor +5";
-                if (id == 29)  return "Bonemaster Skull +5";
-                if (id == 30)  return "Demon Visage +5";
-                if (id == 31)  return "Resolve of the Champion +5";
-                if (id == 32)  return "Wargod Crown +6";
-                if (id == 33)  return "Cthulus Wrath +6";
-                if (id == 34)  return "Iron Maiden +6";
-                if (id == 35)  return "Mantle of Destruction +6";
-            }
-        }
-    }
-
 
     function getMainhandName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) {
-                if (id == 1)  return "Simple Club";
-                if (id == 2)  return "Bone Knife";
-                if (id == 3)  return "Hatchet";
-                if (id == 4)  return "Crude Club";
-                if (id == 5)  return "Witch Finger";
-                if (id == 6)  return "Machete";
-        }
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Ceramic Hammer +1";
-                if (id == 8)  return "Battle Axe +1";
-                if (id == 9)  return "Stone Smasher +1";
-                if (id == 10)  return "Brute Club +2";
-                if (id == 11)  return "Wiseman Blade +2";
-                if (id == 12)  return "Iron fist +2";
-                if (id == 13)  return "Strange Hammer +2";
-                if (id == 14)  return "Venom Sickle +2";
-                if (id == 15)  return "Monk Steel +3";
-            } else {
-                if (id == 16)  return "Blackiron Axe +3";
-                if (id == 17)  return "Serpent Crook +3";
-                if (id == 18)  return "Steel Bound Smasher +3";
-                if (id == 19)  return "Blazing Torch +3";
-                if (id == 20)  return "War Cleaver +3";
-                if (id == 21)  return "Tainted Club +4";
-                if (id == 22)  return "Spiked Club +4";
-                if (id == 23)  return "Razor Edge +4";
-                if (id == 24)  return "Raven Talon +4";
-                if (id == 25)  return "Axe of Rorn +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Wyvern Hammer +4";
-                if (id == 27)  return "Pulverizer +5";
-                if (id == 28)  return "Demon Kanabo +5";
-                if (id == 29)  return "Silken Shredder +5";
-                if (id == 30)  return "Demon Crescent +5";
-                if (id == 31)  return "Saber of the Unknown +5";
-                if (id == 32)  return "Dragon Blade of Norok +6";
-                if (id == 33)  return "Great Sword of Dakmak +6";
-                if (id == 34)  return "Might of Bakk +6";
-                if (id == 35)  return "Soul Blade of Bronk +6";
-            }
-        }
+        if (id == 0)  return "None";
+        if (id == 1)  return "Standard Blade +2";
+        if (id == 2)  return "Soldier Sword +2";
+        if (id == 3)  return "Curved Machete +2";
+        if (id == 4)  return "Curved Blade +2";
+        if (id == 5)  return "Blunt Sword +2";
+        if (id == 6)  return "Sawtooth +3";
+        if (id == 7)  return "Bladed Knuckles +3";
+        if (id == 8)  return "Sharpened Sword +3";
+        if (id == 9)  return "Butterfly Sword +3";
+        if (id == 10)  return "Sai +3";
+        if (id == 11)  return "Serrated Blade +3";
+        if (id == 12)  return "Iron Claw +3";
+        if (id == 13)  return "Whipper +3";
+        if (id == 14)  return "Lightning Stunner +3";
+        if (id == 15)  return "Mithril Cutter +3";
+        if (id == 16)  return "Elf Flail +4";
+        if (id == 17)  return "Shinobi Staff +4";
+        if (id == 18)  return "Claw +4";
+        if (id == 19)  return "Kujang +4";
+        if (id == 20)  return "Miao Dao +4";
+        if (id == 21)  return "Shinken +4";
+        if (id == 22)  return "Double Bladed Reaper +5";
+        if (id == 23)  return "Pirate Cutlass +5";
+        if (id == 24)  return "Moon Blade +5";
+        if (id == 25)  return "Laito +5";
+        if (id == 26)  return "Flame Ash +5";
+        if (id == 27)  return "Razer +5";
+        if (id == 28)  return "Bloody Bokken +5";
+        if (id == 29)  return "Fu Tao of Rina +6";
+        if (id == 30)  return "Shotel of Amara +6";
+        if (id == 31)  return "Kukri of Elora +6";
+        if (id == 32)  return "Stiletto of Zestari +6";
+        if (id == 33)  return "Blade of Iriel +6";
+        if (id == 34)  return "Icebrink of Ilyana +6";
+        if (id == 35)  return "Scythe of Andela +6";
     }
 
     function getOffhandName(uint256 id) public pure returns (string memory) {
-
-        if (id <= 6) {
-                if (id == 1)  return "Pickaxe";
-                if (id == 2)  return "Steel Cudgel";
-                if (id == 3)  return "Two Sided Cleaver";
-                if (id == 4)  return "Knife";
-                if (id == 5)  return "Broken Bottle";
-                if (id == 6)  return "Truncheon";
-        }
-        if (id <= 25) {
-            if (id <= 15) {
-                if (id == 7)  return "Spiked Mace +1";
-                if (id == 8)  return "Cleaver +1";
-                if (id == 9)  return "Barrel Shield +1";
-                if (id == 10)  return "Flanged Mace +2";
-                if (id == 11)  return "Large Knife +2";
-                if (id == 12)  return "Large Cleaver +2";
-                if (id == 13)  return "Skull Crusher +2";
-                if (id == 14)  return "Duelist Buckler +2";
-                if (id == 15)  return "Giant Cleaver +3";
-            } else {
-                if (id == 16)  return "Two Pronged Spear +3";
-                if (id == 17)  return "Spear +3";
-                if (id == 18)  return "Reinforced Shield +3";
-                if (id == 19)  return "Kanabo +3";
-                if (id == 20)  return "Tower Shield +3";
-                if (id == 21)  return "Obsidian Macuahuitl +4";
-                if (id == 22)  return "Wolf Hand +4";
-                if (id == 23)  return "Large Flanged Mace +4";
-                if (id == 24)  return "Chain Sword +4";
-                if (id == 25)  return "Artifact Shield +4";
-            }
-        } else {
-            if (id <= 35) {
-                if (id == 26)  return "Seaman Shield +4";
-                if (id == 27)  return "Spiked Shield +5";
-                if (id == 28)  return "Venom Sword +5";
-                if (id == 29)  return "Spiked Flail +5";
-                if (id == 30)  return "Large Spiked Kanabo +5";
-                if (id == 31)  return "Centurion Shield +5";
-                if (id == 32)  return "Might of Trok +6";
-                if (id == 33)  return "Rage of Zarag +6";
-                if (id == 34)  return "Barricade of Erok +6";
-                if (id == 35)  return "Bulwark of Kugrok +6";
-            }
-        }
+        if (id == 0)  return "None";
+        if (id == 1)  return "Iron Axe +2";
+        if (id == 2)  return "Iron Grace +2";
+        if (id == 3)  return "Broken Straight Sword +2";
+        if (id == 4)  return "Broken Long Sword +2";
+        if (id == 5)  return "Iron Chopper +2";
+        if (id == 6)  return "Twin Tails +3";
+        if (id == 7)  return "Ravager +3";
+        if (id == 8)  return "Bone Short Sword +3";
+        if (id == 9)  return "Coarse Ravager +3";
+        if (id == 10)  return "Wide Axe +3";
+        if (id == 11)  return "Spiked Flail +3";
+        if (id == 12)  return "War Flail +3";
+        if (id == 13)  return "Murakumo +3";
+        if (id == 14)  return "Swordbreaker +3";
+        if (id == 15)  return "Soldier Sword +3";
+        if (id == 16)  return "Elders Blade +4";
+        if (id == 17)  return "Flame Ash +4";
+        if (id == 18)  return "Elf Bow +4";
+        if (id == 19)  return "Double Sided Death +4";
+        if (id == 20)  return "Elf Sai +4";
+        if (id == 21)  return "Haladie +4";
+        if (id == 22)  return "Shuriken of Fate +5";
+        if (id == 23)  return "Broad Blades +5";
+        if (id == 24)  return "Bloodquench +5";
+        if (id == 25)  return "Assassins Blade +5";
+        if (id == 26)  return "Coil of Redemption +5";
+        if (id == 27)  return "Divine Blade +5";
+        if (id == 28)  return "Bone Sword +5";
+        if (id == 29)  return "Death Blade of Elyon +6";
+        if (id == 30)  return "Shotel of Kali +6";
+        if (id == 31)  return "Sharkbone of Tsarra +6";
+        if (id == 32)  return "Soulreaper of Lyrei +6";
+        if (id == 33)  return "God Bow of Aire +6";
+        if (id == 34)  return "Swiftblade of Rania +6";
+        if (id == 35)  return "Great Haladie of Kasula +6";
     }
 
     function getBodyName(uint256 id) public pure returns (string memory) {
-        if (id == 1) return "Dark Red";
-        if (id == 2) return "Bright Red";
-        if (id == 3) return "Dark Blue";
-        if (id == 4) return "Blue";
-        if (id == 5) return "Green";
-        if (id == 6) return "Tan";
-        if (id == 7) return "Clay";
-        if (id == 8) return "Dark Green";
+        if (id == 1) return "Body 1";
+        if (id == 2) return "Body 2";
     }
 }
 

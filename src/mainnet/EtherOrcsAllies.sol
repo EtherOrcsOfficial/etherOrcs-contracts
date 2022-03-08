@@ -94,7 +94,7 @@ contract EtherOrcsAllies is ERC721 {
     } 
 
     function pull(address owner_, uint256[] calldata ids) external {
-        require (auth[msg.sender], "not castle");
+        require (auth[msg.sender], "not auth");
         for (uint256 index = 0; index < ids.length; index++) {
             _transfer(owner_, msg.sender, ids[index]);
         }
@@ -182,6 +182,8 @@ contract EtherOrcsAllies is ERC721 {
         allies[id] = Ally({class: 2, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, mouth, nose, eyes, armor, mainhand, offhand))});
     }
 
+    event Debug(uint256 body, uint256 face);
+
     function _mintRogue(uint256 rand) internal returns (uint16 id) {
         id = uint16(rgSupply + 6001 + startId); //check that supply is less than 3000
         require(rgSupply++ <= 3000, "max supply reached");
@@ -192,8 +194,10 @@ contract EtherOrcsAllies is ERC721 {
         uint8 face     = uint8(_randomize(rand, "FACE",     id) % 10) + 1 + ((body - 1) * 10); 
         uint8 boots    = uint8(_randomize(rand, "BOOTS",    id) % 25) + 1;
         uint8 pants    = uint8(_randomize(rand, "PANTS",    id) % 21) + 1;
-        uint8 shirt    = uint8(_randomize(rand, "SHIRT",    id) % 20) + 1;
+        uint8 shirt    = uint8(_randomize(rand, "SHIRT",    id) % 19) + 1;
         uint8 hair     = uint8(_randomize(rand, "HAIR",     id) % 21) + 1;
+
+        emit Debug(body, face);
 
         _mint(msg.sender, id);
 

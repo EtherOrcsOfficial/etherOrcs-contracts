@@ -171,7 +171,7 @@ contract RaidsPoly {
                    INTERNAl HELPERS  
     //////////////////////////////////////////////////////////////*/
 
-    function _claim(uint256 id) public returns(uint256 reward){
+    function _claim(uint256 id) internal returns(uint256 reward){
         Campaign memory cmp = campaigns[id]; 
 
         if (cmp.runesUsed > 0 && _ended(campaigns[id])) {

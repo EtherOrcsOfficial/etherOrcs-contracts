@@ -247,7 +247,7 @@ contract EtherOrcs is ERC721O {
     }
 
     function pull(address owner_, uint256[] calldata ids) external {
-        require (msg.sender == castle, "not castle");
+        require (auth[msg.sender], "not auth");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], owner_, Actions.UNSTAKED, owner_);
             _transfer(owner_, msg.sender, ids[index]);

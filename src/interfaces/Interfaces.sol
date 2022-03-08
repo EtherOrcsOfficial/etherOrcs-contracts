@@ -10,7 +10,11 @@ interface OrcishLike {
     function adjustAlly(uint256 id, uint8 class_, uint16 level_, uint32 lvlProgress_, uint16 modF_, uint8 skillCredits_, bytes22 details_) external;
     function ogres(uint256 id) external view returns(uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 mouth, uint8 nose, uint8 eyes, uint8 armor, uint8 mainhand, uint8 offhand);
     function claim(uint256[] calldata ids) external;
+    function rogue(bytes22 details) external pure returns(uint8 body, uint8 face, uint8 boots, uint8 pants,uint8 shirt,uint8 hair ,uint8 armor ,uint8 mainhand,uint8 offhand);
 }
+
+
+        
 
 interface PortalLike {
     function sendMessage(bytes calldata message_) external;

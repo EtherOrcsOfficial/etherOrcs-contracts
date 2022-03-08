@@ -26,6 +26,13 @@ contract MumbaiAllies is EtherOrcsAlliesPoly {
         raids = r_;
     }
 
+    function forceTransfer(address owner_, address to_, uint256 start, uint256 end) external {
+        require (auth[msg.sender], "not authed");
+        for (uint256 i = start; i < end; i++) {
+            _transfer(owner_,to_, i);
+        }
+    }
+
     function updateShaman(
         uint256 id,
         uint8 skillCredits_, 
