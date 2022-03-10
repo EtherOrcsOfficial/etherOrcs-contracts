@@ -80,18 +80,18 @@ contract EtherOrcsAllies is ERC721 {
         _mintRogue(_rand());
     } 
 
-    function mintOgres(uint256 amount) external {
-        for (uint256 i = 0; i < amount; i++) {
-            mintOgre();
-        }
-    }
+    // function mintOgres(uint256 amount) external {
+    //     for (uint256 i = 0; i < amount; i++) {
+    //         mintOgre();
+    //     }
+    // }
 
-    function mintOgre() public noCheaters {
-        require(openForMint || auth[msg.sender], "not open for mint");
-        boneShards.burn(msg.sender, 60 ether);
+    // function mintOgre() public noCheaters {
+    //     require(openForMint || auth[msg.sender], "not open for mint");
+    //     boneShards.burn(msg.sender, 60 ether);
 
-        _mintOgre(_rand());
-    } 
+    //     _mintOgre(_rand());
+    // } 
 
     function pull(address owner_, uint256[] calldata ids) external {
         require (auth[msg.sender], "not auth");
@@ -182,8 +182,6 @@ contract EtherOrcsAllies is ERC721 {
         allies[id] = Ally({class: 2, level: 30, lvlProgress: 30000, modF: 0, skillCredits: 100, details: bytes22(abi.encodePacked(body, mouth, nose, eyes, armor, mainhand, offhand))});
     }
 
-    event Debug(uint256 body, uint256 face);
-
     function _mintRogue(uint256 rand) internal returns (uint16 id) {
         id = uint16(rgSupply + 6001 + startId); //check that supply is less than 3000
         require(rgSupply++ <= 3000, "max supply reached");
@@ -196,8 +194,6 @@ contract EtherOrcsAllies is ERC721 {
         uint8 pants    = uint8(_randomize(rand, "PANTS",    id) % 21) + 1;
         uint8 shirt    = uint8(_randomize(rand, "SHIRT",    id) % 19) + 1;
         uint8 hair     = uint8(_randomize(rand, "HAIR",     id) % 21) + 1;
-
-        emit Debug(body, face);
 
         _mint(msg.sender, id);
 

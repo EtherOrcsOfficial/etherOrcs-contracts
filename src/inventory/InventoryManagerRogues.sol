@@ -249,18 +249,18 @@ contract InventoryManagerRogues {
     }
 
     function _getLowerAtt(bytes22 details_) internal pure returns (string memory) {
-        (uint8 body_, uint8 shirt_, uint8 boot_, uint8 pant_) = _rogueLower(details_);
+        (uint8 body_, , , ) = _rogueLower(details_);
        return string(abi.encodePacked(
            '"attributes": [',
             getBodyAttributes(body_),   ','));
     }
 
     function _getUpperAtt(bytes22 details_) internal pure returns (string memory) {
-        (, uint8 hair_, uint8 armor_, uint8 mainhand_, uint8 offhand_) = _rogueUpper(details_);
+        (, , uint8 armor_, uint8 mainhand_, uint8 offhand_) = _rogueUpper(details_);
        return string(abi.encodePacked(
             getArmorAttributes(armor_),      ',',
-            getMainhandAttributes(offhand_), ',',
-            getOffhandAttributes(mainhand_)));
+            getMainhandAttributes(mainhand_), ',',
+            getOffhandAttributes(offhand_)));
     }
 
     function _getBottomAtt(uint256 level_, uint256 sc_, uint256 modF_) internal pure returns (string memory) {

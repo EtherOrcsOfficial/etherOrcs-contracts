@@ -32,9 +32,9 @@ contract RaidsPoly {
     address public vendor;
     address public gamingOracle;
 
-    uint256 seedCounter;
+    uint256 public seedCounter;
     uint256 public vendorPct;
-    uint256 runeBoost;
+    uint256 public runeBoost;
 
     uint256 public constant HND_PCT   = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
     uint256 public constant POTION_ID = 1;
@@ -69,7 +69,6 @@ contract RaidsPoly {
      function init(address allies_, address vendor_, address potions_, address orcl) external {
         require(msg.sender == admin);
 
-        giantCrabHealth = 400000;
         dbl_discount    = 200;
         runeBoost       = 200;
 
@@ -190,10 +189,10 @@ contract RaidsPoly {
                 if (cmp.double) {
                     uint256 reward2 = _getReward(raid, id, level, _getBoosted(cmp, _getRandom(id, rdn, "DOUBLE RAID")));
                     reward += reward2;
-                    _foundSomething(raid, cmp, _getRandom(id, rdn, "FIRST TRY"));
+                    _foundSomething(raid, cmp, _getRandom(id, rdn, "FIRST TRY"), id);
                     emit RaidOutcome(id, level, cmp.location, reward2);
                 }
-                _foundSomething(raid, cmp, _getRandom(id, rdn, "LUCKY"));
+                _foundSomething(raid, cmp, _getRandom(id, rdn, "LUCKY"), id);
             } 
             campaigns[id].runesUsed = 0;
             boneShards.mint(commanders[id], reward);
@@ -309,8 +308,16 @@ contract RaidsPoly {
         bonus =  HallOfChampionsLike(hallOfChampions).joined(id) > 0 ? 100 : 0;
     }
 
-    function _foundSomething(Raid memory raid, Campaign memory cmp, uint256 rdn) internal {
+    function _foundSomething(Raid memory raid, Campaign memory cmp, uint256 rdn, uint256 id) internal {
         if (cmp.runesUsed - 100 == 0) return;
-        
+
+        if (rdn >= 9_700) {
+            if (items.balanceOf(address(this), 100) > 0) items.safeTransferFrom(address(this), commanders[id], 100, 1, new bytes(0));
+        }
+
+        if (rdn <= 300) {
+            if (items.balanceOf(address(this), 101) > 0) items.safeTransferFrom(address(this), commanders[id], 101, 1, new bytes(0));
+        }
+
     }
 }

@@ -35,20 +35,33 @@ async function main() {
   await hre.run("compile");
 
   // Update Items
-  console.log("Deplpoying Inv Man")
-  let invMan = await deployProxied("InventoryManagerItems")
+  // console.log("Deplpoying Inv Man")
+  // let invMan = await deployProxied("InventoryManagerItems")
+  let invMan = await hre.ethers.getContractAt("InventoryManagerItems", "0x6e0c15a29851814D0e88E4AeaA359bae67e89676")
 
-  console.log("Deploying Potion")
-  let potion = await deploy("Potion");
-  await invMan.setSvg(1, potion.address);
+  // console.log("Deploying Potion")
+  // let potion = await deploy("Potion");
+  // await invMan.setSvg(1, potion.address);
 
-  console.log("Deploying Dummy")
-  let dummy = await deploy("Dummy");
-  await invMan.setSvg(2, dummy.address);
+  // console.log("Deploying Dummy")
+  // let dummy = await deploy("Dummy");
+  // await invMan.setSvg(2, dummy.address);
 
-  console.log("Deploying LavaRock")
-  let lavaRock = await deploy("LavaRock");
-   await invMan.setSvg(99, lavaRock.address);
+  // console.log("Deploying LavaRock")
+  // let lavaRock = await deploy("LavaRock");
+  // await invMan.setSvg(99, lavaRock.address);
+
+  console.log("Deploying Luck Rune")
+  let luckRune = await deploy("LuckRune");
+  await invMan.setSvg(3, luckRune.address);
+
+  console.log("Deploying FireCrystal")
+  let fireCrystal = await deploy("FireCrystal");
+  await invMan.setSvg(100, fireCrystal.address);
+
+  console.log("Deploying IceCrystal")
+  let iceCrystal = await deploy("IceCrystal");
+  await invMan.setSvg(101, iceCrystal.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

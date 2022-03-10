@@ -87,11 +87,11 @@ contract HordeUtilities {
         OrcishLike(allies).adjustAlly(id_, class, level, lvlProgress, modF, skillCredits, _getNewDetails(4, details));
     }
 
-    function _getNewDetails(uint256 body_, bytes22 details_) internal returns (bytes22 det){
+    function _getNewDetails(uint256 body_, bytes22 details_) internal view returns (bytes22 det){
         (uint8 body, uint8 face, uint8 boots, uint8 pants,uint8 shirt,uint8 hair ,uint8 armor ,uint8 mainhand,uint8 offhand) = OrcishLike(allies).rogue(details_);
 
-        face = uint8(body_ * 10) + ((face % 10) + 1) ;
-        body  = uint8(body_);
+        face = uint8((body_ - 1) * 10) + ((face % 10) + 1) ;
+        body = uint8(body_);
 
         det =  bytes22(abi.encodePacked(body,face,boots,pants,shirt,hair,armor,mainhand,offhand));
     }

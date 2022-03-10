@@ -643,3 +643,156 @@ Setting as Hairs
 Deploying Hairs2
 address 0x22F5c99869fd3fE60ed9BE9d4c6241d38dfEEa12
 Setting as Hairs
+
+
+Inventory Rogues Mainnet
+Deploying InventoryManagerRogues
+0xE37817Ee65e2b63df46b995D44370aAd22F4cCDC
+Deploying Proxy
+0xDb9Aab86dDce4bc36ef436Dc7AFdb4f86B9123F9
+Deploying Bodies1
+address 0xD285B95fe6c4ecbFc738FAF6bfF91b6bAcA9E321
+Setting as Bodies
+Deploying Armors1
+address 0x7f1CE978eA22c434D2F6fA7c976683670e08A06a
+Setting as Armors
+Deploying Armors2
+address 0x7FFAB3dA5FDd6805f497B048cd4F5831db107fCC
+Setting as Armors
+Deploying Armors3
+address 0xB639059f49FF924c177B5C8e2E1900e2aDE52B89
+Setting as Armors
+Deploying Mainhands1
+address 0x263AaCfAd032099a65D54546887D4B9B30b7FC3b
+Setting as Mainhands
+Deploying Mainhands2
+address 0x9E03facaC832c8f5e5E83b11ef9a603d32D4840b
+Setting as Mainhands
+Deploying Mainhands3
+address 0xA69faD7Ba8003e6e92F789bf49911d330e8F9C7E
+Setting as Mainhands
+Deploying Offhands1
+Deploying Offhands1
+address 0x9AbF621cA68FB067e342311ae83f9cc135b13ba1
+Setting as Offhands
+Deploying Offhands2
+address 0xCf70Cd001678E739CBA8BD7cA5B8F95B549EE2ED
+Setting as Offhands
+Deploying Offhands3
+address 0x5BA9ca6dA0C8F7459407b712ae2A8f4B48dC7139
+Setting as Offhands
+Deploying Faces1
+address 0xEE42CD692C417C03E644CcC9780aA3Df1c62199c
+Setting as Faces
+Deploying Faces2
+address 0x34007489f882F7817b1D26724c3609fE99e3f80c
+Setting as Faces
+Deploying Faces3
+address 0xB2bBc7b8d7A1ab1665aBcEaD3Cd38Ac57BCD2d2B
+Setting as Faces
+Deploying Faces4
+address 0x8EAB07c38217135285e820bA210Abfeeb4c31ee4
+Setting as Faces
+Deploying Boots1
+address 0x78B3259a52F0Ad277F839360Bc5c79E72ed73168
+Setting as Boots
+Deploying Boots2
+address 0x65919A2792C42689bDF11239173c071040a3A41d
+Setting as Boots
+Deploying Shirts1
+address 0x23392c27446a18E8b6c01ed9F23C985774460797
+Setting as Shirts
+Deploying Shirts2
+address 0x5Ca5265a618F8680246F70aef8111BB68142adb0
+Setting as Shirts
+Deploying Pants1
+address 0x73f7C3AA2CDb293713eB8A3a8a7012FF212D0f33
+Setting as Pants
+Deploying Pants2
+address 0xbbc36E32e8617F991acf4369e882AcF406EE1F10
+Setting as Pants
+Deploying Hairs1
+address 0x44e7324abA08bc49378A185ce731B888ac8695f6
+Setting as Hairs
+Deploying Hairs2
+address 0x9E03D97673BcF5F66908b4D01f75C3Ba7caf54BA
+Setting as Hairs
+
+Polygon Rogue Inventory
+Deploying InventoryManagerRogues
+0xfc10Dd2CF3a56800080dBB95557C8852d2FAaC8c
+Deploying Proxy
+0x39eb2084Cfc89b44A036cDd81d2aE97B7eFFa4FF
+starting
+Deploying Bodies1
+address 0x6F930a706DbD3B633f4F290a3afC1Bf5845805c3
+Setting as Bodies
+Deploying Armors1
+address 0x2c5e18C8699b7EB6FA4Bc0eFC3Bcf759a69cc7F5
+Setting as Armors
+Deploying Armors2
+address 0xE694649047A3E259B772c4692BAd6AD5E7Cc9b2d
+Setting as Armors
+Deploying Armors3
+address 0x43e950c754AddBcC01C7861571F80082E4752952
+Setting as Armors
+Deploying Mainhands1
+address 0x3E1e74F5CA633dED9dcBef70dCbcc6A4458005A9
+Setting as Mainhands
+Deploying Mainhands2
+address 0x71d6Ce3A761132f22D13C5B9324D004d0ce17738
+Setting as Mainhands
+Deploying Mainhands3
+address 0x72D4e1085D58DE6BC186D67D58E949a1C0ED5Dcb
+Setting as Mainhands
+Deploying Offhands1
+address 0x2E9A410E4ced336fAE94724718fD28C2d5C4e515
+Setting as Offhands
+Deploying Offhands2
+address 0x0795bEEE0a8F3BeA2929B26feC3FfeE78Ed0A296
+Setting as Offhands
+Deploying Offhands3
+address 0x9BB30dB1a5CA2D8be77595C7399D3F9E141Ad812
+Setting as Offhands
+Deploying Faces1
+address 0xB58c7667a11527F59352F9bDA543aD088f15a2c3
+Setting as Faces
+Deploying Faces2
+address 0xDc5ADbAddcBdd1c25BAb8172972d0E03b77f4f4F
+Setting as Faces
+Deploying Faces3
+address 0x87d6Cbd45d506b0bE92dFD2cA3008eAAbB7743b9
+Setting as Faces
+Deploying Faces4
+address 0x9D93C09dfbE8822cEF15aBEC518b03eFdc0d0e80
+Setting as Faces
+Deploying Boots1
+address 0x1E4297d2DE42Fde5B33b10174285f1844Bb31CD4
+Setting as Boots
+Deploying Boots2
+address 0xbB362f2Cec3e3Fd0565271cb483dfBFdEBFf3C7D
+Setting as Boots
+Deploying Shirts1
+address 0x9796e142874227A9c9637b4bc96e7C9fbDA0cee2
+Setting as Shirts
+Deploying Shirts2
+address 0x53d4Db4ba35837A6864dF151d218A4a5e9f9Ed33
+Setting as Shirts
+Deploying Pants1
+address 0xb3171bA98cC9970A2c9601ad01BfcDc8ECb09Bda
+Setting as Pants
+Deploying Pants2
+address 0xB2C1bf86F3f40e8eD39b402DA49E9f70d63b0e5F
+Setting as Pants
+Deploying Hairs1
+address 0xfe54B76306cd891c66E7aB1D46f368180d690b5c
+Setting as Hairs
+Deploying Hairs2
+address 0x79552516d625c736053F9451aBcB97e93FC6DB26
+Setting as Hairs
+Luck Runes
+0x36E7a9E6773850D0Ebe3201079adD3D0554217df
+Deploying FireCrystal
+0x8B44b1E62B8E414Ad14219634dbfDa8430996166
+Deploying IceCrystal
+0x12D360e3897Df038FB3499757CEC338F62499551

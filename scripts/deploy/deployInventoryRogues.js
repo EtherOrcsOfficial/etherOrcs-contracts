@@ -40,18 +40,19 @@ async function main() {
 
   await hre.run("compile");
 
-  let allies = await deployProxied("TestAllies");
+  // let allies = await deployProxied("TestAllies");
 
   let inv = await deployProxied("InventoryManagerRogues");
  
-  let gen = await deployProxied("InventoryManagerAllies"); 
+  // let gen = await deployProxied("InventoryManagerAllies"); 
  
 
-  await gen.setAddresses(inv.address,inv.address,inv.address,inv.address)
-  await allies.initialize(gen.address, gen.address, gen.address)
+  // await gen.setAddresses(inv.address,inv.address,inv.address,inv.address)
+  // await allies.initialize(gen.address, gen.address, gen.address)
+  // console.log("got inv")
+  // let inv = await hre.ethers.getContractAt("InventoryManagerRogues", "0xDb9Aab86dDce4bc36ef436Dc7AFdb4f86B9123F9");
 
-  // let inv = await hre.ethers.getContractAt("InventoryManagerRogues", "0x5BE7b5A55d8D3cC8e7F530B9b99E59b27113d4E8");
-
+  console.log("starting")
   // Now deploy all of the art
     let svgs = [
                 {name: "Bodies1", ids: [1,2,3,4], type: 1},
@@ -74,7 +75,7 @@ async function main() {
                 {name: "Shirts2", ids: [20,18,19,3,4,5,6,7,8,9], type:7},
                 {name: "Pants1", ids: [1,10,11,13,14,16,17,19,2,20,21], type:8},
                 {name: "Pants2", ids: [12,15,18,3,4,5,6,7,8,9], type:8},
-                {name: "Hairs1", ids: [1,10,11,12,13,14,15,16,17,19], type:9},
+                {name: "Hairs1", ids: [1,10,11,12,13,14,15,16,17,18,19], type:9},
                 {name: "Hairs2", ids: [2,20,21,3,4,5,6,7,8,9], type:9},
             ]
 

@@ -5,7 +5,20 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
+async function deployProxied(contractName) {
+  console.log("Deploying", contractName)
+  const InventoryManagerFactory = await hre.ethers.getContractFactory(contractName);
+  let invMan = await InventoryManagerFactory.deploy();
+  console.log(invMan.address)
 
+  console.log("Deploying Proxy")
+  const ProxyFac = await hre.ethers.getContractFactory("Proxy");
+  let pp = await ProxyFac.deploy(invMan.address);
+  console.log(pp.address)
+
+  let a = await hre.ethers.getContractAt(contractName, pp.address);
+  return a;
+}
 
 async function updateProxy(contractName, address) {
     console.log("Deploying", contractName)
@@ -23,20 +36,12 @@ async function updateProxy(contractName, address) {
 let proxies  = {
     "RaidsPoly": "0x29b1f8C7146d153350061a98446a1D8D1b83b4E0",
     "MumbaiAllies": "0xc702DFd49Dfc02a71799DBC700FA688C1E14618a",
+    "HordeUtilities": "0x8ba95eBB60bA80df0889CD323e1F972435a577a4"
 }
 
 async function main() {
   await hre.run("compile");
-
-  // await updateProxy("MumbaiAllies",proxies["MumbaiAllies"]);
-  
-  let allies = await hre.ethers.getContractAt("MumbaiAllies", proxies["MumbaiAllies"])
-
-  for (let i = 8201; i < 17051; i += 205) {
-    console.log("Transfering", i);
-		await allies.forceTransfer("0x244Ab8Fe8b8fA0B716DF6b89aC80f8d02fA85cF0", "0xA3C19786F60F527c8F60B11032eFEc5581630Fd2",  i, i + 205);
-	}
-
+  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
