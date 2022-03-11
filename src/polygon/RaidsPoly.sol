@@ -139,7 +139,7 @@ contract RaidsPoly {
         require(msg.sender == (orcishId < 5051 ? address(orcs) : address(allies)), "Not orcs contract");
         require(_ended(campaigns[orcishId]),   "Still raiding");
 
-        if (cmp.runesUsed > 0) _claim(orcishId);
+        _claim(orcishId);
 
         if (orcishId < 5051) {
             orcs.transfer(commanders[orcishId], orcishId);
@@ -148,7 +148,6 @@ contract RaidsPoly {
         }
 
         delete commanders[orcishId];
-        delete campaigns[orcishId]; 
     }
 
     function claim(uint256[] calldata ids) external {
@@ -177,7 +176,7 @@ contract RaidsPoly {
     function _claim(uint256 id) internal returns(uint256 reward){
         Campaign memory cmp = campaigns[id]; 
 
-        if (cmp.runesUsed > 0 && _ended(campaigns[id])) {
+        if (cmp.location > 0 && _ended(campaigns[id])) {
             reward = cmp.runesUsed;
             if (cmp.seed != 0) {
                 // New case - calculate the result from seed
@@ -198,7 +197,8 @@ contract RaidsPoly {
                 }
                 _foundSomething(raid, cmp, _getRandom(id, rdn, "LUCKY"), id);
             } 
-            campaigns[id].runesUsed = 0;
+            delete campaigns[id];
+
             boneShards.mint(commanders[id], reward);
         }
     } 
@@ -221,7 +221,7 @@ contract RaidsPoly {
         require(msg.sender == (orcishId < 5051 ? address(orcs) : address(allies)), "Not allowed");
         require(_ended(campaigns[orcishId]),   "Currently on campaign");
 
-        if (campaigns[orcishId].runesUsed > 0) _claim(orcishId);
+        _claim(orcishId);
 
         require(_getLevel(orcishId) >= raid.minLevel, "below min level");
 
@@ -249,7 +249,7 @@ contract RaidsPoly {
         if (runes_ > 0) items.burn(owner, RUNES_ID, runes_ * 1 ether);
 
         campaigns[orcishId].location   = uint8(location_);
-        campaigns[orcishId].runesUsed  = uint112(100) + uint112(runes_);
+        campaigns[orcishId].runesUsed  = uint112(runes_);
         campaigns[orcishId].end        = uint64(block.timestamp + (duration * 1 hours));
         campaigns[orcishId].seed       = requestSeed();
     }   
@@ -281,7 +281,10 @@ contract RaidsPoly {
     }
 
     function _getBoosted(Campaign memory cmp, uint256 rdn) internal view returns (uint256 boosted) {
-        uint256 boost = uint256((uint256(cmp.runesUsed) - 100) / (cmp.double ? 2 : 1) * runeBoost);
+        // Either an old raid (with rewards) or no runes used
+        if (cmp.runesUsed > 2 * MAX_RUNES || cmp.runesUsed == 0) return rdn;
+        
+        uint256 boost = uint256(uint256(cmp.runesUsed) / (cmp.double ? 2 : 1) * runeBoost);
         boosted = boost < rdn ? rdn - boost : 0;
     }
 
@@ -313,7 +316,7 @@ contract RaidsPoly {
     }
 
     function _foundSomething(Raid memory raid, Campaign memory cmp, uint256 rdn, uint256 id) internal {
-        if (cmp.runesUsed - 100 == 0) return;
+        if (cmp.runesUsed > 0 && cmp.runesUsed <=2 * MAX_RUNES) return;
 
         if (rdn >= 9_700) {
             if (items.balanceOf(address(this), 100) > 0) items.safeTransferFrom(address(this), commanders[id], 100, 1, new bytes(0));
