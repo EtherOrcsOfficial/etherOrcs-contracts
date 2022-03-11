@@ -111,6 +111,10 @@ contract RaidsPoly {
         locations[25] = lostRuins;
         locations[26] = piratesBounty;
         locations[27] = vendorStash;
+
+
+        dbl_discount    = 200;
+        runeBoost       = 200;
     }
 
     function setVendorPercentage(uint256 pct) external {

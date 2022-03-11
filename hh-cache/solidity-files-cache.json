@@ -122,8 +122,8 @@
       ]
     },
     "/home/jgcarv/Dev/NFT/Orcs/etherOrcs-contracts/src/polygon/RaidsPoly.sol": {
-      "lastModificationDate": 1646863267458,
-      "contentHash": "d69d176cb30faa8a7dea593ed3992432",
+      "lastModificationDate": 1647004006708,
+      "contentHash": "8452b22ef6c99db3b73fa9f337bdf563",
       "sourceName": "src/polygon/RaidsPoly.sol",
       "solcConfig": {
         "version": "0.8.7",
