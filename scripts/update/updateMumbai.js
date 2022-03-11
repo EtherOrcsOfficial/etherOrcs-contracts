@@ -5,7 +5,20 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
+async function deployProxied(contractName) {
+  console.log("Deploying", contractName)
+  const InventoryManagerFactory = await hre.ethers.getContractFactory(contractName);
+  let invMan = await InventoryManagerFactory.deploy();
+  console.log(invMan.address)
 
+  console.log("Deploying Proxy")
+  const ProxyFac = await hre.ethers.getContractFactory("Proxy");
+  let pp = await ProxyFac.deploy(invMan.address);
+  console.log(pp.address)
+
+  let a = await hre.ethers.getContractAt(contractName, pp.address);
+  return a;
+}
 
 async function updateProxy(contractName, address) {
     console.log("Deploying", contractName)
@@ -20,28 +33,15 @@ async function updateProxy(contractName, address) {
 }
 
 
-
 let proxies  = {
-    "PolyOrcs": "0x9Ee5F6C8B02908a29f111cA9B7B93e61d2374ab1",
-    "MumbaiAllies": "0x31d5CdDEfFb400634362411a770443dD13000dF0",
-    "EtherOrcsAlliesPoly": "0x31d5CdDEfFb400634362411a770443dD13000dF0",
-    "Castle": "0x5a035d0c1E023dECa259E2450cA476dD6d2b2d3e",
-    "RaidsPoly": "0x88720b5f026f0905d40664E185Ef3081Bd420d5B",
-    "PolylandPortal": "0xE5B8F12c9FC0DB0b56A8e8EF0f6025F1C6770401",
-    "EtherOrcsItems": "0xD7E2cC5C5d2c20216dfCd0b915480Ef2a1171f53",
-    "PotionVendorPoly": "0xf714249B531c75e3C915b1C14677FE82399Be05e",
-    "GamingOraclePoly": "0x78A665c21203537aE336b6D42e623337A8844f17",
-    "InventoryManagerAllies": "0x436c522E0db1382aF6C1bCC9a6d610704cFBAfF2"
+    "RaidsPoly": "0x29b1f8C7146d153350061a98446a1D8D1b83b4E0",
+    "MumbaiAllies": "0xc702DFd49Dfc02a71799DBC700FA688C1E14618a",
+    "HordeUtilities": "0x8ba95eBB60bA80df0889CD323e1F972435a577a4"
 }
 
 async function main() {
   await hre.run("compile");
-
-  // await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
-  await updateProxy("PotionVendorPoly",proxies["PotionVendorPoly"]);
-  // await updateProxy("Castle",proxies["Castle"]);
-  // await updateProxy("EtherOrcsItems", proxies["EtherOrcsItems"]);
-
+  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

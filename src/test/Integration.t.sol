@@ -1,7 +1,7 @@
 // // SPDX-License-Identifier: Unlicense
 // pragma solidity 0.8.7;
 
-// import "ds-test/test.sol";
+// import "../../lib/ds-test/src/test.sol";
 
 // import "./mocks/Mocks.sol";
 
@@ -98,7 +98,6 @@
 
 //         InventoryManagerAllies inv = new InventoryManagerAllies();
 
-
 //         // Poly - Proxy
 //         orcsPoly   = PolyOrc(address(new Proxy(address(new PolyOrc()))));
 //         alliesPoly = MumbaiAllies(address(new Proxy(address(new MumbaiAllies()))));
@@ -131,6 +130,7 @@
 //         orcsMain.setAuth(address(castleMain), true);
 
 //         alliesMain.initialize(address(castleMain), address(boneShards), address(inv));
+//         alliesMain.setAuth(address(castleMain),true);
 
 //         // Zug
 //         zug.setMinter(address(orcsMain), true);
@@ -226,6 +226,7 @@
 
 
 //         //TODO need to initMint
+//         alliesPoly.initMint(address(castlePoly), 11050, 11055);
 
 //         // Used for testing only
 //         hevm.roll(100000);
@@ -348,25 +349,28 @@
 //         boneShards.mint(address(this), 10000000 ether);
 //     }
 
-//     function test_mint_shaman() external {
+//     function test_mint_rogue() external {
 //         uint256 balBefore = boneShards.balanceOf(address(this));
 
-//         alliesMain.mintShaman();
+//         alliesMain.mintRogues(100);
+//         fail();
 
-//         uint256 balAfter = boneShards.balanceOf(address(this));
+//         // uint256 balAfter = boneShards.balanceOf(address(this));
 
-//         (uint16 level, uint32 lvlProgress, uint16 herbalism, uint8 skillCredits, uint8 body, uint8 featA, uint8 featB, uint8 helm, uint8 mainhand, uint8 offhand) = alliesMain.shamans(5051);
+//         // (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = alliesMain.allies(11051);
 
-//         assertEq(balBefore - balAfter, 60 ether);
-//         assertEq(alliesMain.ownerOf(5051), address(this));
-//         assertEq(skillCredits, 100);
-//         assertEq(level, 25);
-//         assertEq(lvlProgress, 25000);
-//         assertEq(herbalism, 0);
-//         assertTrue(body > 0 && body <= 7);
-//         assertTrue(helm > 0 && helm <= 7);
-//         assertTrue(mainhand > 0 && mainhand <= 7);
-//         assertTrue(offhand > 0 && offhand <= 7);
+//         // EtherOrcsAllies.Rogue memory rg = alliesMain.rogue(details);
+
+//         // assertEq(balBefore - balAfter, 60 ether);
+//         // assertEq(alliesMain.ownerOf(11051), address(this));
+//         // assertEq(skillCredits, 100);
+//         // assertEq(level, 30);
+//         // assertEq(lvlProgress, 25000);
+//         // assertEq(modF, 0);
+//         // assertTrue(body > 0 && body <= 7);
+//         // assertTrue(helm > 0 && helm <= 7);
+//         // assertTrue(mainhand > 0 && mainhand <= 7);
+//         // assertTrue(offhand > 0 && offhand <= 7);
 //     }
 
 //     function test_mint_ogre() external {
@@ -376,123 +380,127 @@
 
 //         uint256 balAfter = boneShards.balanceOf(address(this));
 
-//         (uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 mouth, uint8 nose, uint8 eyes, uint8 armor, uint8 mainhand, uint8 offhand) = alliesMain.ogres(8051);
+//         (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = alliesMain.allies(5051);
 
-//         assertEq(balBefore - balAfter, 60 ether);
-//         assertEq(alliesMain.ownerOf(8051), address(this));
-//         assertEq(skillCredits, 100);
-//         assertEq(level, 30);
-//         assertEq(lvlProgress, 30000);
-//         assertEq(modF, 0);
-//         assertTrue(body > 0 && body <= 8);
-//         assertTrue(armor > 0 && armor <= 6);
-//         assertTrue(mainhand > 0 && mainhand <= 6);
-//         assertTrue(offhand > 0 && offhand <= 6);
+//         EtherOrcsAllies.Ogre memory og = alliesMain.ogre(details);
+
+//         // assertEq(balBefore - balAfter, 60 ether);
+//         // assertEq(alliesMain.ownerOf(8051), address(this));
+//         // assertEq(skillCredits, 100);
+//         // assertEq(level, 30);
+//         // assertEq(lvlProgress, 30000);
+//         // assertEq(modF, 0);
+//         // assertTrue(body > 0 && body <= 8);
+//         // assertTrue(armor > 0 && armor <= 6);
+//         // assertTrue(mainhand > 0 && mainhand <= 6);
+//         // assertTrue(offhand > 0 && offhand <= 6);
 //     }
 
-//     function testFail_mint_failWithoutBS() external {
-//         boneShards.burn(address(this), boneShards.balanceOf(address(this)));
+//     // function testFail_mint_failWithoutBS() external {
+//     //     boneShards.burn(address(this), boneShards.balanceOf(address(this)));
 
-//         alliesMain.mintShaman();
-//     }
+//     //     alliesMain.mintShaman();
+//     // }
 
 // }
 
-// contract TestAlliesPoly is OrcsBaseTest {
+// // contract TestAlliesPoly is OrcsBaseTest {
 
-//     uint256 myId = 5051;
+// //     uint256 myId = 5051;
 
-//     function setUp() external {
-//         init();
+// //     function setUp() external {
+// //         init();
 
-//         alliesPoly.initMint(address(castlePoly), 5051, 5061);
+// //         alliesPoly.initMint(address(castlePoly), 5051, 5061);
 
-//         zug.setMinter(address(this), true);
-//         boneShards.setMinter(address(this), true);
-//         alliesMain.setAuth(address(this), true);
-//         alliesPoly.setAuth(address(this), true);
+// //         zug.setMinter(address(this), true);
+// //         boneShards.setMinter(address(this), true);
+// //         alliesMain.setAuth(address(this), true);
+// //         alliesPoly.setAuth(address(this), true);
 
-//         boneShards.mint(address(this), 10000 ether);
+// //         boneShards.mint(address(this), 10000 ether);
 
-//         alliesMain.mintShaman();
+// //         alliesMain.mintShaman();
 
-//         uint256[] memory allies = new uint256[](1);
-//         allies[0] = 5051;
-//         castleMain.travel(new uint256[](0), allies, 0 , 0 );
-//         gamingOracle.setAuth(address(this), true);
-//     }
+// //         uint256[] memory allies = new uint256[](1);
+// //         allies[0] = 5051;
+// //         castleMain.travel(new uint256[](0), allies, 0 , 0 );
+// //         gamingOracle.setAuth(address(this), true);
+// //     }
 
-//     function test_journey() external {
-//         (uint16 l, uint32 lvl, uint16 mF, , uint8 b_b, uint8 fA, uint8 fB, uint8 b_h, uint8 b_m, uint8 b_o) = alliesPoly.shamans(myId);
+// //     function test_journey() external {
+// //         (uint16 l, uint32 lvl, uint16 mF, , uint8 b_b, uint8 fA, uint8 fB, uint8 b_h, uint8 b_m, uint8 b_o) = alliesPoly.shamans(myId);
 
-//         // allisPoly.updateShaman()
-//         alliesPoly.doAction(myId, 1);
+// //         // allisPoly.updateShaman()
+// //         alliesPoly.doAction(myId, 1);
 
-//         alliesPoly.startJourney(myId, 0, 0);
+// //         alliesPoly.startJourney(myId, 0, 0);
 
-//         hevm.roll(block.number + 3);
+// //         hevm.roll(block.number + 3);
 
-//         alliesPoly.endJourney(myId);
+// //         alliesPoly.endJourney(myId);
 
-//         (, , ,uint8 sc , uint8 b,,, uint8 h, uint8 m, uint8 o) = alliesPoly.shamans(myId);
+// //         (, , ,uint8 sc , uint8 b,,, uint8 h, uint8 m, uint8 o) = alliesPoly.shamans(myId);
 
-//         assertEq(sc, 95);
-//         assertTrue(h > 7);
-//         assertTrue(b_h != h);
-//         assertEq(m, b_m);
-//         assertEq(o, b_o);
+// //         assertEq(sc, 95);
+// //         assertTrue(h > 7);
+// //         assertTrue(b_h != h);
+// //         assertEq(m, b_m);
+// //         assertEq(o, b_o);
 
-//         hevm.warp(block.timestamp + 14);
-//         alliesPoly.startJourney(myId, 0, 0);
+// //         hevm.warp(block.timestamp + 14);
+// //         alliesPoly.startJourney(myId, 0, 0);
 
-//     }
+// //     }
 
-//     function testFail_journey_invalidLevel() external {
-//         alliesPoly.startJourney(myId, 1, 1);
-//     }
+// //     function testFail_journey_invalidLevel() external {
+// //         alliesPoly.startJourney(myId, 1, 1);
+// //     }
 
-//     function testFail_journey_invalidEquipment() external {
-//         alliesPoly.startJourney(myId,0, 4);
-//     }
+// //     function testFail_journey_invalidEquipment() external {
+// //         alliesPoly.startJourney(myId,0, 4);
+// //     }
 
-//     function testFail_journey_notYourAlly() external {
-//         alliesPoly.startJourney(5052,0, 1);
-//     }
+// //     function testFail_journey_notYourAlly() external {
+// //         alliesPoly.startJourney(5052,0, 1);
+// //     }
 
-//     function test_farming() external {
+// //     function test_farming() external {
 
-//         alliesPoly.doAction(5051, 1);
+// //         alliesPoly.doAction(5051, 1);
 
-//         uint256 balBefore = itemsPoly.balanceOf(address(this),1);
+// //         uint256 balBefore = itemsPoly.balanceOf(address(this),1);
 
-//         hevm.warp(block.timestamp + 10 days);
+// //         hevm.warp(block.timestamp + 10 days);
 
-//         alliesPoly.doAction(5051, 0);
+// //         alliesPoly.doAction(5051, 0);
 
-//         uint256 balAfter = itemsPoly.balanceOf(address(this),1);
+// //         uint256 balAfter = itemsPoly.balanceOf(address(this),1);
 
-//         assertTrue(balAfter > balBefore);
-//     }
+// //         assertTrue(balAfter > balBefore);
+// //     }
 
-//     function test_training() external {
-//         alliesPoly.doAction(5051, 2);
+// //     function test_training() external {
+// //         alliesPoly.doAction(5051, 2);
 
-//         (uint16 l1, , , , , , , , , ) = alliesPoly.shamans(myId);
+// //         (uint16 l1, , , , , , , , , ) = alliesPoly.shamans(myId);
 
-//         hevm.warp(block.timestamp + 10 days);
+// //         hevm.warp(block.timestamp + 10 days);
 
-//         alliesPoly.doAction(5051, 0);
+// //         alliesPoly.doAction(5051, 0);
 
-//         (uint16 l2, , , , , , , , , ) = alliesPoly.shamans(myId);
+// //         (uint16 l2, , , , , , , , , ) = alliesPoly.shamans(myId);
 
-//         assertTrue(l2 > l1);
-//     }
-// }
+// //         assertTrue(l2 > l1);
+// //     }
+// // }
 
 // contract TestRaids is OrcsBaseTest {
 
 //     uint256[] myIds;
 //     uint256[] myAllyIds;
+
+//     uint8 raidLocaction = 19;
 
 //     function setUp() external {
 //         init();
@@ -512,23 +520,26 @@
 //         orcsPoly.setAuth(address(this), true);
 
 //         boneShards.mint(address(this), 10000 ether);
-//         pzug.mint(address(this), 1000000 ether);
+//         pzug.mint(address(this), 1000000000000 ether);
 
-//         alliesMain.mintShamans(3);
+//         alliesMain.mintRogues(3);
 
-//         myAllyIds.push(5051);
-//         myAllyIds.push(5052);
-//         myAllyIds.push(5053);
+//         myAllyIds.push(11051);
+//         myAllyIds.push(11052);
+//         myAllyIds.push(11053);
 
 //         gamingOracle.setAuth(address(this), true);
 
 //         for (uint256 index = 1; index < 10; index++) {
 //             orcsMain.initMint(address(this), index, index + 1 );
 //             myIds.push(index);
-//             orcsMain.updateOrc(index, 1, 1, 1, 1, 10, 1, 1000);
+//             orcsMain.updateOrc(index, 1, 1, 1, 1, 1000, 1, 100000);
 //         }
         
 //         castleMain.travel(myIds, myAllyIds, 0 , 0);
+
+//         itemsPoly.setMinter(address(this), true);
+
 //     }
 
 //     function logCampaing(uint256 id) internal returns ( uint8 location, bool double, uint64 end, uint112 reward, uint64 blockSeed) {
@@ -541,7 +552,7 @@
 //     }
 
 //     function test_sendToRaid() public {
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         for (uint256 index = 0; index < myIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -549,7 +560,7 @@
 //             assertEq(end, 1636580705 + 16 days);
 //         }
 
-//         alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+//         alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myAllyIds.length), new uint256[](myIds.length));
 //         for (uint256 index = 0; index < myAllyIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
 //             (,, uint256 end, ,) = logCampaing(index + 1);
@@ -560,7 +571,7 @@
 //     function test_sendToRaidStaked() public {
 //         orcsPoly.doActionWithManyOrcs(myIds, EtherOrcsPoly.Actions.FARMING);
 
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         for (uint256 index = 0; index < myIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -571,7 +582,7 @@
 //         emit log_named_address("allies add", address(alliesPoly));
 //         alliesPoly.doActionWithManyAllies(myAllyIds, 1);
 
-//         alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+//         alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 //         for (uint256 index = 0; index < myAllyIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 5051), address(this));
 //             (,, uint256 end, ,) = logCampaing(index + 5051);
@@ -580,7 +591,7 @@
 //     }
 
 //     function testFail_sendToRaidAndBackOrcs() public {
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         for (uint256 index = 0; index < myIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -592,7 +603,7 @@
 //     }
 
 //     function testFail_sendToRaidAndBackAllies() public {
-//         alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+//         alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myAllyIds.length), new uint256[](myIds.length));
 //         for (uint256 index = 0; index < myAllyIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
 //             (,, uint256 end, ,) = logCampaing(index + 1);
@@ -603,7 +614,7 @@
 //     }
 
 //     function test_sendToRaidAndBack() public {
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         uint256 endBlock;
 //         for (uint256 index = 0; index < myIds.length; index++) {
@@ -613,7 +624,7 @@
 //             assertEq(end, 1636580705 + 16 days);
 //         }
 
-//         alliesPoly.sendToRaid(myAllyIds, 0, true, new uint256[](myAllyIds.length));
+//         alliesPoly.sendToRaid(myAllyIds, raidLocaction, true, new uint256[](myAllyIds.length), new uint256[](myIds.length));
 //         for (uint256 index = 0; index < myAllyIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
 //             (,, uint256 end, ,) = logCampaing(index + 1);
@@ -633,12 +644,13 @@
 //         itemsPoly.mint(address(this), 1, 10 ether);
 
 //         uint256[] memory pt = new uint256[](myIds.length);
-//         pt[0] = 2;
-//         orcsPoly.sendToRaid(myIds, 0, false, pt);
+//         pt[0] = 1;
+//         orcsPoly.sendToRaid(myIds, raidLocaction, false, pt, new uint256[](myIds.length));
+    
 //     }
 
 //     function testFail_sendToRaidAndBackDirectly() public {
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 //         uint256 endB;
 //         for (uint256 index = 0; index < myIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -654,11 +666,11 @@
 //     }
 
 //     function testFail_stake() public {
-//         raidsPoly.stakeManyAndStartCampaign(myIds, address(this), 0, false, new uint256[](myIds.length));
+//         raidsPoly.stakeManyAndStartCampaign(myIds, address(this), 0, false, new uint256[](myIds.length), new uint256[](myIds.length));
 //     }
 
 //     function test_multipleRaids() public {
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         for (uint256 index = 0; index < myIds.length; index++) {
 //             assertEq(raidsPoly.commanders(index + 1), address(this));
@@ -670,14 +682,16 @@
 //         hevm.warp(block.timestamp + 16 days + 1);
 //         hevm.roll(endBlock + 1);
 
-//         orcsPoly.startRaidCampaign(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.startRaidCampaign(myIds, 0, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         logCampaing(2);
 
 //     }
 
 //     function test_getClaim() public {
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+
+//         emit log_named_uint("blanceof", pzug.balanceOf(address(this)) / 1 ether);
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         hevm.warp(block.timestamp + 16 days + 1);
 
@@ -687,7 +701,7 @@
 //     function testFail_noLevel() public {
 //         orcsPoly.updateOrc(1, 1, 1, 1, 1, 1, 1, 1000);
 
-//         orcsPoly.sendToRaid(myIds, 0, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 //     }
 
 //     function getArray(uint256 id) internal pure returns (uint256[] memory ids) {
@@ -697,41 +711,84 @@
 //     }
 
 //     function test_allRaidPlaces() public {
-//         uint256[] memory one = getArray(1);
-//         orcsPoly.sendToRaid(one, 0, true, new uint256[](myIds.length));
+//         // uint256[] memory one = getArray(1);
+//         // orcsPoly.sendToRaid(one, 0, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-//         orcsPoly.updateOrc(2, 2, 2, 2, 2, 20, 20, 20);
-//         uint256[] memory two = getArray(2);
-//         orcsPoly.sendToRaid(two, 1, true, new uint256[](myIds.length));
+//         // orcsPoly.updateOrc(2, 2, 2, 2, 2, 20, 20, 20);
+//         // uint256[] memory two = getArray(2);
+//         // orcsPoly.sendToRaid(two, 1, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-//         orcsPoly.updateOrc(3, 2, 2, 2, 2, 20, 20, 20);
-//         uint256[] memory thr = getArray(3);
-//         orcsPoly.sendToRaid(thr, 2, true, new uint256[](myIds.length));
+//         // orcsPoly.updateOrc(3, 2, 2, 2, 2, 20, 20, 20);
+//         // uint256[] memory thr = getArray(3);
+//         // orcsPoly.sendToRaid(thr, 2, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-//         orcsPoly.updateOrc(4, 2, 2, 2, 2, 35, 20, 20);
-//         uint256[] memory frr = getArray(4);
-//         orcsPoly.sendToRaid(frr, 3, true, new uint256[](myIds.length));
+//         // orcsPoly.updateOrc(4, 2, 2, 2, 2, 35, 20, 20);
+//         // uint256[] memory frr = getArray(4);
+//         // orcsPoly.sendToRaid(frr, 3, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-//         orcsPoly.updateOrc(5, 2, 2, 2, 2, 55, 20, 20);
-//         uint256[] memory fv = getArray(5);
-//         orcsPoly.sendToRaid(fv, 4, true, new uint256[](myIds.length));
+//         // orcsPoly.updateOrc(5, 2, 2, 2, 2, 55, 20, 20);
+//         // uint256[] memory fv = getArray(5);
+//         // orcsPoly.sendToRaid(fv, 4, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
-//         hevm.warp(block.timestamp + 17 days);
+//         // hevm.warp(block.timestamp + 17 days);
 
-//         raidsPoly.claim(myIds);
+//         // raidsPoly.claim(myIds);
 //     }
 
 //     function test_getSuperb() public {
 
-//         orcsPoly.sendToRaid(myIds, 18, true, new uint256[](myIds.length));
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), new uint256[](myIds.length));
 
 //         hevm.warp(block.timestamp + (500 * 1 hours));
 
 //         raidsPoly.claim(myIds);
-
-
-//         fail();
 //     }
+
+//     function test_runes() public {
+//         itemsPoly.setMinter(address(this), true);
+
+//         itemsPoly.mint(address(this), 3, 10 ether);
+
+//         uint256[] memory pt = new uint256[](myIds.length);
+//         pt[0] = 2;
+//         orcsPoly.sendToRaid(myIds, raidLocaction, true, new uint256[](myIds.length), pt );
+
+//         hevm.warp(block.timestamp + (500 * 1 hours));
+
+//         orcsPoly.claim(myIds);
+//     }
+
+    
+//     mapping (uint256 => uint256) rewardsCount;
+
+//     // function test_raidsOutcomes() public {
+
+//     //     raidsPoly.setRuneBoost(200);
+
+//     //     /// 10k raids different ids
+//     //     alliesPoly.adjustAlly(11051,1,35,1,2,3,"0x");
+//     //     alliesPoly.sendToRaid(getArray(11051), 19, false, getArray(0), getArray(0));
+//     //     uint256 reward1 = raidsPoly._claim(11051);
+//     //     rewardsCount[reward1]++;
+//     //     hevm.warp(block.timestamp + 200 hours);
+//     //     uint256 runs = 10000;
+
+//     //     emit log_named_uint("runs:", runs);
+//     //     emit log("orc level : twice the max");
+//     //     emit log("Desired %: 10% supber, 20% great, 70% regurlar");
+//     //     for (uint256 i = 0; i < runs; i++) {
+//     //         itemsPoly.mint(address(this), 3, 3 ether);
+//     //         alliesPoly.startRaidCampaign(getArray(11051), 19, false, getArray(0), getArray(3));
+//     //         hevm.warp(block.timestamp + 400 hours);
+//     //         reward1 = raidsPoly._claim(11051);
+//     //         rewardsCount[reward1]++;
+//     //     }
+//     //     emit log_named_uint("regs  :", rewardsCount[3000000000000000000]);
+//     //     emit log_named_uint("greats:", rewardsCount[7000000000000000000]);
+//     //     emit log_named_uint("sup   :", rewardsCount[15000000000000000000]);
+//     // }
+
+    
 
 //     function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4){
 //         return 0xf23a6e61;

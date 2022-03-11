@@ -35,6 +35,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
     struct Shaman {uint8 body; uint8 featA; uint8 featB; uint8 helm; uint8 mainhand; uint8 offhand;}
     struct Ogre   {uint8 body; uint8 mouth; uint8 nose;  uint8 eyes; uint8 armor; uint8 mainhand; uint8 offhand;}
+    struct Rogue  {uint8 body; uint8 face; uint8 boots; uint8 pants; uint8 shirt; uint8 hair; uint8 armor; uint8 mainhand; uint8 offhand;}
+
 
     struct Adventure {uint64 seed; uint64 location; uint64 equipment;}
 
@@ -89,50 +91,54 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     function setLocations() external {
         require(msg.sender == admin, "not admin");
 
-        {
-            Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
-            Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
-            Location memory jungleHealerHut   = Location({minLevel:35, skillCost: 25, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:4, tier_3:5});
-            Location memory monkTemple        = Location({minLevel:35, skillCost: 20, cost:  0, classAllowed: 1, tier_1Prob:80, tier_2Prob:20, tier_3Prob:0, tier_1:2, tier_2:5, tier_3:5});
-            Location memory forgottenDesert   = Location({minLevel:40, skillCost: 35, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:4, tier_2:5, tier_3:6});
-            Location memory moldyCitadel      = Location({minLevel:45, skillCost: 30, cost:  0, classAllowed: 1, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:6});
-            Location memory swampEnchanterDen = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:40, tier_2Prob:60, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:0});
-            Location memory theFallsOfTruth   = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:70, tier_2Prob:30, tier_3Prob:0, tier_1:4, tier_2:7, tier_3:0});
-            Location memory ethereanPlains    = Location({minLevel:60, skillCost: 50, cost:  200, classAllowed: 1, tier_1Prob:80, tier_2Prob:15, tier_3Prob:5, tier_1:5, tier_2:6, tier_3:7});
-            Location memory djinnOasis        = Location({minLevel:60, skillCost: 10, cost:  150, classAllowed: 1, tier_1Prob:70, tier_2Prob:25, tier_3Prob:5, tier_1:2, tier_2:3, tier_3:4});
-            locations[0] = swampHealerHut;
-            locations[1] = enchantedGrove;
-            locations[2] = jungleHealerHut;
-            locations[3] = monkTemple;
-            locations[4] = forgottenDesert;
-            locations[5] = moldyCitadel;
-            locations[6] = swampEnchanterDen;
-            locations[7] = theFallsOfTruth;
-            locations[8] = ethereanPlains;
-            locations[9] = djinnOasis;
-        }
+        // {
+        //     Location memory swampHealerHut    = Location({minLevel:25, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:88, tier_2Prob:10, tier_3Prob:2, tier_1:1, tier_2:2, tier_3:3});
+        //     Location memory enchantedGrove    = Location({minLevel:31, skillCost: 5, cost:  0, classAllowed: 1, tier_1Prob:50, tier_2Prob:40, tier_3Prob:10, tier_1:1, tier_2:2, tier_3:3});
+        //     Location memory jungleHealerHut   = Location({minLevel:35, skillCost: 25, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:4, tier_3:5});
+        //     Location memory monkTemple        = Location({minLevel:35, skillCost: 20, cost:  0, classAllowed: 1, tier_1Prob:80, tier_2Prob:20, tier_3Prob:0, tier_1:2, tier_2:5, tier_3:5});
+        //     Location memory forgottenDesert   = Location({minLevel:40, skillCost: 35, cost:  0, classAllowed: 1, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:4, tier_2:5, tier_3:6});
+        //     Location memory moldyCitadel      = Location({minLevel:45, skillCost: 30, cost:  0, classAllowed: 1, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:6});
+        //     Location memory swampEnchanterDen = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:40, tier_2Prob:60, tier_3Prob:0, tier_1:3, tier_2:6, tier_3:0});
+        //     Location memory theFallsOfTruth   = Location({minLevel:55, skillCost: 45, cost:  200, classAllowed: 1, tier_1Prob:70, tier_2Prob:30, tier_3Prob:0, tier_1:4, tier_2:7, tier_3:0});
+        //     Location memory ethereanPlains    = Location({minLevel:60, skillCost: 50, cost:  200, classAllowed: 1, tier_1Prob:80, tier_2Prob:15, tier_3Prob:5, tier_1:5, tier_2:6, tier_3:7});
+        //     Location memory djinnOasis        = Location({minLevel:60, skillCost: 10, cost:  150, classAllowed: 1, tier_1Prob:70, tier_2Prob:25, tier_3Prob:5, tier_1:2, tier_2:3, tier_3:4});
+        //     locations[0] = swampHealerHut;
+        //     locations[1] = enchantedGrove;
+        //     locations[2] = jungleHealerHut;
+        //     locations[3] = monkTemple;
+        //     locations[4] = forgottenDesert;
+        //     locations[5] = moldyCitadel;
+        //     locations[6] = swampEnchanterDen;
+        //     locations[7] = theFallsOfTruth;
+        //     locations[8] = ethereanPlains;
+        //     locations[9] = djinnOasis;
+        // }
         
-        {
-            Location memory spiritWorld       = Location({minLevel:70, skillCost: 60, cost:  300, classAllowed: 1, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:5, tier_2:6, tier_3:7});
-            Location memory assassin          = Location({minLevel:30, skillCost: 5, cost:  25, classAllowed: 2, tier_1Prob:92, tier_2Prob:0, tier_3Prob:8, tier_1:1, tier_2:1, tier_3:5}); 
-            Location memory plainsGolem       = Location({minLevel:35, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:2, tier_2:3, tier_3:4}); 
-            Location memory lostYeti          = Location({minLevel:45, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:55, tier_2Prob:40, tier_3Prob:5, tier_1:2, tier_2:4, tier_3:5}); 
-            Location memory giantSpider       = Location({minLevel:45, skillCost: 20, cost:  0, classAllowed: 2, tier_1Prob:65, tier_2Prob:25, tier_3Prob:10, tier_1:3, tier_2:4, tier_3:5}); 
-            Location memory wolf              = Location({minLevel:50, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:90, tier_2Prob:0, tier_3Prob:10, tier_1:3, tier_2:3, tier_3:5}); 
-            Location memory beholder          = Location({minLevel:50, skillCost: 10, cost:  45, classAllowed: 2, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:5, tier_3:6}); 
-            Location memory serpent           = Location({minLevel:60, skillCost: 15, cost:  60, classAllowed: 2, tier_1Prob:90, tier_2Prob:0, tier_3Prob:10, tier_1:3, tier_2:3, tier_3:6}); 
-            Location memory machine           = Location({minLevel:65, skillCost: 35, cost:  90, classAllowed: 2, tier_1Prob:60, tier_2Prob:20, tier_3Prob:20, tier_1:3, tier_2:5, tier_3:6});
-            locations[10] = spiritWorld;
-            locations[11] = assassin;
-            locations[12] = plainsGolem;
-            locations[13] = lostYeti;
-            locations[14] = giantSpider;
-            locations[15] = wolf;
-            locations[16] = beholder;
-            locations[17] = serpent;
-            locations[18] = machine;
-        }
+        // {
+        //     Location memory spiritWorld       = Location({minLevel:70, skillCost: 60, cost:  300, classAllowed: 1, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:5, tier_2:6, tier_3:7});
+        //     Location memory assassin          = Location({minLevel:30, skillCost: 5, cost:  25, classAllowed: 2, tier_1Prob:92, tier_2Prob:0, tier_3Prob:8, tier_1:1, tier_2:1, tier_3:5}); 
+        //     Location memory plainsGolem       = Location({minLevel:35, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:30, tier_2Prob:30, tier_3Prob:40, tier_1:2, tier_2:3, tier_3:4}); 
+        //     Location memory lostYeti          = Location({minLevel:45, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:55, tier_2Prob:40, tier_3Prob:5, tier_1:2, tier_2:4, tier_3:5}); 
+        //     Location memory giantSpider       = Location({minLevel:45, skillCost: 20, cost:  0, classAllowed: 2, tier_1Prob:65, tier_2Prob:25, tier_3Prob:10, tier_1:3, tier_2:4, tier_3:5}); 
+        //     Location memory wolf              = Location({minLevel:50, skillCost: 10, cost:  0, classAllowed: 2, tier_1Prob:90, tier_2Prob:0, tier_3Prob:10, tier_1:3, tier_2:3, tier_3:5}); 
+        //     Location memory beholder          = Location({minLevel:50, skillCost: 10, cost:  45, classAllowed: 2, tier_1Prob:85, tier_2Prob:10, tier_3Prob:5, tier_1:3, tier_2:5, tier_3:6}); 
+        //     Location memory serpent           = Location({minLevel:60, skillCost: 15, cost:  60, classAllowed: 2, tier_1Prob:90, tier_2Prob:0, tier_3Prob:10, tier_1:3, tier_2:3, tier_3:6}); 
+        //     Location memory machine           = Location({minLevel:65, skillCost: 35, cost:  90, classAllowed: 2, tier_1Prob:60, tier_2Prob:20, tier_3Prob:20, tier_1:3, tier_2:5, tier_3:6});
+        //     locations[10] = spiritWorld;
+        //     locations[11] = assassin;
+        //     locations[12] = plainsGolem;
+        //     locations[13] = lostYeti;
+        //     locations[14] = giantSpider;
+        //     locations[15] = wolf;
+        //     locations[16] = beholder;
+        //     locations[17] = serpent;
+        //     locations[18] = machine;
+        // }
 
+        locations[19] = Location({minLevel:85, skillCost: 30, cost: 0,  classAllowed: 3, tier_1Prob:85, tier_2Prob:15, tier_3Prob:0, tier_1:3, tier_2:4, tier_3:4});
+        locations[20] = Location({minLevel:85, skillCost: 30, cost: 0,  classAllowed: 3, tier_1Prob:50, tier_2Prob:50, tier_3Prob:0, tier_1:0, tier_2:5, tier_3:5});
+        locations[21] = Location({minLevel:85, skillCost: 30, cost: 0,  classAllowed: 3, tier_1Prob:75, tier_2Prob:25, tier_3Prob:0, tier_1:0, tier_2:6, tier_3:6});
+        locations[22] = Location({minLevel:85, skillCost: 3,  cost: 80, classAllowed: 3, tier_1Prob:50, tier_2Prob:50, tier_3Prob:0, tier_1:2, tier_2:3, tier_3:3});
     }
 
     function setAuth(address add_, bool status) external {
@@ -255,7 +261,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
         if(activities[id].timestamp < block.timestamp) _claim(id); // Need to claim to not have equipment reatroactively multiplying
 
-        bytes22 newDetails = ally.class == 1 ? _equipShaman(loc, ally.details, adv.equipment, rdn) : _equipOgre(loc, ally.details, adv.equipment, rdn);
+        bytes22 newDetails = ally.class == 1 ? _equipShaman(loc, ally.details, adv.equipment, rdn) : ally.class == 2 ? _equipOgre(loc, ally.details, adv.equipment, rdn) : _equipRogue(loc, ally.details, adv.equipment, rdn);
 
         allies[id].details = newDetails;
         allies[id].modF    = ally.class == 1 ? _modFSh(newDetails) : _modFOg(newDetails);
@@ -263,21 +269,21 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         delete adventures[id];
     }
 
-    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_,uint256[] calldata potions_) external { 
+    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_,uint256[] calldata potions_, uint256[] calldata runes_) external { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != 0) _doAction(ids[index], msg.sender, 0, msg.sender);
             _transfer(msg.sender, raids, ids[index]);
         }
-        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_,potions_ );
+        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_,potions_, runes_ );
     }
 
-    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_,  uint256[] calldata potions_) external { 
+    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_,  uint256[] calldata potions_, uint256[] calldata runes_) external { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == RaidsLikePoly(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
         }
-        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_);
+        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_, runes_);
     }
 
     function returnFromRaid(uint256[] calldata ids, uint8 action_) external { 
@@ -291,7 +297,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     }
 
     function pull(address owner_, uint256[] calldata ids) external {
-        require (msg.sender == castle, "not castle");
+        require (auth[msg.sender], "not authed");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != 0) _doAction(ids[index], owner_, 0, owner_);
             _transfer(owner_, msg.sender, ids[index]);
@@ -305,39 +311,6 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         allies[id] = Ally({class: class_, level: level_, lvlProgress: lvlProgress_, modF: modF_, skillCredits: skillCredits_, details: details_});
     }
 
-    function shamans(uint256 id) external view returns(uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 featA, uint8 featB, uint8 helm, uint8 mainhand, uint8 offhand) {
-        Ally memory ally = allies[id];
-        level        = ally.level;
-        lvlProgress  = ally.lvlProgress;
-        modF         = ally.modF;
-        skillCredits = ally.skillCredits;
-
-        Shaman memory sh = _shaman(ally.details);
-        body     = sh.body;
-        featA    = sh.featA;
-        featB    = sh.featB;
-        helm     = sh.helm;
-        mainhand = sh.mainhand;
-        offhand  = sh.offhand;
-    }
-
-    function ogres(uint256 id) external view returns(uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 mouth, uint8 nose, uint8 eyes, uint8 armor, uint8 mainhand, uint8 offhand) {
-        Ally memory ally = allies[id];
-        level        = ally.level;
-        lvlProgress  = ally.lvlProgress;
-        modF         = ally.modF;
-        skillCredits = ally.skillCredits;
-
-        Ogre memory og = _ogre(ally.details);
-        body     = og.body;
-        mouth    = og.mouth;
-        nose     = og.nose;
-        eyes     = og.eyes;
-        armor    = og.armor;
-        mainhand = og.mainhand;
-        offhand  = og.offhand;
-    }
-
     function setMetadataHandler(address add) external {
         require(msg.sender == admin);
         metadaHandler = MetadataHandlerAllies(add);
@@ -348,6 +321,28 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         for (uint256 i = start; i < end; i++) {
             _mint( to, i);
         }
+    }
+
+    function rogue(bytes22 details) public pure returns(Rogue memory rg) {
+        uint8 body     = uint8(bytes1(details));
+        uint8 face     = uint8(bytes1(details << 8));
+        uint8 boots    = uint8(bytes1(details << 16));
+        uint8 pants    = uint8(bytes1(details << 24));
+        uint8 shirt    = uint8(bytes1(details << 32));
+        uint8 hair     = uint8(bytes1(details << 40));
+        uint8 armor    = uint8(bytes1(details << 48));
+        uint8 mainhand = uint8(bytes1(details << 56));
+        uint8 offhand  = uint8(bytes1(details << 64));
+
+        rg.body     = body;
+        rg.face     = face;
+        rg.armor    = armor;
+        rg.mainhand = mainhand;
+        rg.offhand  = offhand;
+        rg.boots    = boots;
+        rg.pants    = pants;
+        rg.shirt    = shirt;
+        rg.hair     = hair;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -405,11 +400,23 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
         Ogre memory og = _ogre(details_);
 
-        if (equipment == 0) og.armor = item;
+        if (equipment == 0) og.armor    = item;
         if (equipment == 1) og.mainhand = item;
-        if (equipment == 2) og.offhand = item;
+        if (equipment == 2) og.offhand  = item;
 
         details = bytes22(abi.encodePacked(og.body, og.mouth, og.nose, og.eyes, og.armor, og.mainhand, og.offhand));
+    }
+
+    function _equipRogue(Location memory loc, bytes22 details_, uint256 equipment, uint256 rdn) internal pure returns(bytes22 details) {
+        uint8 item  = _getItemRg(loc, rdn);
+
+        Rogue memory rg = rogue(details_);
+
+        if (equipment == 0) rg.armor    = item;
+        if (equipment == 1) rg.mainhand = item;
+        if (equipment == 2) rg.offhand  = item;
+
+        details = bytes22(abi.encodePacked(rg.body, rg.face, rg.boots, rg.pants, rg.shirt, rg.hair, rg.armor, rg.mainhand, rg.offhand));
     }
 
     function _modFSh(bytes32 details_) internal pure returns (uint16 mod) {
@@ -428,6 +435,14 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         mod = _tierOg(armor) + _tierOg(mainhand) + _tierOg(offhand);
     }
 
+    function _modFTg(bytes32 details_) internal pure returns (uint16 mod) {
+        uint8 armor    = uint8(bytes1(details_ << 56));
+        uint8 mainhand = uint8(bytes1(details_ << 64));
+        uint8 offhand  = uint8(bytes1(details_ << 72));
+
+        mod = _tierRg(armor) + _tierRg(mainhand) + _tierRg(offhand);
+    }
+
     function _getItemSh(Location memory loc, uint256 rand) internal pure returns (uint8 item) {
         uint256 draw = uint256(rand % 100) + 1;
 
@@ -440,6 +455,13 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
         uint8 tier = uint8(draw <= loc.tier_3Prob ? loc.tier_3 : draw <= loc.tier_2Prob + loc.tier_3Prob? loc.tier_2 : loc.tier_1);
         item = uint8(rand % _tierItemsOg(tier) + _startForTierOg(tier));
+    }
+
+    function _getItemRg(Location memory loc, uint256 rand) internal pure returns (uint8 item) {
+        uint256 draw = uint256(rand % 100) + 1;
+
+        uint8 tier = uint8(draw <= loc.tier_3Prob ? loc.tier_3 : draw <= loc.tier_2Prob + loc.tier_3Prob? loc.tier_2 : loc.tier_1);
+        item = uint8(rand % _tierItemsRg(tier) + _startForTierRg(tier));
     }
 
     function _claimable(uint256 timeDiff, uint256 herbalism_) internal pure returns (uint256 potionAmount) {
@@ -508,4 +530,33 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         if (tier_ == 5) return 27;
         if (tier_ == 6) return 32;
     }
+
+    function _tierRg(uint8 item) internal pure returns (uint8 tier) {
+        if (item == 0) return 0;
+        if (item <= 5) return 2;
+        if (item <= 15) return 3;
+        if (item <= 21) return 4;
+        if (item <= 28) return 5;
+        if (item <= 35) return 6;
+    } 
+
+    function _tierItemsRg(uint256 tier_) internal pure returns (uint256 numItems) {
+        if (tier_ == 0) return 0;
+        if (tier_ == 1) return 0;
+        if (tier_ == 2) return 5;
+        if (tier_ == 3) return 10;
+        if (tier_ == 4) return 6;
+        if (tier_ == 5) return 7;
+        if (tier_ == 6) return 7;
+    }
+
+    function _startForTierRg(uint256 tier_) internal pure returns (uint256 start) {
+        if (tier_ == 0) return 0;
+        if (tier_ == 1) return 0;
+        if (tier_ == 2) return 1;
+        if (tier_ == 3) return 6;
+        if (tier_ == 4) return 16;
+        if (tier_ == 5) return 22;
+        if (tier_ == 6) return 29;
+    }       
 }

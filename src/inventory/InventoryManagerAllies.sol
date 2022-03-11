@@ -24,7 +24,8 @@ contract InventoryManagerAllies {
     function getTokenURI(uint256 id_, uint256 class_, uint256 level_, uint256 modF_, uint256 skillCredits_, bytes22 details_) external view returns (string memory) {
         if (class_ == 1) return InventoryManagerAllies(shInv).getTokenURI(id_, class_, level_, modF_, skillCredits_, details_);
         if (class_ == 2) return InventoryManagerAllies(ogInv).getTokenURI(id_, class_, level_, modF_, skillCredits_, details_);
+        if (class_ == 3) return InventoryManagerAllies(rgInv).getTokenURI(id_, class_, level_, modF_, skillCredits_, details_);
+        if (class_ == 4) return InventoryManagerAllies(mgInv).getTokenURI(id_, class_, level_, modF_, skillCredits_, details_);
     }
-   
    
 }

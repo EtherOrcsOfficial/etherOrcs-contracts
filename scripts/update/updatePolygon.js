@@ -17,6 +17,9 @@ async function updateProxy(contractName, address) {
   let a = await hre.ethers.getContractAt("Proxy", address);
 
   await a.setImplementation(impl.address);
+
+  let im = await hre.ethers.getContractAt(contractName, address);
+  return im
 }
 
 let proxies  = {
@@ -26,15 +29,21 @@ let proxies  = {
     "Castle": "0xaF8884f29a4421d7CA847895Be4d2edE40eD6ad9",
     "RaidsPoly": "0x2EeC5C9DfD2a8630fBAa8973357a9ac8393721D4",
     "PotionVendor": "0xBb477E51A4E28280cB1839cb2F8AB551b24834Ae",
-    "InventoryManagerAllies": "0xA873dF562Eb39A3c560038Fc2c3D5b1C09C03b82",
+    "InventoryManagerAllies": "0xa44dE708c9a79A9465463C08f2980077b0808B06",
     "InventoryManagerOgres": "0x0Ad561F3E4a39c72e0AEE345D1590600F22cE1b2",
+    "InventoryManagerItems": "0x6e0c15a29851814D0e88E4AeaA359bae67e89676",
     "HordeUtilities": "0x6FFFa8692B29e982B9668B35ed998570BeB64C79",
+    "GamingOraclePoly": "0x04A0B7E35828c985e78E2F1107e0B1C3FE39a837"
 }
 
 async function main() {
   await hre.run("compile");
+  await updateProxy("EtherOrcsPoly",proxies["EtherOrcsPoly"]);
+  let allies = await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
 
-  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
+  await allies.setLocations()
+  let radis = await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
+  await radis.setRaids();
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -69,4 +69,31 @@ contract HordeUtilities {
         OrcishLike(allies).adjustAlly(id_, 2, level, lvlProgress, modF, skillCredits, bytes22(abi.encodePacked(body,mouth,nose,eyes,armor,mainhand,offhand)));
     }
 
+    function userFireCrystal(uint256 id_) external {
+        (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = OrcishLike(allies).allies(id_);
+        require(class == 3, "not an rogue");
+
+        ERC1155Like(items).burn(msg.sender, 100,  15 ether);
+
+        OrcishLike(allies).adjustAlly(id_, class, level, lvlProgress, modF, skillCredits, _getNewDetails(3, details));
+    }
+
+    function userIceCrystal(uint256 id_) external {
+        (uint8 class, uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = OrcishLike(allies).allies(id_);
+        require(class == 3, "not an rogue");
+
+        ERC1155Like(items).burn(msg.sender, 101,  15 ether);
+
+        OrcishLike(allies).adjustAlly(id_, class, level, lvlProgress, modF, skillCredits, _getNewDetails(4, details));
+    }
+
+    function _getNewDetails(uint256 body_, bytes22 details_) internal view returns (bytes22 det){
+        (uint8 body, uint8 face, uint8 boots, uint8 pants,uint8 shirt,uint8 hair ,uint8 armor ,uint8 mainhand,uint8 offhand) = OrcishLike(allies).rogue(details_);
+
+        face = uint8((body_ - 1) * 10) + ((face % 10) + 1) ;
+        body = uint8(body_);
+
+        det =  bytes22(abi.encodePacked(body,face,boots,pants,shirt,hair,armor,mainhand,offhand));
+    }
+
 }

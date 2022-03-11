@@ -66,7 +66,7 @@ contract MockGamingOracle is GamingOraclePoly {
         
         bytes32 id = keccak256(abi.encodePacked(key, msg.sender));
         keys[key] = id;
-        rands[keys[key]] = uint256(1); // 
+        rands[keys[key]] = uint256(keccak256(abi.encodePacked(key, msg.sender))); // 
     }
 
 }

@@ -5,14 +5,26 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
+async function deployProxied(contractName) {
+  console.log("Deploying", contractName)
+  const InventoryManagerFactory = await hre.ethers.getContractFactory(contractName);
+  let invMan = await InventoryManagerFactory.deploy();
+  console.log(invMan.address)
 
+  console.log("Deploying Proxy")
+  const ProxyFac = await hre.ethers.getContractFactory("Proxy");
+  let pp = await ProxyFac.deploy(invMan.address);
+  console.log(pp.address)
+
+  let a = await hre.ethers.getContractAt(contractName, pp.address);
+  return a;
+}
 
 async function updateProxy(contractName, address) {
     console.log("Deploying", contractName)
   const ImplFact = await hre.ethers.getContractFactory(contractName);
   let impl = await ImplFact.deploy();
   console.log(impl.address)
-  await impl.deployed();
 
   console.log("Updating Impl")
   let a = await hre.ethers.getContractAt("Proxy", address);
@@ -21,23 +33,16 @@ async function updateProxy(contractName, address) {
 }
 
 
-
 let proxies  = {
-    "Castle": "0xaF8884f29a4421d7CA847895Be4d2edE40eD6ad9",
-    "InventoryManagerShamans":"0xf286aa8c83609328811319af2f223bcc5b6db028",
-    "InventoryManagerOgres": "0x81FA8559D8861F7b748db745C2C8dfdf6B3DFF68",
-    "InventoryManagerAllies": "0xAA6647e4C507b2E30b4816963ABB2887585157eD",
-    "MainlandPortal": "0xcf586c68661c4a0358c79D33961C8FFeB59Ee162",
-    "EtherOrcsAllies": "0x62674b8aCe7D939bB07bea6d32c55b74650e0eaA",
-    "EtherOrcs": "0x3aBEDBA3052845CE3f57818032BFA747CDED3fca"
+    "TestAllies": "0x06D9917733b6Bd22B03C522eE3038064dA5562b5",
+    "InventoryManagerRogues": "0x0f9d3d89dEc2fA5ae4f5e51eff58F60d78542CEd"
 }
 
 async function main() {
   await hre.run("compile");
 
-  // await updateProxy("EtherOrcsAllies",proxies["EtherOrcsAllies"]);
-  // await updateProxy("EtherOrcs",proxies["EtherOrcs"]);
-  await updateProxy("InventoryManagerAllies",proxies["InventoryManagerAllies"]);
+  await updateProxy("InventoryManagerRogues",proxies["InventoryManagerRogues"]);
+  
 }
 
 // We recommend this pattern to be able to use async/await everywhere

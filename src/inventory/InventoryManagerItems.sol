@@ -19,9 +19,12 @@ contract InventoryManagerItems {
 
     function getTokenURI(uint256 id) external view returns (string memory) {
         string memory svg = Base64.encode(bytes(InventoryLike(svgs[id]).getSvg()));
-        if (id == 1) return getURI(svg, "Potion");
-        if (id == 2) return getURI(svg, "Training Dummy");
-        if (id == 99) return getURI(svg, "Lava Rock");
+        if (id == 1)   return getURI(svg, "Potion");
+        if (id == 2)   return getURI(svg, "Training Dummy");
+        if (id == 3)   return getURI(svg, "Luck Rune");
+        if (id == 99)  return getURI(svg, "Lava Rock");
+        if (id == 100) return getURI(svg, "Fire Crystal");
+        if (id == 101) return getURI(svg, "Ice Crystal");
     }
 
     function getURI(string memory svg, string memory name) public pure returns (string memory) {

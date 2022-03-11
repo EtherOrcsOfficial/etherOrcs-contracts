@@ -75,7 +75,6 @@ interface LinkTokenInterface {
 
 contract GamingOraclePoly is VRFRequestIDBase {
 
-
     address impl;
     address admin;
 
@@ -122,6 +121,15 @@ contract GamingOraclePoly is VRFRequestIDBase {
 
     function getRandom(uint64 id) external view returns(uint256 rand){
         return rands[keys[id]];
+    }
+
+    function getRandom(uint256 id) external view returns(uint256 rand){
+        return rands[keys[uint64(id)]];
+    }
+
+    function forceFullfill(uint256 id, uint256 rand) external {
+      require(msg.sender == admin, "not authorized");
+      rands[keys[uint64(id)]] = rand;
     }
 
     function withdrawLink() external {

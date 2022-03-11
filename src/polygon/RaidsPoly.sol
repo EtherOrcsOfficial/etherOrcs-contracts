@@ -29,25 +29,29 @@ contract RaidsPoly {
     ERC721Like  allies;
     ERC1155Like items;
 
-    address vendor;
-    address gamingOracle;
+    address public vendor;
+    address public gamingOracle;
 
-    uint256 seedCounter;
+    uint256 public seedCounter;
+    uint256 public vendorPct;
+    uint256 public runeBoost;
 
-    uint256 public constant HND_PCT = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
-    uint256 public constant VND_PCT = 1500;
-    uint256 public constant POTION_ID = 1; 
+    uint256 public constant HND_PCT   = 10_000; // Probabilities are given in a scale from 0 - 10_000, where 10_000 == 100% and 0 == 0%
+    uint256 public constant POTION_ID = 1;
+    uint256 public constant RUNES_ID  = 3;  
+    uint256 public constant MAX_RUNES = 3;  
 
     // All that in a single storage slot. Fuck yeah!
     struct Raid {
-        uint16 minLevel;  uint16 maxLevel;  uint16 duration; uint16 cost;
-        uint16 grtAtMin;  uint16 grtAtMax;  uint16 supAtMin; uint16 supAtMax;
-        uint16 regReward; uint16 grtReward; uint16 supReward;uint16 minPotions; uint16 maxPotions; // Rewards are scale down to 100(= 1BS & 1=0.01) to fit uint16. 
+        uint16 minLevel;  uint16 maxLevel;  uint16 duration;  uint16 cost;
+        uint16 grtAtMin;  uint16 grtAtMax;  uint16 supAtMin;  uint16 supAtMax;
+        uint16 regReward; uint16 grtReward; uint16 supReward; uint16 minPotions; uint16 maxPotions; // Rewards are scale down to 100(= 1BS & 1=0.01) to fit uint16. 
     }    
 
-    struct Campaign { uint8 location; bool double; uint64 end; uint112 reward; uint64 seed; }
+    struct Campaign { uint8 location; bool double; uint64 end; uint112 runesUsed; uint64 seed; } // warning: runesUsed is both indication that a campaing has rewards and the actual numbers of runes used.
 
     event BossHit(uint256 orcId, uint256 damage, uint256 remainingHealth);
+    event RaidOutcome(uint256 id, uint256 level, uint256 location, uint256 reward);
 
     /*///////////////////////////////////////////////////////////////
                    Admin Functions 
@@ -60,44 +64,16 @@ contract RaidsPoly {
         zug             = ERC20Like(zug_);
         boneShards      = ERC20Like(boneShards_);
         hallOfChampions = HallOfChampionsLike(hallOfChampions_);
-
-        // Creating starting locations
-        Raid memory giantCrabBeach = Raid({
-            minLevel: 5, maxLevel: 15,   duration:  192, cost:      65,  grtAtMin:  1500, grtAtMax: 3500, 
-            supAtMin: 0, supAtMax: 1500, regReward: 200, grtReward: 300, supReward: 500, minPotions: 0, maxPotions:4});
-
-        Raid memory pirateCove = Raid({
-            minLevel: 15, maxLevel: 30,   duration:  192,  cost:     150, grtAtMin:  1500, grtAtMax: 3500, 
-            supAtMin: 0,  supAtMax: 1500, regReward: 500, grtReward: 800, supReward: 1200, minPotions: 0, maxPotions:4});
-
-        Raid memory spiderDen = Raid({
-            minLevel: 15, maxLevel: 30,   duration:  192,  cost:     175, grtAtMin:  1500, grtAtMax: 3500, 
-            supAtMin: 0,  supAtMax: 1500, regReward: 400, grtReward: 800, supReward: 2000, minPotions: 0, maxPotions:4});
-
-        Raid memory unstableQuagmire = Raid({
-            minLevel: 30, maxLevel: 50,   duration:  192,  cost:      250,  grtAtMin:  1500, grtAtMax: 3500, 
-            supAtMin: 0,  supAtMax: 1500, regReward: 1200, grtReward: 1500, supReward: 2300, minPotions: 0, maxPotions:4});
-
-        Raid memory merfolkFortress = Raid({
-            minLevel: 50, maxLevel: 75,   duration:  192,  cost:      300,  grtAtMin:  1500, grtAtMax: 3500, 
-            supAtMin: 0,  supAtMax: 1500, regReward: 1600, grtReward: 2000, supReward: 3000, minPotions: 0, maxPotions:4});
-
-        locations[0] = giantCrabBeach;
-        locations[1] = pirateCove;
-        locations[2] = spiderDen;
-        locations[3] = unstableQuagmire;
-        locations[4] = merfolkFortress;
     }
 
      function init(address allies_, address vendor_, address potions_, address orcl) external {
         require(msg.sender == admin);
 
-
-        giantCrabHealth = 400000;
         dbl_discount    = 200;
+        runeBoost       = 200;
 
         allies       = ERC721Like(allies_);
-        items      = ERC1155Like(potions_);
+        items        = ERC1155Like(potions_);
         gamingOracle = orcl;
         vendor       = vendor_;
     }
@@ -106,38 +82,51 @@ contract RaidsPoly {
         require(msg.sender == admin);
 
         //disable all old raids
-        locations[0].cost = type(uint16).max;
-        locations[1].cost = type(uint16).max;
-        locations[2].cost = type(uint16).max;
-        locations[3].cost = type(uint16).max;
-        locations[4].cost = type(uint16).max;
-        locations[5].cost = type(uint16).max;
-        locations[6].cost = type(uint16).max;
-        locations[7].cost = type(uint16).max;
-        locations[8].cost = type(uint16).max;
-        locations[9].cost = type(uint16).max;
+        locations[10].cost = type(uint16).max;
+        locations[11].cost = type(uint16).max;
+        locations[12].cost = type(uint16).max;
+        locations[13].cost = type(uint16).max;
+        locations[14].cost = type(uint16).max; 
+        locations[15].cost = type(uint16).max;
+        locations[16].cost = type(uint16).max;
+        locations[17].cost = type(uint16).max;
+        locations[18].cost = type(uint16).max;
 
-        Raid memory crookedCrabBeach = Raid({ minLevel:  5, maxLevel: 5,  duration:  48, cost: 60, grtAtMin: 0, grtAtMax: 0, supAtMin: 400, supAtMax: 400, regReward: 100, grtReward: 100, supReward: 3000, minPotions: 0, maxPotions: 0});
-        Raid memory twistedPirateCove = Raid({ minLevel:  15, maxLevel: 25,  duration:  30, cost: 45, grtAtMin: 0, grtAtMax: 0, supAtMin: 200, supAtMax: 400, regReward: 100, grtReward: 100, supReward: 2000, minPotions: 0, maxPotions: 0});
-        Raid memory warpedSpiderDen = Raid({ minLevel:  25, maxLevel: 35,  duration:  72, cost: 110, grtAtMin: 1000, grtAtMax: 1500, supAtMin: 0, supAtMax: 500, regReward: 200, grtReward: 1000, supReward: 3000, minPotions: 0, maxPotions: 1});
-        Raid memory toxicQuagmire = Raid({ minLevel:  45, maxLevel: 45,  duration:  96, cost: 195, grtAtMin: 0, grtAtMax: 0, supAtMin: 0, supAtMax: 0, regReward: 900, grtReward: 900, supReward: 900, minPotions: 1, maxPotions: 1});
-        Raid memory evilMerfolkCastle = Raid({ minLevel:  50, maxLevel: 75,  duration:  144, cost: 275, grtAtMin: 1500, grtAtMax: 3000, supAtMin: 200, supAtMax: 1500, regReward: 1000, grtReward: 1600, supReward: 2400, minPotions: 3, maxPotions: 3});
+        Raid memory spidersDenNew = Raid({ minLevel:  15, maxLevel: 35,  duration:  192, cost: 165, grtAtMin: 1500, grtAtMax: 2000, supAtMin: 1000, supAtMax: 1500, regReward: 300, grtReward: 700, supReward: 1500, minPotions: 0, maxPotions: 1});
+        Raid memory unstableQuagNew = Raid({ minLevel:  45, maxLevel: 65,  duration:  192, cost: 155, grtAtMin: 1500, grtAtMax: 2000, supAtMin: 1000, supAtMax: 1500, regReward: 600, grtReward: 600, supReward: 600, minPotions: 2, maxPotions: 2});
+        Raid memory spiderlordNew = Raid({ minLevel:  70, maxLevel: 90,  duration:  168, cost: 105, grtAtMin: 2000, grtAtMax: 2500, supAtMin: 1500, supAtMax: 2000, regReward: 200, grtReward: 300, supReward: 1200, minPotions: 2, maxPotions: 2});
+        Raid memory pirateCoveNew = Raid({ minLevel:  100, maxLevel: 120,  duration:  264, cost: 195, grtAtMin: 2000, grtAtMax: 2500, supAtMin: 1500, supAtMax: 2000, regReward: 500, grtReward: 800, supReward: 1800, minPotions: 3, maxPotions: 3});
+        Raid memory boneshardBeach = Raid({ minLevel:  155, maxLevel: 175,  duration:  192, cost: 135, grtAtMin: 1000, grtAtMax: 1500, supAtMin: 0, supAtMax: 500, regReward: 500, grtReward: 800, supReward: 1800, minPotions: 2, maxPotions: 2});
+        Raid memory hiddenCatacomb = Raid({ minLevel:  180, maxLevel: 200,  duration:  168, cost: 110, grtAtMin: 0, grtAtMax: 500, supAtMin: 0, supAtMax: 500, regReward: 400, grtReward: 1200, supReward: 1600, minPotions: 2, maxPotions: 2});
+        Raid memory lostRuins = Raid({ minLevel:  230, maxLevel: 250,  duration:  264, cost: 215, grtAtMin: 1500, grtAtMax: 2000, supAtMin: 1000, supAtMax: 1500, regReward: 800, grtReward: 1200, supReward: 2000, minPotions: 3, maxPotions: 3});
+        Raid memory piratesBounty = Raid({ minLevel:  260, maxLevel: 280,  duration:  120, cost: 95, grtAtMin: 0, grtAtMax: 500, supAtMin: 0, supAtMax: 500, regReward: 400, grtReward: 800, supReward: 2000, minPotions: 1, maxPotions: 1});
+        Raid memory vendorStash = Raid({ minLevel:  260, maxLevel: 280,  duration:  72, cost: 35, grtAtMin: 0, grtAtMax: 500, supAtMin: 0, supAtMax: 500, regReward: 0, grtReward: 1000, supReward: 2000, minPotions: 1, maxPotions: 1});
 
-        Raid memory werewolf = Raid({ minLevel:  90, maxLevel: 90,  duration:  144, cost: 90, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 300, grtReward: 500, supReward: 1000, minPotions: 0, maxPotions: 4});
-        Raid memory frenziedSpiderlord = Raid({ minLevel:  100, maxLevel: 125,  duration:  144, cost: 240, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 800, grtReward: 1600, supReward: 2800, minPotions: 2, maxPotions: 4});        Raid memory leviathan = Raid({ minLevel:  150, maxLevel: 175,  duration:  192, cost: 365, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 1500, regReward: 1000, grtReward: 2600, supReward: 6000, minPotions: 3, maxPotions: 5});
-        Raid memory lavaTitan = Raid({ minLevel:  190, maxLevel: 200,  duration:  216, cost: 275, grtAtMin: 1500, grtAtMax: 2500, supAtMin: 500, supAtMax: 2000, regReward: 1200, grtReward: 1800, supReward: 2600, minPotions: 6, maxPotions: 6});
+        locations[19] = spidersDenNew;
+        locations[20] = unstableQuagNew;
+        locations[21] = spiderlordNew;
+        locations[22] = pirateCoveNew;
+        locations[23] = boneshardBeach;
+        locations[24] = hiddenCatacomb;
+        locations[25] = lostRuins;
+        locations[26] = piratesBounty;
+        locations[27] = vendorStash;
 
-        locations[10] = crookedCrabBeach;
-        locations[11] = twistedPirateCove;
-        locations[12] = warpedSpiderDen;
-        locations[13] = toxicQuagmire;
-        locations[14] = evilMerfolkCastle; 
-        locations[15] = werewolf;
-        locations[16] = frenziedSpiderlord;
-        locations[17] = leviathan;
-        locations[18] = lavaTitan;
 
         dbl_discount    = 200;
+        runeBoost       = 200;
+    }
+
+    function setVendorPercentage(uint256 pct) external {
+        require(msg.sender == admin, "not authed");
+
+        vendorPct = pct;
+    }
+
+    function setRuneBoost(uint256 pct) external {
+        require(msg.sender == admin, "not authed");
+
+        runeBoost = pct;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -150,7 +139,7 @@ contract RaidsPoly {
         require(msg.sender == (orcishId < 5051 ? address(orcs) : address(allies)), "Not orcs contract");
         require(_ended(campaigns[orcishId]),   "Still raiding");
 
-        if (cmp.reward > 0) _claim(orcishId);
+        if (cmp.runesUsed > 0) _claim(orcishId);
 
         if (orcishId < 5051) {
             orcs.transfer(commanders[orcishId], orcishId);
@@ -166,33 +155,30 @@ contract RaidsPoly {
         for (uint256 i = 0; i < ids.length; i++) {
             _claim(ids[i]);
         }
-        _updateEntropy();
     }   
 
-    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_, uint256[] calldata potions_) external {
+    function stakeManyAndStartCampaign(uint256[] calldata ids_, address owner_, uint256 location_, bool double_, uint256[] calldata potions_, uint256[] calldata runes_) external {
         for (uint256 i = 0; i < ids_.length; i++) {
             _stake(ids_[i], owner_);
-            _startCampaign(ids_[i], location_, double_, potions_[i]);
+            _startCampaign(ids_[i], location_, double_, potions_[i], runes_[i]);
         }
-        _updateEntropy();
     }
 
-    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_, uint256[] calldata potions_) external {
+    function startCampaignWithMany(uint256[] calldata ids, uint256 location_, bool double_, uint256[] calldata potions_, uint256[] calldata runes_) external {
         for (uint256 i = 0; i < ids.length; i++) {
-            _startCampaign(ids[i], location_, double_, potions_[i]);
+            _startCampaign(ids[i], location_, double_, potions_[i], runes_[i]);
         }
-        _updateEntropy();
     } 
 
     /*///////////////////////////////////////////////////////////////
                    INTERNAl HELPERS  
     //////////////////////////////////////////////////////////////*/
 
-    function _claim(uint256 id) internal {
+    function _claim(uint256 id) internal returns(uint256 reward){
         Campaign memory cmp = campaigns[id]; 
 
-        if (cmp.reward > 0 && _ended(campaigns[id])) {
-            uint256 reward = cmp.reward;
+        if (cmp.runesUsed > 0 && _ended(campaigns[id])) {
+            reward = cmp.runesUsed;
             if (cmp.seed != 0) {
                 // New case - calculate the result from seed
                 Raid memory raid = locations[cmp.location];
@@ -200,11 +186,19 @@ contract RaidsPoly {
                 uint256 rdn      = OracleLike(gamingOracle).getRandom(cmp.seed);
                 
                 require(rdn != 0, "no random value yet");
+                
+                reward = _getReward(raid, id, level, _getBoosted(cmp, _getRandom(id, rdn, "RAID")));
+                emit RaidOutcome(id, level, cmp.location, reward);
 
-                reward = _getReward(raid, id, level, rdn, "RAID") + (cmp.double ? _getReward(raid, id, level, rdn, "DOUBLE RAID") : 0);
-                _foundSomething(raid, cmp, id, level, rdn);
+                if (cmp.double) {
+                    uint256 reward2 = _getReward(raid, id, level, _getBoosted(cmp, _getRandom(id, rdn, "DOUBLE RAID")));
+                    reward += reward2;
+                    _foundSomething(raid, cmp, _getRandom(id, rdn, "FIRST TRY"), id);
+                    emit RaidOutcome(id, level, cmp.location, reward2);
+                }
+                _foundSomething(raid, cmp, _getRandom(id, rdn, "LUCKY"), id);
             } 
-            campaigns[id].reward = 0;
+            campaigns[id].runesUsed = 0;
             boneShards.mint(commanders[id], reward);
         }
     } 
@@ -217,29 +211,30 @@ contract RaidsPoly {
         commanders[id] = owner;
     }
 
-    function _startCampaign(uint orcishId, uint256 location_, bool double, uint256 potions_) internal {
+    function _startCampaign(uint orcishId, uint256 location_, bool double, uint256 potions_, uint256 runes_) internal {
         Raid memory raid = locations[location_];
         address owner = commanders[orcishId];
 
+        require(runes_   <= (double ? MAX_RUNES * 2 : MAX_RUNES),             "too much runes");
         require(potions_ <= (double ? raid.maxPotions * 2 : raid.maxPotions), "too much potions");
-        require(potions_ >= (double ? raid.minPotions * 2 : raid.minPotions), "too much potions");
+        require(potions_ >= (double ? raid.minPotions * 2 : raid.minPotions), "too few potions");
         require(msg.sender == (orcishId < 5051 ? address(orcs) : address(allies)), "Not allowed");
         require(_ended(campaigns[orcishId]),   "Currently on campaign");
 
-        if (campaigns[orcishId].reward > 0) _claim(orcishId);
+        if (campaigns[orcishId].runesUsed > 0) _claim(orcishId);
 
         require(_getLevel(orcishId) >= raid.minLevel, "below min level");
 
+        if (double) require(runes_ % 2 == 0, "odd runes in double raids");
+
         uint256 zugAmount = uint256(raid.cost) * 1 ether;
         uint256 duration  = raid.duration;
-        uint112 reward    = raid.regReward;
          
         campaigns[orcishId].double = false;
         
         if (double) {
             uint256 totalCost = zugAmount * 2;
             zugAmount  = totalCost - (totalCost * dbl_discount / HND_PCT);
-            reward    += raid.regReward;
             duration  += raid.duration;
 
             campaigns[orcishId].double = true;
@@ -251,16 +246,16 @@ contract RaidsPoly {
             duration -= potions_ * 24;
         }
 
-        campaigns[orcishId].location  = uint8(location_);
-        campaigns[orcishId].reward   += reward;
-        campaigns[orcishId].end       = uint64(block.timestamp + (duration * 1 hours));
-        campaigns[orcishId].seed      = requestSeed();
+        if (runes_ > 0) items.burn(owner, RUNES_ID, runes_ * 1 ether);
 
-        _attackBoss(orcishId);
+        campaigns[orcishId].location   = uint8(location_);
+        campaigns[orcishId].runesUsed  = uint112(100) + uint112(runes_);
+        campaigns[orcishId].end        = uint64(block.timestamp + (duration * 1 hours));
+        campaigns[orcishId].seed       = requestSeed();
     }   
 
     function _distributeZug(address owner, uint256 amount) internal {
-        uint256 vendorAmt = amount * VND_PCT / HND_PCT;
+        uint256 vendorAmt = amount * vendorPct / HND_PCT;
         zug.burn(owner, amount);
         zug.mint(vendor, vendorAmt);
     }
@@ -277,15 +272,21 @@ contract RaidsPoly {
         return OracleLike(gamingOracle).request();
     }
 
-    function _getReward(Raid memory raid, uint256 orcId, uint16 orcLevel, uint256 ramdom, string memory salt) internal view returns(uint176 reward) {
-        uint256 rdn = uint256(keccak256(abi.encode(ramdom, orcId, salt))) % 10_000 + 1;
-
+    function _getReward(Raid memory raid, uint256 orcId, uint16 orcLevel, uint256 rdn) internal view returns(uint176 reward) {
         uint256 champBonus = _getChampionBonus(uint16(orcId));
-
         uint256 greatProb  = _getBaseOutcome(raid.minLevel, raid.maxLevel, raid.grtAtMin, raid.grtAtMax, orcLevel) + _getLevelBonus(raid.maxLevel, orcLevel) + champBonus;
         uint256 superbProb = _getBaseOutcome(raid.minLevel, raid.maxLevel, raid.supAtMin, raid.supAtMax, orcLevel) + champBonus;
 
         reward = uint176(rdn <= superbProb ? raid.supReward  : rdn <= greatProb + superbProb ? raid.grtReward : raid.regReward) * 1e16;
+    }
+
+    function _getBoosted(Campaign memory cmp, uint256 rdn) internal view returns (uint256 boosted) {
+        uint256 boost = uint256((uint256(cmp.runesUsed) - 100) / (cmp.double ? 2 : 1) * runeBoost);
+        boosted = boost < rdn ? rdn - boost : 0;
+    }
+
+    function _getRandom(uint256 orcId, uint256 ramdom, string memory salt) internal pure returns (uint256 rdn) {
+        rdn = uint256(keccak256(abi.encode(ramdom, orcId, salt))) % 10_000 + 1;
     }
 
     function _getLevel(uint256 id) internal view returns(uint16 level) {
@@ -311,30 +312,16 @@ contract RaidsPoly {
         bonus =  HallOfChampionsLike(hallOfChampions).joined(id) > 0 ? 100 : 0;
     }
 
-    function _attackBoss(uint256 id) internal {
-        uint256 damage = _randomize(_rand(), "ATTACK", id) % 2000;
-        giantCrabHealth = damage >= giantCrabHealth ? 0 : giantCrabHealth - damage;
-        emit BossHit(id, damage, giantCrabHealth);
+    function _foundSomething(Raid memory raid, Campaign memory cmp, uint256 rdn, uint256 id) internal {
+        if (cmp.runesUsed - 100 == 0) return;
+
+        if (rdn >= 9_700) {
+            if (items.balanceOf(address(this), 100) > 0) items.safeTransferFrom(address(this), commanders[id], 100, 1, new bytes(0));
+        }
+
+        if (rdn <= 300) {
+            if (items.balanceOf(address(this), 101) > 0) items.safeTransferFrom(address(this), commanders[id], 101, 1, new bytes(0));
+        }
+
     }
-
-    function _foundSomething(Raid memory raid, Campaign memory cmp, uint256 orcId, uint16 orcLevel, uint256 ramdom) internal {
-        uint256 rdn1 = uint256(keccak256(abi.encode(ramdom, orcId, "RAID"))) % 10_000 + 1;
-        uint256 rdn2 = cmp.double ? (uint256(keccak256(abi.encode(ramdom, orcId, "DOUBLE RAID"))) % 10_000 + 1) : type(uint256).max;
-
-        if (cmp.location == 18) {
-            uint256 supOutcome = _getBaseOutcome(raid.minLevel, raid.maxLevel, raid.supAtMin, raid.supAtMax, orcLevel);
-            uint256 bal = items.balanceOf(address(this), 99);
-            if (rdn1 <= supOutcome && bal > 0) items.safeTransferFrom(address(this), commanders[orcId], 99, 1, new bytes(0));
-            if (rdn2 <= supOutcome && bal > 1) items.safeTransferFrom(address(this), commanders[orcId], 99, 1, new bytes(0));
-        } 
-    }
-
-    function _randomize(uint256 rand, string memory val, uint256 spicy) internal pure returns (uint256) {
-        return uint256(keccak256(abi.encode(rand, val, spicy)));
-    }
-
-    function _rand() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(msg.sender, block.timestamp, block.timestamp, entropySauce)));
-    }
-
 }

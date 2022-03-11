@@ -100,7 +100,6 @@ async function main() {
 	await hall.deployed();
 	console.log("Hall: ", hall.address);
 
-
 	//Deploy Potion Vendor
 	const PotionVendorFact = await hre.ethers.getContractFactory("PotionVendorPoly");
 	let potionVendorImpl = await PotionVendorFact.deploy();
@@ -144,6 +143,7 @@ async function main() {
 	await allies.initialize(zug.address, shr.address, items.address, raids.address, castle.address, gamingOracle.address);
 	await allies.setAuth(castle.address, true);
 	await allies.setAuth(raids.address, true);
+	await allies.setLocations();
 	console.log("done allies");
  
 	await zug.setMinter(castle.address, true);
@@ -155,7 +155,8 @@ async function main() {
 
 	raids = await hre.ethers.getContractAt("RaidsPoly", raids.address);
 	await raids.initialize(orc.address, zug.address, shr.address, hall.address);
-	await raids.init(allies.address, potionVendor.address, items.address);
+	await raids.init(allies.address, potionVendor.address, items.address, gamingOracle.address);
+	await raids.setRaids();
 	console.log("done raids");
 
 	await shr.setMinter(castle.address, true);
@@ -189,11 +190,13 @@ async function main() {
 	console.log("done castle");
 	for (let i = 0; i < 5051; i += 505) {
 		await orc.initMint(orc.address, i, i + 505);
-		
 	}
 
 	//TODO 
 	//initMint for allies
+	for (let i = 8051; i < 17051; i += 505) {
+		await allies.initMint(orc.address, i, i + 505);
+	}
 
 	console.log("inited");
 
@@ -202,27 +205,27 @@ async function main() {
 		await hre.run("verify:verify", {
 			address: orcImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: orc.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: orc.address,
+		// });
 		await hre.run("verify:verify", {
 			address: castleImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: castle.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: castle.address,
+		// });
 		await hre.run("verify:verify", {
 			address: raidsImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: raids.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: raids.address,
+		// });
 		await hre.run("verify:verify", {
 			address: portalImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: portal.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: portal.address,
+		// });
 		await hre.run("verify:verify", {
 			address: zug.address,
 		});
@@ -232,9 +235,9 @@ async function main() {
 		await hre.run("verify:verify", {
 			address: hallImpl.address,
 		});
-		await hre.run("verify:verify", {
-			address: hall.address,
-		});
+		// await hre.run("verify:verify", {
+		// 	address: hall.address,
+		// });
 		await hre.run("verify:verify", {
 			address: gamingOracle.address,
 		});
@@ -242,10 +245,10 @@ async function main() {
 			address: potionVendor.address,
 		});
 		await hre.run("verify:verify", {
-			address: items.address,
+			address: itemsImpl.address,
 		});
 		await hre.run("verify:verify", {
-			address: allies.address,
+			address: alliesImpl.address,
 		});
 	}
 }

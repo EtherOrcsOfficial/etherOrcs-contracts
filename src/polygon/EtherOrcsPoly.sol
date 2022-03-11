@@ -215,21 +215,21 @@ contract EtherOrcsPoly is PolyERC721 {
         activities[id].timestamp = uint88(block.timestamp + cooldown);
     } 
 
-    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_) external noCheaters { 
+    function sendToRaid(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_, uint256[] calldata runes_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], msg.sender, Actions.UNSTAKED, msg.sender);
             _transfer(msg.sender, raids, ids[index]);
         }
-        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_, potions_);
+        RaidsLikePoly(raids).stakeManyAndStartCampaign(ids, msg.sender, location_, double_, potions_, runes_);
     }
 
-    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_) external noCheaters { 
+    function startRaidCampaign(uint256[] calldata ids, uint8 location_, bool double_, uint256[] calldata potions_, uint256[] calldata runes_) external noCheaters { 
         require(address(raids) != address(0), "raids not set");
         for (uint256 index = 0; index < ids.length; index++) {
             require(msg.sender == RaidsLikePoly(raids).commanders(ids[index]) && ownerOf[ids[index]] == address(raids), "not staked or not your orc");
         }
-        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_);
+        RaidsLikePoly(raids).startCampaignWithMany(ids, location_, double_, potions_, runes_);
     }
 
     function returnFromRaid(uint256[] calldata ids, Actions action_) external noCheaters { 
@@ -242,7 +242,7 @@ contract EtherOrcsPoly is PolyERC721 {
     }
 
     function pull(address owner_, uint256[] calldata ids) external {
-        require (msg.sender == castle, "not castle");
+        require (auth[msg.sender], "not authed");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], owner_, Actions.UNSTAKED, owner_);
             _transfer(owner_, msg.sender, ids[index]);
