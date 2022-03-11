@@ -38,12 +38,7 @@ let proxies  = {
 
 async function main() {
   await hre.run("compile");
-  await updateProxy("EtherOrcsPoly",proxies["EtherOrcsPoly"]);
-  let allies = await updateProxy("EtherOrcsAlliesPoly",proxies["EtherOrcsAlliesPoly"]);
-
-  await allies.setLocations()
-  let radis = await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
-  await radis.setRaids();
+  await updateProxy("RaidsPoly",proxies["RaidsPoly"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
