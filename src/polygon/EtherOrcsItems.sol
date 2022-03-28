@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.7;
 
+import "../interfaces/Interfaces.sol";
+
 interface IERC165 {
     function supportsInterface(bytes4 _interfaceId) external view returns (bool);
 }
@@ -44,6 +46,7 @@ contract EtherOrcsItems is IERC1155 {
     // onReceive function signatures
     bytes4 constant internal ERC1155_RECEIVED_VALUE       = 0xf23a6e61;
     bytes4 constant internal ERC1155_BATCH_RECEIVED_VALUE = 0xbc197c81;
+    uint8 internal constant WRAPPED_BONESHARD_ID          = 5;
 
     mapping (address => mapping(uint256 => uint256))  internal balances;
     mapping (address => mapping(uint256 => uint256))  internal decimalBalances;
@@ -52,6 +55,7 @@ contract EtherOrcsItems is IERC1155 {
     mapping(address => bool) public isMinter;
 
     address public inventoryManager;
+    address public boneshards;
 
    /****************************************|
   |            Minting Functions           |
@@ -81,6 +85,16 @@ contract EtherOrcsItems is IERC1155 {
         _burn(from, id, value);
     }
 
+    function wrapBoneshard(uint256 value) external {
+        ERC20Like(boneshards).transferFrom(msg.sender, address(this), value);
+        _mint(msg.sender, WRAPPED_BONESHARD_ID, value);
+    }
+
+    function unwrapBoneshard(uint256 value) external {
+        _burn(msg.sender, WRAPPED_BONESHARD_ID, value);
+        ERC20Like(boneshards).transferFrom(address(this), msg.sender, value);
+    }
+
     function setMinter(address minter, bool status) external {
         require(msg.sender == admin, "NOT ALLOWED TO RULE");
 
@@ -90,6 +104,11 @@ contract EtherOrcsItems is IERC1155 {
     function setInventoryManager(address inv_) external {
         require(msg.sender == admin);
         inventoryManager = inv_;
+    }
+
+    function setBoneshards(address bone_) external {
+        require(msg.sender == admin);
+        boneshards = bone_;
     }
 
     /***********************************|
