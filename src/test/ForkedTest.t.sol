@@ -5,7 +5,12 @@ import "../../lib/ds-test/src/test.sol";
 
 import "../polygon/EtherOrcsAlliesPoly.sol";
 
+import "../mainnet/EtherOrcsAllies.sol";
+
 import "../Proxy.sol";
+
+import "../Rescuer.sol";
+
 
 interface Vm {
 
@@ -116,4 +121,22 @@ contract Forked is DSTest {
         // emit log_named_uint("mod", allies.getMod(11054));
     }
 
+    function testFork_rescue() external {
+        Vm vm = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
+
+        vm.prank(0xe37Da1e4632B94e601Ac015Be8DB554E0456B01a); 
+        Rescuer rescuer = new Rescuer();
+
+        EtherOrcsAllies allies = EtherOrcsAllies(address(0x62674b8aCe7D939bB07bea6d32c55b74650e0eaA));
+
+        vm.prank(0xe37Da1e4632B94e601Ac015Be8DB554E0456B01a);       
+        allies.setAuth(address(rescuer), true);
+
+        uint256[] memory ids = new uint256[](1);
+        ids[0] = 8057;
+        rescuer.rescue(address(allies), address(allies), ids);
+
+        emit log_named_address("resc", address(rescuer));
+        emit log_named_address("owner", ERC721Like(address(allies)).ownerOf(8057));
+    }
 }
