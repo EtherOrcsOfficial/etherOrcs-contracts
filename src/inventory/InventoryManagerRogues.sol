@@ -286,14 +286,12 @@ contract InventoryManagerRogues {
     }
 
     function getTier(uint8 item) internal pure returns (uint8 tier) {
-        if (item <= 6) return 0;
-        if (item <= 9) return 1;
-        if (item <= 14) return 2;
-        if (item <= 20) return 3;
-        if (item <= 26) return 4;
-        if (item <= 31) return 5;
+        if (item == 0)  return 0;
+        if (item <= 5)  return 2;
+        if (item <= 15) return 3;
+        if (item <= 21) return 4;
+        if (item <= 28) return 5;
         if (item <= 35) return 6;
-        return 7;
     } 
 
     function getArmorName(uint256 id) public pure returns (string memory) {

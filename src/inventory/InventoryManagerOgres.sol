@@ -408,6 +408,7 @@ contract InventoryManagerOgres {
         if (id == 6) return "Tan";
         if (id == 7) return "Clay";
         if (id == 8) return "Dark Green";
+        if (id == 9) return "Lava";
     }
 }
 

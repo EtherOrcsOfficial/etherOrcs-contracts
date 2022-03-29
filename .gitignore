@@ -4,3 +4,4 @@ artifacts/
 .env
 cache/out
 cache/
+hh-cache

@@ -316,7 +316,7 @@ contract RaidsPoly {
     }
 
     function _foundSomething(Raid memory raid, Campaign memory cmp, uint256 rdn, uint256 id) internal {
-        if (cmp.runesUsed > 0 && cmp.runesUsed <=2 * MAX_RUNES) return;
+        if (cmp.runesUsed == 0 || cmp.runesUsed > 2 * MAX_RUNES) return;
 
         if (rdn >= 9_700) {
             if (items.balanceOf(address(this), 100) > 0) items.safeTransferFrom(address(this), commanders[id], 100, 1, new bytes(0));
