@@ -31,6 +31,7 @@ let proxies  = {
     "PotionVendor": "0xBb477E51A4E28280cB1839cb2F8AB551b24834Ae",
     "InventoryManagerAllies": "0xa44dE708c9a79A9465463C08f2980077b0808B06",
     "InventoryManagerOgres": "0x0Ad561F3E4a39c72e0AEE345D1590600F22cE1b2",
+    "InventoryManagerRogues": "0x39eb2084Cfc89b44A036cDd81d2aE97B7eFFa4FF",
     "InventoryManagerItems": "0x6e0c15a29851814D0e88E4AeaA359bae67e89676",
     "HordeUtilities": "0x6FFFa8692B29e982B9668B35ed998570BeB64C79",
     "GamingOraclePoly": "0x04A0B7E35828c985e78E2F1107e0B1C3FE39a837"

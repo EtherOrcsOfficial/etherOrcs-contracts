@@ -54,19 +54,19 @@ contract HordeUtilities {
 
 
     function userRock(uint256 id_) external {
-        (uint8 class, , , , , ) = OrcishLike(allies).allies(id_);
+        (uint8 class,uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, bytes22 details) = OrcishLike(allies).allies(id_);
         require(class == 2, "not an ogre");
 
-        ERC1155Like(items).burn(msg.sender, 99,  3 ether);
+        ERC1155Like(items).burn(msg.sender, 99, 3 ether);
 
-        (uint16 level, uint32 lvlProgress, uint16 modF, uint8 skillCredits, uint8 body, uint8 mouth, uint8 nose, uint8 eyes, uint8 armor, uint8 mainhand, uint8 offhand) = OrcishLike(allies).ogres(id_);
+        (uint8 body, uint8 mouth, uint8 nose, uint8 eye,uint8 armor, uint8 mainhand, uint8 offhand) = _ogre(details);
 
-        mouth = (9 - body) * 3 + mouth;
-        nose  = (9 - body) * 3 + nose;
-        eyes  = (9 - body) * 3 + eyes;
+        mouth = (9 - body) * 3 + mouth; // 25 25 27
+        nose  = (9 - body) * 3 + nose; //
+        eye   = (9 - body) * 3 + eye;
         body  = 9;
 
-        OrcishLike(allies).adjustAlly(id_, 2, level, lvlProgress, modF, skillCredits, bytes22(abi.encodePacked(body,mouth,nose,eyes,armor,mainhand,offhand)));
+        OrcishLike(allies).adjustAlly(id_, 2, level, lvlProgress, modF, skillCredits, bytes22(abi.encodePacked(body,mouth,nose,eye,armor,mainhand,offhand)));
     }
 
     function userFireCrystal(uint256 id_) external {
@@ -94,6 +94,16 @@ contract HordeUtilities {
         body = uint8(body_);
 
         det =  bytes22(abi.encodePacked(body,face,boots,pants,shirt,hair,armor,mainhand,offhand));
+    }
+
+    function _ogre(bytes22 details) internal pure returns(uint8 body, uint8 mouth, uint8 nose, uint8 eye,uint8 armor, uint8 mainhand, uint8 offhand) {
+        body     = uint8(bytes1(details));
+        mouth    = uint8(bytes1(details << 8));
+        nose     = uint8(bytes1(details << 16));
+        eye      = uint8(bytes1(details << 24));
+        armor    = uint8(bytes1(details << 32));
+        mainhand = uint8(bytes1(details << 40));
+        offhand  = uint8(bytes1(details << 48));
     }
 
 }

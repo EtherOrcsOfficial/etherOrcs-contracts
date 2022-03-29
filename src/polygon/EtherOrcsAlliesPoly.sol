@@ -264,7 +264,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         bytes22 newDetails = ally.class == 1 ? _equipShaman(loc, ally.details, adv.equipment, rdn) : ally.class == 2 ? _equipOgre(loc, ally.details, adv.equipment, rdn) : _equipRogue(loc, ally.details, adv.equipment, rdn);
 
         allies[id].details = newDetails;
-        allies[id].modF    = ally.class == 1 ? _modFSh(newDetails) : _modFOg(newDetails);
+        allies[id].modF    = ally.class == 1 ? _modFSh(newDetails) : ally.class == 2 ? _modFOg(newDetails) : _modFRg(newDetails);
 
         delete adventures[id];
     }
@@ -322,7 +322,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
             _mint( to, i);
         }
     }
-
+    
     function rogue(bytes22 details) public pure returns(Rogue memory rg) {
         uint8 body     = uint8(bytes1(details));
         uint8 face     = uint8(bytes1(details << 8));
@@ -435,10 +435,10 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         mod = _tierOg(armor) + _tierOg(mainhand) + _tierOg(offhand);
     }
 
-    function _modFTg(bytes32 details_) internal pure returns (uint16 mod) {
-        uint8 armor    = uint8(bytes1(details_ << 56));
-        uint8 mainhand = uint8(bytes1(details_ << 64));
-        uint8 offhand  = uint8(bytes1(details_ << 72));
+    function _modFRg(bytes32 details_) internal pure returns (uint16 mod) {
+        uint8 armor    = uint8(bytes1(details_ << 48));
+        uint8 mainhand = uint8(bytes1(details_ << 56));
+        uint8 offhand  = uint8(bytes1(details_ << 64));
 
         mod = _tierRg(armor) + _tierRg(mainhand) + _tierRg(offhand);
     }
@@ -461,6 +461,7 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         uint256 draw = uint256(rand % 100) + 1;
 
         uint8 tier = uint8(draw <= loc.tier_3Prob ? loc.tier_3 : draw <= loc.tier_2Prob + loc.tier_3Prob? loc.tier_2 : loc.tier_1);
+        if (tier == 0) return 0;
         item = uint8(rand % _tierItemsRg(tier) + _startForTierRg(tier));
     }
 
@@ -532,8 +533,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     }
 
     function _tierRg(uint8 item) internal pure returns (uint8 tier) {
-        if (item == 0) return 0;
-        if (item <= 5) return 2;
+        if (item == 0)  return 0;
+        if (item <= 5)  return 2;
         if (item <= 15) return 3;
         if (item <= 21) return 4;
         if (item <= 28) return 5;
