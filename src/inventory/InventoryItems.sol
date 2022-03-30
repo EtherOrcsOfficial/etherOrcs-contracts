@@ -40,3 +40,8 @@ contract IceCrystal {
     }
 
 }
+contract Boneshard {
+    function getSvg() public pure returns(string memory) {
+        return '<svg id="orc" width="100%" height="100%" version="1.1" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><image x="0" y="0" width="60" height="60" image-rendering="pixelated" preserveAspectRatio="xMidYMid" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4BAMAAADLSivhAAAAGFBMVEUAAAB6X0y4k3TeyLFALSR6X0y4k3TeyLHP1fQkAAAABHRSTlMAAAAAs5NmmgAAAQNJREFUWMPt2MENwyAMBVBWyAqswAqswAqswPrVj2VhpZEK3L7df8klr5UsQ8ApmfQ+Ru/pLJQYFGktDm5NeO8HnBAD1AqOH4iApVDAwiNgkHpH+RgRMAAwFgbaZJnT4lqlORDdEBY5KRauUb7cKqTYRrm0S84RsHIsFzzzHe/4urRo8kzJP5aiAepC2W4USoyi2e0hAtaDnZZu8+JCjG3L4DPgHYM/t8Wt/3aAt5cGJf4nTrRRjhqGEJcyN8HtQQQplmOcHUuALw4lKHEptkRyScVgQi8vXrF9ZY5gFgbKpPj7Bct/NAktfqNyrJEjrT/8diWfo8aDMQQhliP7AaPGTvIBF9BCp/EMlQUAAAAASUVORK5CYII="/><style>#orc{shape-rendering: crispedges; image-rendering: -webkit-crisp-edges; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; image-rendering: pixelated; -ms-interpolation-mode: nearest-neighbor;}</style></svg>';
+    }
+}

@@ -22,6 +22,7 @@ contract InventoryManagerItems {
         if (id == 1)   return getURI(svg, "Potion");
         if (id == 2)   return getURI(svg, "Training Dummy");
         if (id == 3)   return getURI(svg, "Luck Rune");
+        if (id == 5)   return getURI(svg, "Boneshard");
         if (id == 99)  return getURI(svg, "Lava Rock");
         if (id == 100) return getURI(svg, "Fire Crystal");
         if (id == 101) return getURI(svg, "Ice Crystal");
