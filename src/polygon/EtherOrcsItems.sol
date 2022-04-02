@@ -86,13 +86,13 @@ contract EtherOrcsItems is IERC1155 {
     }
 
     function wrapBoneshard(uint256 value) external {
-        ERC20Like(boneshards).transferFrom(msg.sender, address(this), value);
+        ERC20Like(boneshards).transferFrom(msg.sender, address(this), value * 1 ether);
         _mint(msg.sender, WRAPPED_BONESHARD_ID, value);
     }
 
     function unwrapBoneshard(uint256 value) external {
         _burn(msg.sender, WRAPPED_BONESHARD_ID, value);
-        ERC20Like(boneshards).transferFrom(address(this), msg.sender, value);
+        ERC20Like(boneshards).transferFrom(address(this), msg.sender, value * 1 ether);
     }
 
     function setMinter(address minter, bool status) external {
