@@ -4,6 +4,7 @@ pragma solidity 0.8.7;
 import "./PolyERC721.sol"; 
 
 import "../interfaces/Interfaces.sol";
+import "../interfaces/WorldLike.sol";
 
 contract EtherOrcsAlliesPoly is PolyERC721 {
 
@@ -22,6 +23,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
     address raids;
     address castle;
     address gamingOracle;
+
+    WorldLike world;
 
     bytes32 internal entropySauce;
 
@@ -220,8 +223,6 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
 
         uint256 timeDiff = uint256(block.timestamp - action.timestamp);
 
-        if (action.action == 1) potions.mint(action.owner, ally.class, _claimable(timeDiff, ally.modF));
-       
         if (action.action == 2) {
             allies[id].lvlProgress += uint32(timeDiff * 3000 / 1 days);
             allies[id].level        = uint16(allies[id].lvlProgress / 1000);
@@ -300,6 +301,18 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         require (auth[msg.sender], "not authed");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != 0) _doAction(ids[index], owner_, 0, owner_);
+
+            // If farming in the new world contract, end farming for convenience.
+            // Location of `1` is farming
+            //
+            if(address(world) != address(0)
+                && msg.sender != address(world)
+                && world.locationForStakedEntity(ids[index]) == 1
+                && world.ownerForStakedEntity(ids[index]) == owner_)
+            {
+                world.adminTransferEntityOutOfWorld(owner_, uint16(ids[index]));
+            }
+
             _transfer(owner_, msg.sender, ids[index]);
         }
         CastleLike(msg.sender).pullCallback(owner_, ids);
@@ -322,7 +335,12 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
             _mint( to, i);
         }
     }
-    
+
+    function setWorld(address worldAddress) external {
+        require(msg.sender == admin);
+        world = WorldLike(worldAddress);
+    }
+
     function rogue(bytes22 details) public pure returns(Rogue memory rg) {
         uint8 body     = uint8(bytes1(details));
         uint8 face     = uint8(bytes1(details << 8));
@@ -465,8 +483,8 @@ contract EtherOrcsAlliesPoly is PolyERC721 {
         item = uint8(rand % _tierItemsRg(tier) + _startForTierRg(tier));
     }
 
-    function _claimable(uint256 timeDiff, uint256 herbalism_) internal pure returns (uint256 potionAmount) {
-        potionAmount = timeDiff * (0.5 ether + (herbalism_ * 0.05 ether)) / 1 days;
+    function _claimable(uint256, uint256) internal pure returns (uint256) {
+        return 0;
     }
 
     function _tierSh(uint8 item) internal pure returns (uint8 tier) {

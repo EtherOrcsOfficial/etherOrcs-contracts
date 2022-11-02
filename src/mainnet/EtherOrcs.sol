@@ -165,8 +165,6 @@ contract EtherOrcs is ERC721O {
 
         uint256 timeDiff = uint256(block.timestamp - action.timestamp);
 
-        if (action.action == Actions.FARMING) zug.mint(action.owner, claimableZug(timeDiff, orc.zugModifier));
-       
         if (action.action == Actions.TRAINING) {
             if (orcs[id].level > 0 && orcs[id].lvlProgress < 1000){
                 orcs[id].lvlProgress = (1000 * orcs[id].level) + orcs[id].lvlProgress;
@@ -309,8 +307,8 @@ contract EtherOrcs is ERC721O {
         }
     }
 
-    function claimableZug(uint256 timeDiff, uint16 zugModifier) internal pure returns (uint256 zugAmount) {
-        zugAmount = timeDiff * (4 + zugModifier) * 1 ether / 1 days;
+    function claimableZug(uint256, uint16) internal pure returns (uint256) {
+        return 0;
     }
 
     /// @dev Convert an id to its tier
