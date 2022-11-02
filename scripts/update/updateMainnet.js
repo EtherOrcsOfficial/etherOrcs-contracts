@@ -5,22 +5,18 @@
 // Runtime Environment's members available in the global scope.
 const hre = require("hardhat");
 
-
-
 async function updateProxy(contractName, address) {
     console.log("Deploying", contractName)
-  const ImplFact = await hre.ethers.getContractFactory(contractName);
-  let impl = await ImplFact.deploy();
-  console.log(impl.address)
-  await impl.deployed();
+    const ImplFact = await hre.ethers.getContractFactory(contractName);
+    let impl = await ImplFact.deploy();
+    console.log(impl.address)
+    await impl.deployed();
 
-  console.log("Updating Impl")
-  let a = await hre.ethers.getContractAt("Proxy", address);
+    console.log("Updating Impl")
+    let a = await hre.ethers.getContractAt("Proxy", address);
 
-  await a.setImplementation(impl.address);
+    await a.setImplementation(impl.address);
 }
-
-
 
 let proxies  = {
     "Castle": "0xaF8884f29a4421d7CA847895Be4d2edE40eD6ad9",
@@ -34,16 +30,14 @@ let proxies  = {
 }
 
 async function main() {
-  await hre.run("compile");
+    await hre.run("compile");
 
-  // await updateProxy("EtherOrcsAllies",proxies["EtherOrcsAllies"]);
-  // await updateProxy("EtherOrcs",proxies["EtherOrcs"]);
-  await updateProxy("InventoryManagerRogues",proxies["InventoryManagerRogues"]);
+    await updateProxy("EtherOrcs", proxies["EtherOrcs"]);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+    console.error(error);
+    process.exitCode = 1;
 });

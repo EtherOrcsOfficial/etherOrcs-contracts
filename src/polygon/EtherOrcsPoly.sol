@@ -5,6 +5,7 @@ import "../ERC20.sol";
 import "./PolyERC721.sol"; 
 
 import "../interfaces/Interfaces.sol";
+import "../interfaces/WorldLike.sol";
 
 //    ___ _   _               ___            
 //  | __| |_| |_  ___ _ _   / _ \ _ _ __ ___
@@ -40,6 +41,8 @@ contract EtherOrcsPoly is PolyERC721 {
     address public raids;
     mapping(bytes4 => address) implementer;
     address castle;
+
+    WorldLike world;
 
     function setImplementer(bytes4[] calldata funcs, address source) external onlyOwner {
         for (uint256 index = 0; index < funcs.length; index++) {
@@ -162,8 +165,6 @@ contract EtherOrcsPoly is PolyERC721 {
 
         uint256 timeDiff = uint256(block.timestamp - action.timestamp);
 
-        if (action.action == Actions.FARMING) zug.mint(action.owner, claimableZug(timeDiff, orc.zugModifier));
-       
         if (action.action == Actions.TRAINING) {
             if (orcs[id].level > 0 && orcs[id].lvlProgress < 1000){
                 orcs[id].lvlProgress = (1000 * orcs[id].level) + orcs[id].lvlProgress;
@@ -245,6 +246,18 @@ contract EtherOrcsPoly is PolyERC721 {
         require (auth[msg.sender], "not authed");
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], owner_, Actions.UNSTAKED, owner_);
+
+            // If farming in the new world contract, end farming for convenience.
+            // Location of `1` is farming
+            //
+            if(address(world) != address(0)
+                && msg.sender != address(world)
+                && world.locationForStakedEntity(ids[index]) == 1
+                && world.ownerForStakedEntity(ids[index]) == owner_)
+            {
+                world.adminTransferEntityOutOfWorld(owner_, uint16(ids[index]));
+            }
+
             _transfer(owner_, msg.sender, ids[index]);
         }
         CastleLike(msg.sender).pullCallback(owner_, ids);
@@ -317,7 +330,11 @@ contract EtherOrcsPoly is PolyERC721 {
             _mint( to, i);
         }
     }
-    
+
+    function setWorld(address worldAddress) external {
+        require(msg.sender == admin);
+        world = WorldLike(worldAddress);
+    }
 
     /*///////////////////////////////////////////////////////////////
                     VIEWERS
@@ -357,8 +374,8 @@ contract EtherOrcsPoly is PolyERC721 {
         }
     }
 
-    function claimableZug(uint256 timeDiff, uint16 zugModifier) internal pure returns (uint256 zugAmount) {
-        zugAmount = timeDiff * (4 + zugModifier) * 1 ether / 1 days;
+    function claimableZug(uint256, uint16) internal pure returns (uint256) {
+        return 0;
     }
 
     /// @dev Convert an id to its tier
