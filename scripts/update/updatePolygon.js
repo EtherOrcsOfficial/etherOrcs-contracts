@@ -41,14 +41,8 @@ let proxies  = {
 async function main() {
     await hre.run("compile");
 
-    const orcs = await updateProxy("EtherOrcsPoly", proxies["EtherOrcsPoly"]);
-    const allies = await updateProxy("EtherOrcsAlliesPoly", proxies["EtherOrcsAlliesPoly"]);
-
-    console.log("Setting world address on Orcs contract...");
-    await(await orcs.setWorld(worldAddress)).wait();
-
-    console.log("Setting world address on Allies contract...");
-    await(await allies.setWorld(worldAddress)).wait();
+    const orcs = await hre.ethers.getContractAt('EtherOrcsPoly', proxies['EtherOrcsPoly']);
+    const allies = await hre.ethers.getContractAt('EtherOrcsAlliesPoly', proxies['EtherOrcsAlliesPoly']);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
