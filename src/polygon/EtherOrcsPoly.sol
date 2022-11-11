@@ -247,12 +247,12 @@ contract EtherOrcsPoly is PolyERC721 {
         for (uint256 index = 0; index < ids.length; index++) {
             if (activities[ids[index]].action != Actions.UNSTAKED) _doAction(ids[index], owner_, Actions.UNSTAKED, owner_);
 
-            // If farming in the new world contract, end farming for convenience.
-            // Location of `1` is farming
+            // If in the new world contract, try and transfer them out for convenience.
+            // Location of `0` means they are NOT in the world contract
             //
             if(address(world) != address(0)
                 && msg.sender != address(world)
-                && world.locationForStakedEntity(ids[index]) == 1
+                && world.locationForStakedEntity(ids[index]) != 0
                 && world.ownerForStakedEntity(ids[index]) == owner_)
             {
                 world.adminTransferEntityOutOfWorld(owner_, uint16(ids[index]));
